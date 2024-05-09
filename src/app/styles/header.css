@@ -3,7 +3,7 @@
     background: url('../../../public/header-bg.png');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: center;
+    background-position: center;
 }
 
 /*Estas clases es para hacer el menu hambuguesa para movil y la animacion*/
@@ -19,25 +19,25 @@
 
 .burguer-menu{
     position: absolute;
-    top: 0px%;
+    top: -70px;
     right: 0px;
     left: 0px;
     padding: 0.7rem;
-    height: 0vh;
     opacity: 0;
-    background-color: white;
-    color: #111;
-    transform: translateY(0px) translateX(0px);
-    transition: transform 400ms ease 0s;
+    transition: all 600ms ease 0s;
 }
 
 /*Al hacer click en el icono de las 3 rayas salen las opciones del menu*/
 .activated{
     position: absolute;
+    top: 80px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    padding: 0.7rem;
-    height: 25vh;
     opacity: 1;
+    height: 25vh;
+    margin: 0 0.5rem;
+    border-radius: 18px;
+    background-color: white;
+    color: #111;
 }
