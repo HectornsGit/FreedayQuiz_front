@@ -1,6 +1,7 @@
+"use client";
 import { useState } from "react";
 
-function Register() {
+function RegisterForm() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -61,4 +62,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default RegisterForm;
