@@ -18,8 +18,10 @@ function RegisterForm() {
 
   return (
     <div>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col justify-center items-center"
+        onSubmit={handleSubmit}
+      >
         <div>
           <label>Username:</label>
           <input
@@ -27,6 +29,7 @@ function RegisterForm() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            className="rounded-md m-2"
           />
         </div>
         <div>
@@ -36,6 +39,7 @@ function RegisterForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="rounded-md m-2"
           />
         </div>
         <div>
@@ -45,6 +49,7 @@ function RegisterForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="rounded-md m-2"
           />
         </div>
         <div>
@@ -54,9 +59,15 @@ function RegisterForm() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            className="rounded-md m-2"
           />
         </div>
-        <button type="submit">Register</button>
+        <button
+          className="p-2 bg-white text-gray-800 justify-center items-center"
+          type="submit"
+        >
+          Register
+        </button>
       </form>
     </div>
   );
