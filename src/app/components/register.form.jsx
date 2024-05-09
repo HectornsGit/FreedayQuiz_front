@@ -22,48 +22,48 @@ function RegisterForm() {
         className="flex flex-col justify-center items-center"
         onSubmit={handleSubmit}
       >
-        <div>
+        <div className="flex flex-col items-center">
           <label>Username:</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            className="rounded-md m-2"
+            className="rounded-lg min-w-64 min-h-7"
           />
         </div>
-        <div>
+        <div className="flex flex-col items-center mt-2">
           <label>Email:</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="rounded-md m-2"
+            className="rounded-lg min-w-64 min-h-7"
           />
         </div>
-        <div>
+        <div className="flex flex-col items-center mt-2">
           <label>Password:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="rounded-md m-2"
+            className="rounded-lg min-w-64 min-h-7"
           />
         </div>
-        <div>
-          <label>Confirm Password:</label>
+        <div className="flex flex-col items-center mt-2">
+          <label className="text-base">Confirm Password:</label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            className="rounded-md m-2"
+            className="rounded-lg min-w-64 min-h-7"
           />
         </div>
         <button
-          className="p-2 bg-white text-gray-800 justify-center items-center"
+          className="px-7 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-900 text-white justify-center items-center text-lg mt-5"
           type="submit"
         >
           Register
