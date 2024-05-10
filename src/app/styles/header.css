@@ -19,7 +19,6 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-image: linear-gradient(135deg,#01ffff,#fcff00);;
-    /* color: linear-gradient(135deg,#01ffff,#fcff00); */
     box-shadow: 4px 4px 0 0 #fcff00;
     font-weight: 800;
 }

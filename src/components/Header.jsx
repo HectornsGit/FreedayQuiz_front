@@ -33,7 +33,6 @@ export default function Header() {
             <li><Link href="#">Sign In</Link></li>
             <li><Link href="#">Sign Up</Link></li>
         </ul>
-
         <ul className="text-white hidden md:flex gap-x-8">
             <li ><Link href="#" className="text-xl button-linear">Sign In</Link></li>
             <li ><Link href="#" className="text-xl button-gradient">Sign Up</Link></li>
