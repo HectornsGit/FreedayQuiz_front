@@ -28,9 +28,15 @@ export default function Header() {
                 <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
             </svg>
         </button>
+        {/* Lista de enlaces para versión móvil */}
         <ul className={`burguer-menu ${menu ? 'activated' : ''}`}>
             <li><Link href="#">Sign In</Link></li>
             <li><Link href="#">Sign Up</Link></li>
+        </ul>
+
+        <ul className="text-white hidden md:flex gap-x-8">
+            <li ><Link href="#" className="text-xl button-linear">Sign In</Link></li>
+            <li ><Link href="#" className="text-xl button-gradient">Sign Up</Link></li>
         </ul>
     </nav>
         </header>
