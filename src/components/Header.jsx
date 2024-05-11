@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "../../src/app/styles/header.css";
+import ButtonPrimary from "./ButtonPrimary";
+import ButtonSecondary from "./ButtonSecondary";
 
 
 
@@ -30,12 +32,12 @@ export default function Header() {
         </button>
         {/* Lista de enlaces para versión móvil */}
         <ul className={`burguer-menu ${menu ? 'activated' : ''}`}>
-            <li><Link href="#">Sign In</Link></li>
-            <li><Link href="#">Sign Up</Link></li>
+            <li><Link href="#">Iniciar sesión</Link></li>
+            <li><Link href="#">Registrarse</Link></li>
         </ul>
-        <ul className="text-white hidden md:flex gap-x-8">
-            <li ><Link href="#" className="text-xl button-linear">Sign In</Link></li>
-            <li ><Link href="#" className="text-xl button-gradient">Sign Up</Link></li>
+        <ul className="hidden md:flex gap-x-8">
+            <li ><ButtonSecondary href="/">Iniciar sesión</ButtonSecondary></li>
+            <li ><ButtonPrimary href="/">Registrarse</ButtonPrimary></li>
         </ul>
     </nav>
         </header>

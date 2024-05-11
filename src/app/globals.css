@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 :root {
+  /*colores personalizados*/
+  --cyan: #01ffff;
+  --yellow: #fcff00;
+  --color-gradient: linear-gradient(135deg,var(--cyan),var(--yellow));
+
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -32,3 +37,27 @@ body {
     text-wrap: balance;
   }
 }
+
+/*degradado personalizado*/
+@variants  bg-gradient, bg-gradient:hover {
+  .bg-gradient{
+  background-image: var(--color-gradient);
+  }
+
+  .bg-gradient:hover{
+  /* background-image: none; */
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  }
+}
+
+/*sombras para los botones*/
+@variants  box-shadow-yellow, box-shadow-white {
+  .box-shadow-yellow{
+    box-shadow: 4px 4px 0 0 var(--yellow);
+    }
+  
+    .box-shadow-white{
+      box-shadow: 4px 4px 0 0 #fff;
+    }
+  }
