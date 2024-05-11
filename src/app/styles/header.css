@@ -6,37 +6,6 @@
     background-position: center;
 }
 
-/*estilos para boton primario
-.button-gradient{
-    padding: 0.8rem 2.2rem;
-    color: #111;
-    background-image: linear-gradient(135deg,#01ffff,#fcff00);
-    font-weight: 800;
-}
-
-.button-gradient:hover{
-    background-color: #111;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(135deg,#01ffff,#fcff00);;
-    box-shadow: 4px 4px 0 0 #fcff00;
-    font-weight: 800;
-}*/
-
-/*estilos para boton secundario*/
-.button-linear{
-    padding: 0.8rem 2.2rem;
-    font-weight: 800;
-    background-color: #ffffff;
-    color: #111;
-}
-
-.button-linear:hover{
-    background-color: #111;
-    color: #ffffff;
-}
-
-
 /*Estas clases es para hacer el menu hambuguesa para movil y la animacion*/
 .icon-menu{
     cursor: pointer;
