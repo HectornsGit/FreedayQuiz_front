@@ -1,11 +1,13 @@
 "use client";
 
-function RegisterPage() {
+import LoginForm from "../components/login.form";
+
+function LoginPage() {
   return (
     <div className="h-dvh flex flex-col justify-center items-center">
-      <h1>Log In</h1>
+      <LoginForm />
     </div>
   );
 }
 
-export default RegisterPage;
+export default LoginPage;
