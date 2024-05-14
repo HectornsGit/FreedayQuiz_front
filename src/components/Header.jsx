@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import "../../src/app/styles/header.css";
+import "../styles/header.css";
 import ButtonPrimary from "./ButtonPrimary";
 import ButtonSecondary from "./ButtonSecondary";
 
@@ -36,8 +36,8 @@ export default function Header() {
             <li><Link href="#">Registrarse</Link></li>
         </ul>
         <ul className="hidden md:flex gap-x-8">
-            <li ><ButtonSecondary href="/">Iniciar sesión</ButtonSecondary></li>
-            <li ><ButtonPrimary href="/">Registrarse</ButtonPrimary></li>
+            <li ><ButtonSecondary href="/login">Iniciar sesión</ButtonSecondary></li>
+            <li ><ButtonPrimary href="/register">Registrarse</ButtonPrimary></li>
         </ul>
     </nav>
         </header>
