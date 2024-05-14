@@ -1,5 +1,5 @@
 export const registerUserService = async ({ name, email, password }) => {
-    const response = await fetch(`${import.meta.env.URL_API}/register`, {
+    const response = await fetch(`${process.env.API_URL}/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
