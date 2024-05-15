@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import '../../src/app/styles/header.css'
+import '../styles/header.css'
 import ButtonPrimary from './ButtonPrimary'
 import ButtonSecondary from './ButtonSecondary'
 
@@ -52,10 +52,10 @@ export default function Header() {
                 {/* Lista de enlaces para versión móvil */}
                 <ul className={`burguer-menu ${menu ? 'activated' : ''}`}>
                     <li>
-                        <Link href="/login">Iniciar sesión</Link>
+                        <Link href="#">Iniciar sesión</Link>
                     </li>
                     <li>
-                        <Link href="/register">Registrarse</Link>
+                        <Link href="#">Registrarse</Link>
                     </li>
                 </ul>
                 <ul className="hidden md:flex gap-x-8">
