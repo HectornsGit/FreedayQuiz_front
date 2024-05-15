@@ -39,7 +39,7 @@ body {
 }
 
 /*degradado personalizado*/
-@variants  bg-gradient, bg-gradient:hover {
+@layer utilities {
   .bg-gradient{
   background-image: var(--color-gradient);
   }
@@ -52,12 +52,12 @@ body {
 }
 
 /*sombras para los botones*/
-@variants  box-shadow-yellow, box-shadow-white {
+@layer utilities {
   .box-shadow-yellow{
     box-shadow: 4px 4px 0 0 var(--yellow);
     }
   
-    .box-shadow-white{
-      box-shadow: 4px 4px 0 0 #fff;
+  .box-shadow-white{
+    box-shadow: 4px 4px 0 0 #fff;
     }
   }

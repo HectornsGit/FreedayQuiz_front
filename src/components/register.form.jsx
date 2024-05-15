@@ -1,19 +1,31 @@
 "use client";
 import { useState } from "react";
+import { sendRegister } from "@/api/send-register";
 
 function RegisterForm() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your registration logic here
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Confirm Password:", confirmPassword);
+    // Construir el payload con los datos del formulario
+    const payload = {
+      username: username,
+      email: email,
+      password: password,
+    };
+
+    (async () => {
+      try {
+        // Llamar a sendRegister con el payload
+        const response = await sendRegister(payload);
+        // Manejar la respuesta si es necesario
+        console.log("Registro exitoso:", response);}
+        catch (error) {
+        // Manejar errores si la solicitud falla
+        console.error("Error al registrar:", error);}
+    })();
   };
 
   return (
@@ -48,16 +60,6 @@ function RegisterForm() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
-            className="rounded-lg min-w-64 min-h-7"
-          />
-        </div>
-        <div className="flex flex-col items-center mt-2">
-          <label className="text-base">Confirm Password:</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
             required
             className="rounded-lg min-w-64 min-h-7"
           />
