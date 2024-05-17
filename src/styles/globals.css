@@ -41,7 +41,6 @@ body {
   }
 
   .bg-gradient:hover{
-  /* background-image: none; */
   background-clip: text;
   -webkit-text-fill-color: transparent;
   }
