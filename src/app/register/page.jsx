@@ -4,7 +4,7 @@ import RegisterForm from '../../components/register.form'
 
 function RegisterPage() {
     return (
-        <div className="h-dvh flex flex-col justify-center items-center">
+        <div className="h-fit py-11 flex flex-col justify-center items-center">
             <RegisterForm />
         </div>
     )
