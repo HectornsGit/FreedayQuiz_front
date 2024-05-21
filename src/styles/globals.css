@@ -27,6 +27,23 @@ body {
     
 }
 
+.input-default {
+    min-width: 224px;
+    min-height: 40px;
+    padding: 0.5rem;
+    border: 1px solid #CBD6E2;
+    box-sizing: border-box;
+    color: black;
+}
+
+.select-default {
+  min-width: 224px;
+    min-height: 40px;
+    border: 1px solid #CBD6E2;
+    box-sizing: border-box;
+    color: black;
+    font-size: 100%;
+}
 
 @layer utilities {
   .text-balance {
