@@ -1,24 +1,24 @@
+'use client';
 import { createContext, useState, useEffect } from 'react';
-import { getDataUserLoggedService } from '../service/getDataUserLoggedService';
-import { useNavigate } from 'react-router-dom';
+//import { getDataUserLoggedService } from '../service/getDataUserLoggedService';
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem('token'));
-  const navigate = useNavigate();
+  const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
   //guardamos token en local Storage
   useEffect(() => {
     localStorage.setItem('token', token);
+    //localStorage.getItem('token')
   }, [token]);
 
 
   useEffect(() => {
     const getDataUserLogged = async () => {
       try {
-        const data = await getDataUserLoggedService({ token });
+        const data = await getDataUserLoggedService({ token }); //TO DO: hacer el service
         setUser(data);
       } catch (error) {
         logout();
@@ -31,7 +31,7 @@ export const AuthContextProvider = ({ children }) => {
   const logout = () => {
     setToken('');
     setUser(null); 
-    navigate('/');
+   // navigate('/') TODO: con next esto se hace de otra manera
   };
 
 
