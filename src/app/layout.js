@@ -2,7 +2,6 @@ import { Montserrat } from 'next/font/google'
 import '../styles/globals.css'
 import Header from '../components/Header'
 import Footer from '@/components/Footer'
-import { AuthContextProvider } from '@/context/AuthContextProvider'
 
 const inter = Montserrat({ subsets: ['latin'] })
 
@@ -13,7 +12,6 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <AuthContextProvider>
         <html lang="es">
             <body className={`${inter.className}`}>
                 <Header />
@@ -21,6 +19,5 @@ export default function RootLayout({ children }) {
                 <Footer/>
             </body>
         </html>
-        </AuthContextProvider>
     )
 }

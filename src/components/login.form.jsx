@@ -27,6 +27,7 @@ function LoginForm() {
                 console.log('Respuesta del servidor:', response)
                 if (response.ok) {
                     console.log('Inicio de sesión exitoso')
+
                 } else {
                     console.error(
                         'Error al iniciar sesión:',
