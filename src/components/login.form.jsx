@@ -24,10 +24,9 @@ function LoginForm() {
         // Enviamos los datos del formulario al fetch
         sendLogin(payload)
             .then((response) => {
-                console.log('Respuesta del servidor:', response)
+            console.log('Respuesta del servidor:', response)
                 if (response.ok) {
                     console.log('Inicio de sesión exitoso')
-
                 } else {
                     console.error(
                         'Error al iniciar sesión:',
