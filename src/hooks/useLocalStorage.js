@@ -1,19 +1,24 @@
-'use client'
-import { useEffect, useState } from 'react';
-
-//TODO: ver porqué no se puede usar localStorage aqui, da error:"ReferenceError: localStorage is not defined"
-
-const useLocalStorage = (key, defaultValue) => {
-  const localStorageValue = localStorage.getItem(key);
-  const [state, setState] = useState(
-    localStorageValue ? JSON.parse(localStorageValue) : defaultValue
-  );
-  useEffect(() => {
-    if (state) {
-    localStorage.setItem(key, JSON.stringify(state));
+import { useState } from "react";
+export const useLocalStorage = (key, initialValue) => {
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.log(error);
+      return initialValue;
     }
-  }, [key, state]);
+  });
 
-  return [state, setState];
+  const setValue = (value) => {
+    try {
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return [storedValue, setValue];
 };
-export default useLocalStorage;
