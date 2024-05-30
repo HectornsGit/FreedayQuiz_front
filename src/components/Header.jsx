@@ -1,13 +1,16 @@
 //Menu navegación
 'use client'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import '../styles/header.css'
 import ButtonPrimary from './ButtonPrimary'
 import ButtonSecondary from './ButtonSecondary'
 
+
 export default function Header() {
+
+
     const [menu, setMenu] = useState(false)
 
     const toggleMenu = () => {
