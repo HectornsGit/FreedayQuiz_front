@@ -1,6 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
-import { sendRegister } from '@/api/send-register'
+import { fetchAPI } from '@/api/fetch-api'
 
 function RegisterForm() {
     const [name, setName] = useState('')
@@ -11,10 +11,6 @@ function RegisterForm() {
         'imagenPredeterminada.png'
     )
     const fileInputRef = useRef(null)
-
-    const handleNameChange = (e) => setName(e.target.value)
-    const handleEmailChange = (e) => setEmail(e.target.value)
-    const handlePasswordChange = (e) => setPassword(e.target.value)
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0]
@@ -28,18 +24,23 @@ function RegisterForm() {
         }
     }
 
-    const handleAvatarClick = () => {
-        fileInputRef.current.click()
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault()
 
         const payload = { name, email, password, avatar }
         console.log('Datos del formulario:', payload)
 
-        // Enviar los datos del formulario al fetch
-        sendRegister(payload)
+        const onSuccess = (data) => {
+            console.log('Registrado correctamente', data)
+            setEmail('')
+            setName('')
+            setPassword('')
+        }
+        const onError = (error) => {
+            console.log('Ha habido un error en el registro', error.error)
+            setPassword('')
+        }
+        fetchAPI('/register', 'POST', payload, onSuccess, onError)
     }
 
     return (
@@ -49,7 +50,12 @@ function RegisterForm() {
                 onSubmit={handleSubmit}
             >
                 {avatarPreview && (
-                    <div className="mb-4" onClick={handleAvatarClick}>
+                    <div
+                        className="mb-4"
+                        onClick={() => {
+                            fileInputRef.current.click()
+                        }}
+                    >
                         <img
                             src={avatarPreview}
                             alt="Avatar Preview"
@@ -71,7 +77,9 @@ function RegisterForm() {
                     <input
                         type="name"
                         value={name}
-                        onChange={handleNameChange}
+                        onChange={(e) => {
+                            setName(e.target.value)
+                        }}
                         required
                         className="input-default"
                     />
@@ -81,7 +89,9 @@ function RegisterForm() {
                     <input
                         type="email"
                         value={email}
-                        onChange={handleEmailChange}
+                        onChange={(e) => {
+                            setEmail(e.target.value)
+                        }}
                         required
                         className="input-default"
                     />
@@ -91,7 +101,9 @@ function RegisterForm() {
                     <input
                         type="password"
                         value={password}
-                        onChange={handlePasswordChange}
+                        onChange={(e) => {
+                            setPassword(e.target.value)
+                        }}
                         required
                         className="input-default"
                     />

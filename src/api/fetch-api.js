@@ -1,6 +1,12 @@
 const host = process.env.NEXT_PUBLIC_API_HOST
 
-export async function fetchAPI(path, method, payload) {
+export async function fetchAPI(
+    path,
+    method,
+    payload,
+    onSuccess = () => {},
+    onError = () => {}
+) {
     method = method ?? 'get'
 
     const requestInit = {
@@ -12,14 +18,17 @@ export async function fetchAPI(path, method, payload) {
         requestInit.headers['Content-Type'] = 'application/json'
         requestInit.body = JSON.stringify(payload)
     }
+    try {
+        const response = await fetch(host + path, requestInit)
 
-    const response = await fetch(host + path, requestInit)
+        const result = await response.json()
 
-    const result = await response.json()
-
-    if (!response.ok) {
-        throw new Error(result.message || 'Something went wrong')
+        if (response.ok) {
+            onSuccess(result)
+        } else {
+            onError(result)
+        }
+    } catch (error) {
+        onError(error)
     }
-
-    return result
 }
