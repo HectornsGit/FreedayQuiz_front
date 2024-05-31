@@ -12,10 +12,6 @@ function RegisterForm() {
     )
     const fileInputRef = useRef(null)
 
-    const handleNameChange = (e) => setName(e.target.value)
-    const handleEmailChange = (e) => setEmail(e.target.value)
-    const handlePasswordChange = (e) => setPassword(e.target.value)
-
     const handleAvatarChange = (e) => {
         const file = e.target.files[0]
         setAvatar(file)
@@ -26,10 +22,6 @@ function RegisterForm() {
         if (file) {
             reader.readAsDataURL(file)
         }
-    }
-
-    const handleAvatarClick = () => {
-        fileInputRef.current.click()
     }
 
     const handleSubmit = (e) => {
@@ -49,7 +41,12 @@ function RegisterForm() {
                 onSubmit={handleSubmit}
             >
                 {avatarPreview && (
-                    <div className="mb-4" onClick={handleAvatarClick}>
+                    <div
+                        className="mb-4"
+                        onClick={() => {
+                            fileInputRef.current.click()
+                        }}
+                    >
                         <img
                             src={avatarPreview}
                             alt="Avatar Preview"
@@ -71,7 +68,9 @@ function RegisterForm() {
                     <input
                         type="name"
                         value={name}
-                        onChange={handleNameChange}
+                        onChange={(e) => {
+                            setName(e.target.value)
+                        }}
                         required
                         className="input-default"
                     />
@@ -81,7 +80,9 @@ function RegisterForm() {
                     <input
                         type="email"
                         value={email}
-                        onChange={handleEmailChange}
+                        onChange={(e) => {
+                            setEmail(e.target.value)
+                        }}
                         required
                         className="input-default"
                     />
@@ -91,7 +92,9 @@ function RegisterForm() {
                     <input
                         type="password"
                         value={password}
-                        onChange={handlePasswordChange}
+                        onChange={(e) => {
+                            setPassword(e.target.value)
+                        }}
                         required
                         className="input-default"
                     />

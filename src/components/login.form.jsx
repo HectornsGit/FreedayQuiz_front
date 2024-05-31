@@ -6,26 +6,20 @@ function LoginForm() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { token, setToken } = useContext(AuthContext)
-    console.log('estado', token)
-    console.log(token)
-
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value)
-    }
-
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value)
-    }
+    const { setToken } = useContext(AuthContext)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         const payload = { email: email, password: password }
-        console.log('Datos del formulario:', payload)
-
-        const data = await fetchAPI('/login', 'POST', payload)
-        setToken(data.data.token)
+        const onSuccess = (data) => {
+            setToken(data.data.token)
+            console.log('Logueado correctamente')
+        }
+        const onError = (error) => {
+            console.log('Error en el inicio de sesión', error.error)
+        }
+        await fetchAPI('/login', 'POST', payload, onSuccess, onError)
     }
 
     return (
@@ -39,7 +33,9 @@ function LoginForm() {
                     <input
                         type="text"
                         value={email}
-                        onChange={handleEmailChange}
+                        onChange={(e) => {
+                            setEmail(e.target.value)
+                        }}
                         required
                         className="input-default"
                     />
@@ -49,7 +45,9 @@ function LoginForm() {
                     <input
                         type="password"
                         value={password}
-                        onChange={handlePasswordChange}
+                        onChange={(e) => {
+                            setPassword(e.target.value)
+                        }}
                         required
                         className="input-default"
                     />
