@@ -1,20 +1,14 @@
 import { useContext, useState } from 'react'
-import { sendLogin } from '@/api/send-login'
 import { fetchAPI } from '@/api/fetch-api'
 import { AuthContext } from '@/context/AuthContextProvider'
 
-
-
 function LoginForm() {
-    //const [loginInput, setLoginInput] = useState("");
-    //const [username, setUsername] = useState("");
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { token, setToken} = useContext(AuthContext)
-    console.log('estado', token);
-    console.log(token);
-
+    const { token, setToken } = useContext(AuthContext)
+    console.log('estado', token)
+    console.log(token)
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
@@ -27,35 +21,11 @@ function LoginForm() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const payload = { email:email, password:password }
+        const payload = { email: email, password: password }
         console.log('Datos del formulario:', payload)
 
-        const data =  await fetchAPI('/login', 'POST', payload);
-        setToken(data.data.token);
-        
-        
-        // Enviamos los datos del formulario al fetch
-        /* sendLogin(payload)
-            .then((response) => {
-            console.log('Respuesta del servidor:', response)
-                if (response.ok) {
-                    console.log('Inicio de sesión exitoso')
-                } else {
-                    console.error(
-                        'Error al iniciar sesión:',
-                        response.statusText
-                    )
-                } 
-            })
-
-            .catch((error) => {
-                console.error(
-                    'Error al procesar el inicio de sesión:',
-                    error.message
-                )
-                
-            }) */
-
+        const data = await fetchAPI('/login', 'POST', payload)
+        setToken(data.data.token)
     }
 
     return (
