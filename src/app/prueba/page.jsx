@@ -1,33 +1,16 @@
 'use client'
-import { useContext, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useContext } from 'react'
 import { AuthContext } from '@/context/AuthContextProvider'
 
 const Prueba = () => {
-    const router = useRouter()
-    const { token, setToken } = useContext(AuthContext)
-
-    useEffect(() => {
-        if (!token) {
-            router.push('/')
-        }
-    }, [token, router])
-
-    const handleLogout = () => {
-        setToken(null)
-    }
-
-    console.log(token)
+    const { setToken } = useContext(AuthContext)
 
     return (
         <>
             <p style={{ color: 'white' }}>Esto es prueba</p>
-            <button style={{ color: 'white' }} onClick={handleLogout}>
+            <button style={{ color: 'white' }} onClick={() => setToken(null)}>
                 Cerrar sesión
             </button>
-            <p style={{ color: 'white' }}>
-                {token ? 'Hay token' : 'No hay token'}
-            </p>
         </>
     )
 }
