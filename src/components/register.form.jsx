@@ -1,6 +1,7 @@
 'use client'
 import { useState, useRef } from 'react'
 import { fetchAPI } from '@/api/fetch-api'
+import { toast } from 'react-toastify'
 
 function RegisterForm() {
     const [name, setName] = useState('')
@@ -31,12 +32,14 @@ function RegisterForm() {
         console.log('Datos del formulario:', payload)
 
         const onSuccess = (data) => {
+            toast.success('Registrado correctamente')
             console.log('Registrado correctamente', data)
             setEmail('')
             setName('')
             setPassword('')
         }
         const onError = (error) => {
+            toast.error(error.error)
             console.log('Ha habido un error en el registro', error.error)
             setPassword('')
         }
