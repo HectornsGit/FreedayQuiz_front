@@ -1,6 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
-import { sendRegister } from '@/api/send-register'
+import { fetchAPI } from '@/api/fetch-api'
 
 function RegisterForm() {
     const [name, setName] = useState('')
@@ -30,8 +30,17 @@ function RegisterForm() {
         const payload = { name, email, password, avatar }
         console.log('Datos del formulario:', payload)
 
-        // Enviar los datos del formulario al fetch
-        sendRegister(payload)
+        const onSuccess = (data) => {
+            console.log('Registrado correctamente', data)
+            setEmail('')
+            setName('')
+            setPassword('')
+        }
+        const onError = (error) => {
+            console.log('Ha habido un error en el registro', error.error)
+            setPassword('')
+        }
+        fetchAPI('/register', 'POST', payload, onSuccess, onError)
     }
 
     return (

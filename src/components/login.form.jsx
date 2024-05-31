@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import { fetchAPI } from '@/api/fetch-api'
 import { AuthContext } from '@/context/AuthContextProvider'
+import { toast } from 'react-toastify'
 
 function LoginForm() {
     const [email, setEmail] = useState('')
@@ -12,12 +13,17 @@ function LoginForm() {
         e.preventDefault()
 
         const payload = { email: email, password: password }
+
         const onSuccess = (data) => {
             setToken(data.data.token)
             console.log('Logueado correctamente')
+            toast.success('Logueado correctamente')
+            setEmail('')
+            setPassword('')
         }
         const onError = (error) => {
             console.log('Error en el inicio de sesión', error.error)
+            toast.error(error.error)
         }
         await fetchAPI('/login', 'POST', payload, onSuccess, onError)
     }
