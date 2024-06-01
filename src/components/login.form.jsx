@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import { fetchAPI } from '@/api/fetch-api'
 import { AuthContext } from '@/context/AuthContextProvider'
 import { toast } from 'react-toastify'
+import { signIn } from 'next-auth/react'
 
 function LoginForm() {
     const [email, setEmail] = useState('')
@@ -20,6 +21,7 @@ function LoginForm() {
             toast.success('Logueado correctamente')
             setEmail('')
             setPassword('')
+            // signIn('credentials', { email: email, password: password })
         }
         const onError = (error) => {
             console.log('Error en el inicio de sesión', error.error)
