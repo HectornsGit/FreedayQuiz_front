@@ -23,8 +23,8 @@
 
 body {
     background-image: url('../../public/Background.webp');
-    background-position: center;
-    
+    background: center no-repeat cover;
+    color: #fff;
 }
 
 .input-default {
