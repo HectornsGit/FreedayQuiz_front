@@ -18,7 +18,7 @@ export default function Header() {
     }
 
     return (
-        <header className="flex items-center justify-evenly text-white p-8 bg-header">
+        <header className="flex items-center justify-between text-white p-8 bg-header">
             <h1>
                 {/* Pongo las imágenes asi porque cuando es versión movil aparece un logo y cuando es version mas grande, otro */}
                 <Image
