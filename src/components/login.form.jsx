@@ -62,14 +62,14 @@ function LoginForm() {
                     />
                 </div>
 
-               {/*  <div className="flex flex-col items-center mt-10">
+                <div className="flex flex-col items-center mt-10">
                 <button type="submit" className="text-black font-extrabold text-lg bg-white px-11 py-2 
                 hover:bg-black hover:text-white hover:box-shadow-white"> Iniciar sesión </button>
-                </div> */}
-                <button className="px-7 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-900 text-white justify-center items-center text-lg mt-5"
+                </div>
+               {/*  <button className="px-7 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-900 text-white justify-center items-center text-lg mt-5"
                 type="submit">
                     Login
-                </button>
+                </button> */}
 
             </form>
         </div>
