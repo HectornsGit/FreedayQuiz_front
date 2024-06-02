@@ -66,11 +66,6 @@ function LoginForm() {
                 <button type="submit" className="text-black font-extrabold text-lg bg-white px-11 py-2 
                 hover:bg-black hover:text-white hover:box-shadow-white"> Iniciar sesión </button>
                 </div>
-               {/*  <button className="px-7 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-900 text-white justify-center items-center text-lg mt-5"
-                type="submit">
-                    Login
-                </button> */}
-
             </form>
         </div>
     )

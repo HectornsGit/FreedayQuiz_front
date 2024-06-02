@@ -54,7 +54,7 @@ function RegisterForm() {
             >
                 {avatarPreview && (
                     <div
-                        className="mb-4"
+                        className="mb-8"
                         onClick={() => {
                             fileInputRef.current.click()
                         }}
@@ -75,8 +75,8 @@ function RegisterForm() {
                         ref={fileInputRef}
                     />
                 </div>
-                <div className="flex flex-col items-center">
-                    <label>Nombre de usuario:</label>
+                <div className="flex flex-col">
+                    <label className='text-lg font-semibold text-left'>Nombre de usuario: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
                         type="name"
                         value={name}
@@ -87,8 +87,8 @@ function RegisterForm() {
                         className="input-default"
                     />
                 </div>
-                <div className="flex flex-col items-center mt-2">
-                    <label>Email:</label>
+                <div className="flex flex-col mt-8">
+                    <label className='text-lg font-semibold text-left'>Email: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
                         type="email"
                         value={email}
@@ -99,8 +99,8 @@ function RegisterForm() {
                         className="input-default"
                     />
                 </div>
-                <div className="flex flex-col items-center mt-2">
-                    <label>Contraseña:</label>
+                <div className="flex flex-col mt-8">
+                    <label className='text-lg font-semibold text-left'>Contraseña: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
                         type="password"
                         value={password}

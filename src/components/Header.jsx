@@ -55,10 +55,10 @@ export default function Header() {
                 {/* Lista de enlaces para versión móvil */}
                 <ul className={`burguer-menu ${menu ? 'activated' : ''}`}>
                     <li>
-                        <Link href="#">Iniciar sesión</Link>
+                        <Link href="/login">Iniciar sesión</Link>
                     </li>
                     <li>
-                        <Link href="#">Registrarse</Link>
+                        <Link href="/register">Registrarse</Link>
                     </li>
                 </ul>
                 <ul className="hidden md:flex gap-x-8">
