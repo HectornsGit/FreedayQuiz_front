@@ -4,10 +4,28 @@ import '../styles/globals.css'
 import Header from '../components/Header'
 import Footer from '@/components/Footer'
 const inter = Montserrat({ subsets: ['latin'] })
-import ToastProvider from '@/middlewares/ToastProvider'
 import { SessionProvider } from 'next-auth/react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { useMemo } from 'react'
 
 export default function RootLayout({ children, session }) {
+    const toastConfig = useMemo(
+        () => ({
+            position: 'top-center',
+            autoClose: 3000,
+            hideProgressBar: false,
+            newestOnTop: false,
+            closeOnClick: true,
+            rtl: false,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+            theme: 'light',
+        }),
+        []
+    )
+
     return (
         <html lang="es">
             <head>
@@ -21,7 +39,8 @@ export default function RootLayout({ children, session }) {
                 <SessionProvider session={session}>
                     <Header />
                     <main className="w-full min-h-[76vh]">
-                        <ToastProvider>{children}</ToastProvider>
+                        <ToastContainer {...toastConfig} />
+                        {children}
                     </main>
                     <Footer />
                 </SessionProvider>
