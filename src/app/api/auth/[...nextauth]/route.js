@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import GoogleProvider from 'next-auth/providers/google'
 
 export const authOptions = {
     providers: [
@@ -10,7 +9,7 @@ export const authOptions = {
                 email: { label: 'Email', type: 'text' },
                 password: { label: 'Password', type: 'password' },
             },
-            async authorize(credentials, req) {
+            async authorize(credentials, _req) {
                 const { email, password } = credentials
                 try {
                     const res = await fetch('http://localhost:3001/login', {

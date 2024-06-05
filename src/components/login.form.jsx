@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { fetchAPI } from '@/api/fetch-api'
 
 import { toast } from 'react-toastify'
