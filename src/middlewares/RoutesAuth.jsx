@@ -1,16 +1,16 @@
 'use client'
-import { AuthContext } from '@/context/AuthContextProvider'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { useSession } from 'next-auth/react'
 
 export default function routesAuth({ children }) {
+    const { data: session } = useSession()
     const router = useRouter()
-    const { token } = React.useContext(AuthContext)
 
     React.useEffect(() => {
-        if (!token) {
-            router.push('/')
+        if (!session) {
+            router.push('/login')
         }
-    }, [token, router])
-    return token ? children : null
+    }, [session, router])
+    return session ? children : null
 }
