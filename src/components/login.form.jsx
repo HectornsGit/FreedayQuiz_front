@@ -37,8 +37,8 @@ function LoginForm() {
                 className="flex flex-col justify-center items-center"
                 onSubmit={handleSubmit}
             >
-                <div className="flex flex-col items-center">
-                    <label>Email:</label>
+                <div className="flex flex-col m-2">
+                    <label className='text-lg font-semibold text-left'>Email: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
                         type="text"
                         value={email}
@@ -49,8 +49,8 @@ function LoginForm() {
                         className="input-default"
                     />
                 </div>
-                <div className="flex flex-col items-center mt-2">
-                    <label>Contrasela:</label>
+                <div className="flex flex-col m-2">
+                    <label className='text-lg font-semibold text-left'>Contraseña: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
                         type="password"
                         value={password}
@@ -62,12 +62,10 @@ function LoginForm() {
                     />
                 </div>
 
-                <button
-                    className="px-7 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-900 text-white justify-center items-center text-lg mt-5"
-                    type="submit"
-                >
-                    Login
-                </button>
+                <div className="flex flex-col items-center mt-10">
+                <button type="submit" className="text-black font-extrabold text-lg bg-white px-11 py-2 
+                hover:bg-black hover:text-white hover:box-shadow-white"> Iniciar sesión </button>
+                </div>
             </form>
         </div>
     )

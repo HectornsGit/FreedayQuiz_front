@@ -18,7 +18,11 @@ export default function RootLayout({ children, session }) {
             <body className={`${inter.className}`}>
                 <SessionProvider session={session}>
                     <Header />
-                    <ToastProvider>{children}</ToastProvider>
+                    <ToastProvider>
+                        <div className='h-lvh flex flex-col items-center justify-center'>
+                        {children}
+                        </div>
+                    </ToastProvider>
                     <Footer />
                 </SessionProvider>
             </body>

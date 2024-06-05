@@ -53,8 +53,9 @@ function RegisterForm() {
                 onSubmit={handleSubmit}
             >
                 {avatarPreview && (
+                    <>
                     <div
-                        className="mb-4"
+                        className="mb-8"
                         onClick={() => {
                             fileInputRef.current.click()
                         }}
@@ -65,6 +66,8 @@ function RegisterForm() {
                             className="w-24 h-24 rounded-full object-cover cursor-pointer"
                         />
                     </div>
+                    <span className='bg-[--yellow] w-8 h-8 rounded-full text-black text-center font-bold text-4xl leading-[2rem] relative left-[1.7rem] bottom-[3.5rem] cursor-pointer' > + </span>
+                    </>
                 )}
                 <div className="hidden">
                     <input
@@ -75,8 +78,8 @@ function RegisterForm() {
                         ref={fileInputRef}
                     />
                 </div>
-                <div className="flex flex-col items-center">
-                    <label>Nombre de usuario:</label>
+                <div className="flex flex-col">
+                    <label className='text-lg font-semibold text-left'>Nombre de usuario: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
                         type="name"
                         value={name}
@@ -87,8 +90,8 @@ function RegisterForm() {
                         className="input-default"
                     />
                 </div>
-                <div className="flex flex-col items-center mt-2">
-                    <label>Email:</label>
+                <div className="flex flex-col mt-8">
+                    <label className='text-lg font-semibold text-left'>Email: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
                         type="email"
                         value={email}
@@ -99,8 +102,8 @@ function RegisterForm() {
                         className="input-default"
                     />
                 </div>
-                <div className="flex flex-col items-center mt-2">
-                    <label>Contraseña:</label>
+                <div className="flex flex-col mt-8">
+                    <label className='text-lg font-semibold text-left'>Contraseña: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
                         type="password"
                         value={password}
@@ -112,7 +115,7 @@ function RegisterForm() {
                     />
                 </div>
                 <button
-                    className="text-black font-extrabold text-lg bg-gradient px-10 py-2 mt-5  hover:bg-black hover:box-shadow-yellow"
+                    className="text-black font-extrabold text-lg bg-gradient px-10 py-2 mt-10  hover:bg-black hover:box-shadow-yellow"
                     type="submit"
                 >
                     Registrarse
