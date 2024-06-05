@@ -7,18 +7,22 @@ const inter = Montserrat({ subsets: ['latin'] })
 import ToastProvider from '@/middlewares/ToastProvider'
 import { SessionProvider } from 'next-auth/react'
 
-// export const metadata = {
-//     title: 'Freeday Quiz',
-//     description: 'trivial de preguntas para Hack a Boss',
-// }
-
 export default function RootLayout({ children, session }) {
     return (
         <html lang="es">
-            <body className={`${inter.className}`}>
+            <head>
+                <title>Freeday Quiz</title>
+                <meta
+                    name="description"
+                    content="Trivial de preguntas para Hack a Boss"
+                />
+            </head>
+            <body className={`${inter.className} `}>
                 <SessionProvider session={session}>
                     <Header />
-                    <ToastProvider>{children}</ToastProvider>
+                    <main className="w-full min-h-[76vh]">
+                        <ToastProvider>{children}</ToastProvider>
+                    </main>
                     <Footer />
                 </SessionProvider>
             </body>
