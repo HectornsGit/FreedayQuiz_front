@@ -3,10 +3,13 @@ import { fetchAPI } from '@/api/fetch-api'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { signIn } from 'next-auth/react'
+import EyeOpen from './EyeOpen'
+import EyeClose from './EyeClose'
 
 function LoginForm() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [showPass, setShowPass] = useState(false); //para mostrar o no el texto en el campo contraseña
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -52,7 +55,8 @@ function LoginForm() {
                 <div className="flex flex-col m-2">
                     <label className='text-lg font-semibold text-left'>Contraseña: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
-                        type="password"
+                        /* type="password" */
+                        type={showPass ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => {
                             setPassword(e.target.value)
@@ -60,6 +64,12 @@ function LoginForm() {
                         required
                         className="input-default"
                     />
+                    {/* Icono de ojo para ver/ocultar texto contraseña */}
+                    <div className='relative left-[11rem] bottom-[2.1rem] fill-[#111]'
+                        onClick={() => 
+                            setShowPass(!showPass)}> 
+                            {showPass ? (<EyeClose/>):(<EyeOpen/>)}
+                    </div>
                     <Link href="/" className=' mt-2 font-medium text-base underline hover:text-[--yellow]'>He olvidado mi contraseña</Link>
                 </div>
 
