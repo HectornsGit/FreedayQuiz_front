@@ -3,8 +3,8 @@ import { fetchAPI } from '@/api/fetch-api'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { signIn } from 'next-auth/react'
-import EyeOpen from './EyeOpen'
-import EyeClose from './EyeClose'
+import EyeOpen from './EyeOpen' //icono ojo aberto
+import EyeClose from './EyeClose' //icono ojo cerrado
 
 function LoginForm() {
     const [email, setEmail] = useState('')
@@ -55,7 +55,6 @@ function LoginForm() {
                 <div className="flex flex-col m-2">
                     <label className='text-lg font-semibold text-left'>Contraseña: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
-                        /* type="password" */
                         type={showPass ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => {
