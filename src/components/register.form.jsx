@@ -2,8 +2,11 @@
 import { useState, useRef } from 'react'
 import { fetchAPI } from '@/api/fetch-api'
 import { toast } from 'react-toastify'
+import EyeOpen from './EyeOpen' //icono ojo aberto
+import EyeClose from './EyeClose' //icono ojo cerrado
 
 function RegisterForm() {
+    const [showPass, setShowPass] = useState(false); //para mostrar o no el texto en el campo contraseña
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -55,7 +58,7 @@ function RegisterForm() {
                 {avatarPreview && (
                     <>
                     <div
-                        className="mb-8"
+                        className="mb-1"
                         onClick={() => {
                             fileInputRef.current.click()
                         }}
@@ -66,7 +69,7 @@ function RegisterForm() {
                             className="w-24 h-24 rounded-full object-cover cursor-pointer"
                         />
                     </div>
-                    <span className='bg-[--yellow] w-8 h-8 rounded-full text-black text-center font-bold text-4xl leading-[2rem] relative left-[1.7rem] bottom-[3.5rem] cursor-pointer' > + </span>
+                    <span className='bg-[--yellow] w-8 h-8 rounded-full text-black text-center font-bold text-4xl leading-[2rem] relative left-[1.7rem] bottom-[1.9rem] cursor-pointer' > + </span>
                     </>
                 )}
                 <div className="hidden">
@@ -105,7 +108,7 @@ function RegisterForm() {
                 <div className="flex flex-col mt-8">
                     <label className='text-lg font-semibold text-left'>Contraseña: <span className='text-[--red] font-semibold'>*</span></label>
                     <input
-                        type="password"
+                        type={showPass ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => {
                             setPassword(e.target.value)
@@ -113,9 +116,15 @@ function RegisterForm() {
                         required
                         className="input-default"
                     />
+                     {/* Icono de ojo para ver/ocultar texto contraseña */}
+                    <div className='relative left-[11rem] bottom-[2.1rem] fill-[#111]'
+                        onClick={() => 
+                            setShowPass(!showPass)}> 
+                            {showPass ? (<EyeClose/>):(<EyeOpen/>)}
+                    </div>
                 </div>
                 <button
-                    className="text-black font-extrabold text-lg bg-gradient px-10 py-2 mt-10  hover:bg-black hover:box-shadow-yellow"
+                    className="text-black font-extrabold text-lg bg-gradient px-11 py-2 mt-10  hover:bg-black hover:box-shadow-yellow"
                     type="submit"
                 >
                     Registrarse
