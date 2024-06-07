@@ -55,7 +55,7 @@ function RegisterForm() {
                 {avatarPreview && (
                     <>
                     <div
-                        className="mb-8"
+                        className="mb-1"
                         onClick={() => {
                             fileInputRef.current.click()
                         }}
@@ -66,7 +66,7 @@ function RegisterForm() {
                             className="w-24 h-24 rounded-full object-cover cursor-pointer"
                         />
                     </div>
-                    <span className='bg-[--yellow] w-8 h-8 rounded-full text-black text-center font-bold text-4xl leading-[2rem] relative left-[1.7rem] bottom-[3.5rem] cursor-pointer' > + </span>
+                    <span className='bg-[--yellow] w-8 h-8 rounded-full text-black text-center font-bold text-4xl leading-[2rem] relative left-[1.7rem] bottom-[1.9rem] cursor-pointer' > + </span>
                     </>
                 )}
                 <div className="hidden">
@@ -115,7 +115,7 @@ function RegisterForm() {
                     />
                 </div>
                 <button
-                    className="text-black font-extrabold text-lg bg-gradient px-10 py-2 mt-10  hover:bg-black hover:box-shadow-yellow"
+                    className="text-black font-extrabold text-lg bg-gradient px-11 py-2 mt-10  hover:bg-black hover:box-shadow-yellow"
                     type="submit"
                 >
                     Registrarse

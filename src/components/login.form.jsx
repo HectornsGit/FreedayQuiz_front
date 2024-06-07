@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { fetchAPI } from '@/api/fetch-api'
-
+import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { signIn } from 'next-auth/react'
 
@@ -60,6 +60,7 @@ function LoginForm() {
                         required
                         className="input-default"
                     />
+                    <Link href="/" className=' mt-2 font-medium text-base underline hover:text-[--yellow]'>He olvidado mi contraseña</Link>
                 </div>
 
                 <div className="flex flex-col items-center mt-10">
