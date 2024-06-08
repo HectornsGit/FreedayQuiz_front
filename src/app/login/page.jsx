@@ -11,7 +11,7 @@ export default function LoginPage() {
     return (
         <div className="h-fit flex flex-col content-center text-center">
             <h2 className='text-4xl font-extrabold mb-4'>Iniciar sesión</h2>
-            <p className='mb-10 text-lg w-[250px]'> <span className='text-4xl'>🎲</span> Inicia sesión para comenzar a crear partidas</p>
+            <p className='mb-10 text-lg'> <span className='text-4xl'>🎲</span> Inicia sesión para comenzar a crear partidas</p>
             <LoginForm />
             <p className='mt-6 font-medium text-base'>¿No tienes cuenta?, <Link href="/register" className='underline font-bold font-semibold hover:text-[--yellow]'>regístrate</Link></p>
             {session && (
