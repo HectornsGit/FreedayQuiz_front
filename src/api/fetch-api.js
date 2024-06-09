@@ -1,5 +1,6 @@
 const host = process.env.NEXT_PUBLIC_API_HOST
 
+
 export async function fetchAPI(
     path,
     method,
@@ -11,7 +12,7 @@ export async function fetchAPI(
 
     const requestInit = {
         method: method,
-        headers: {},
+        headers: {}, 
     }
 
     if (method !== 'get' && method !== 'delete' && payload) {

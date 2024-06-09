@@ -22,7 +22,7 @@ function LoginForm() {
             setEmail('')
             setPassword('')
             await signIn('credentials', {
-                redirect: false,
+                redirect: true,
                 email: email,
                 password: password,
             })
