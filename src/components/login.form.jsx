@@ -22,7 +22,7 @@ function LoginForm() {
             setEmail('')
             setPassword('')
             await signIn('credentials', {
-                redirect: true,
+                redirect: false,
                 email: email,
                 password: password,
             })
@@ -31,7 +31,7 @@ function LoginForm() {
             console.log('Error en el inicio de sesión', error.error)
             toast.error(error.error)
         }
-        await fetchAPI('/login', 'POST', payload, onSuccess, onError)
+        await fetchAPI('/login', 'POST', null, payload, onSuccess, onError)
     }
 
     return (

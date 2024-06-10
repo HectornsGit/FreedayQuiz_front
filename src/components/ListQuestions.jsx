@@ -7,11 +7,10 @@ import { fetchAPI } from '@/api/fetch-api'
 
 
 const handleUpdate = async (session) => {
-      //funcion que se ejecuta cuando va todo bien :)
+        //funcion que se ejecuta cuando va todo bien :)
         const onSuccess = async (_data) => {
         const questions = _data[0].quizzes[0].questions
-        //const { questions } = _data
-        console.log('Aqui tienes las preguntas', questions )
+        console.log('EXITOOO, aqui tienes las preguntas', questions)
         }
     
         //funcion que se ejecuta cuando hay algun error
@@ -20,13 +19,18 @@ const handleUpdate = async (session) => {
         }
 
     try {
-        await fetchAPI('/user-info', {
-            method: 'GET',
-            headers: {'Authorization': `Bearer ${session.accessToken}`}, //cuando el metodo es GET podemos indicar cabecera
-        },
-        null, //como es un get no hay playload
+        const token = session.accessToken;
+        const headers = {
+        'Authorization': `Bearer ${token}`,
+        };
+
+        await fetchAPI('/user-info',
+        'GET', //me obliga a poner un metodo, aunque sea GET
+        headers,
+        null, //no hay payload como esta dentro de parametros, me obliga a poner algo
         onSuccess, onError);
         } 
+
         catch (error) {
         console.error('error');
         }

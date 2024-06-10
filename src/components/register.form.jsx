@@ -46,7 +46,7 @@ function RegisterForm() {
             console.log('Ha habido un error en el registro', error.error)
             setPassword('')
         }
-        fetchAPI('/register', 'POST', payload, onSuccess, onError)
+        fetchAPI('/register', 'POST',null,  payload, onSuccess, onError)
     }
 
     return (
