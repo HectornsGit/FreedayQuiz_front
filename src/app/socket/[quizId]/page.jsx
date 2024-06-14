@@ -11,6 +11,7 @@ const Page = () => {
 
     const { data: session } = useSession()
     const [quizData, setQuizData] = useState(null)
+    const [question, setQuestion] = useState(null)
     const [scores, setScores] = useState(null)
     const [error, setError] = useState(null)
     const [joinedQuiz, setJoinedQuiz] = useState(false)
@@ -19,7 +20,7 @@ const Page = () => {
     const userId = uuidv4()
     const loggedUserId = session?.user.data.id
     const quizId = params.quizId
-
+    console.log(question)
     useEffect(() => {
         if (!joinedQuiz) {
             //Crear una conexión con el servidor:
@@ -44,6 +45,10 @@ const Page = () => {
             //Escuchar el evento quizData del servidor y recibir la información del quiz:
             socket.on('quizData', (data) => {
                 setQuizData(data)
+            })
+
+            socket.on('question', (data) => {
+                setQuestion(data)
             })
             //Escuchar el evento answerSubmitted del servidor y recibir la respuesta enviada por otro usuario:
             socket.on('answerSubmitted', (data) => {
@@ -79,7 +84,6 @@ const Page = () => {
     }
 
     const handleStartQuiz = () => {
-        //Emitir un evento llamado 'startQuiz' con el id del quiz al servidor:
         socket.emit('startQuiz', loggedUserId, quizId)
     }
 
@@ -90,7 +94,10 @@ const Page = () => {
     return (
         <>
             {loggedUserId ? (
-                <button onClick={handleStartQuiz}>Start Quiz</button>
+                <>
+                    <button onClick={handleStartQuiz}>Start Quiz</button>
+                    <p>{question.question}</p>
+                </>
             ) : (
                 <div>
                     <h1>{quizData?.title}</h1>

@@ -7,7 +7,7 @@ import Link from 'next/link'
 export default function LoginPage() {
     const router = useRouter()
     const { data: session } = useSession()
-    console.log('session desde login', session.user.data.id)
+    console.log('session desde login', session?.user.data.id)
     return (
         <div className="h-fit flex flex-col content-center text-center">
             <h2 className="text-4xl font-extrabold mb-4">Iniciar sesión</h2>
