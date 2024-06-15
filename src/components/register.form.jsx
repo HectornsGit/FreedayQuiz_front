@@ -2,8 +2,8 @@
 import { useState, useRef } from 'react'
 import { fetchAPI } from '@/api/fetch-api'
 import { toast } from 'react-toastify'
-import EyeOpen from './EyeOpen' //icono ojo aberto
-import EyeClose from './EyeClose' //icono ojo cerrado
+import EyeOpen from './icons/EyeOpen' //icono ojo aberto
+import EyeClose from './icons/EyeClose' //icono ojo cerrado
 
 function RegisterForm() {
     const [showPass, setShowPass] = useState(false); //para mostrar o no el texto en el campo contraseña

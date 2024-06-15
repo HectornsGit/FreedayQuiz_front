@@ -3,8 +3,8 @@ const host = process.env.NEXT_PUBLIC_API_HOST
 export async function fetchAPI(
     path,
     method ='GET',
-    additionalHeaders = {},
     payload = null,
+    additionalHeaders = {},
     onSuccess = () => {},
     onError = () => {}
 ) {

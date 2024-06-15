@@ -9,11 +9,7 @@ const ListaPreguntas = () => {
         <>
             {session?.accessToken ? (
                 <>
-{/*                     <p style={{ color: 'white' }}>Puedes pasar</p>
-                    <p style={{ color: 'white' }}>{session?.user.message}</p>
-                    <p style={{ color: 'white' }}>{session?.user.email}</p>
-                    <p style={{ color: 'white' }}>{status}</p> */}
-                    <ListQuestions/>
+                <ListQuestions/>
                 </>
             ) : (
                 <p style={{ color: 'white' }}>No puedes pasar</p>
