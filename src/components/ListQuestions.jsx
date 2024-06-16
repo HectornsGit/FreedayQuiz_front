@@ -1,4 +1,8 @@
 'use client'
+//importacion de iconos
+import Delete from './icons/Delete' //icono papelera
+import AddQuestion from './icons/AddQuestion' //recuadro dentro de modal para agregar question
+
 //me traigo info de sesion para coger el token
 import { useSession } from 'next-auth/react'
 
@@ -12,9 +16,7 @@ import { useState } from 'react'
 import Slider from './Slider' 
 
 //importamos unseRouter para usar enrutados
-import { useRouter } from 'next/navigation' 
-import Delete from './icons/Delete'
-import AddQuestion from './icons/AddQuestion'
+import { useRouter } from 'next/navigation'
 
 
 export default function ListQuestions() {
@@ -69,15 +71,17 @@ export default function ListQuestions() {
     }
 
     const handleRouteAddQuestion =  () => {
-        router.push(`/create-questions/`) //lleva a la ruta con la id de la pregunta TODO !! esto es una ruta de ejmplo
+        router.push(`/create-questions/`) //lleva a la ruta con la id de la pregunta TODO !! esto es una ruta de ejemplo
     }
 
 
     return ( 
-        <>
+    <>
         <button className='p-3 bg-[--cyan] text-black'  onClick={() => handleUpdate(session)}> Lista las preguntas</button>
         {modal &&
         <Slider>
+        <p onClick={() => setModal(false)} className='cursor-pointer md:w-10 md:h-10 w-10 h-8 flex items-center justify-center text-black font-extrabold md:text-xl text-base bg-white
+        hover:bg-black hover:text-white hover:box-shadow-white relative md:bottom-[100px] md:right-[47px] bottom-[60px] right-[26px]'>X</p>
             <div id='slider' className='w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth'>
             <div className='w-[200px] md:w-[400px] inline-flex mx-8 md:mx-4 justify-center'> <AddQuestion onClick={() => handleRouteAddQuestion()}/> </div>
             {dataQuizz ? (
@@ -100,6 +104,6 @@ export default function ListQuestions() {
             </div>
         </Slider>
         }
-        </>
+    </>
     );
 }
