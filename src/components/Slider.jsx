@@ -6,25 +6,23 @@ export default function Slider({children}) {
 
     const slideLeft = () => {
         const slider = document.getElementById('slider')
-        slider.scrollLeft = slider.scrollLeft - 300
+        slider.scrollLeft = slider.scrollLeft - 265
         console.log('iz');
     }
 
     const slideRight = () => {
         const slider = document.getElementById('slider')
-        slider.scrollLeft = slider.scrollLeft + 300
+        slider.scrollLeft = slider.scrollLeft + 265
         console.log('drcha');
     }
 
 
     return (
         <>
-        <section className='relative flex items-center'>
-            <ChevronLeft onClick={slideLeft} className='cursor-pointer fill-[--yellow] w-7 mx-4'/>
-                <div id='slider' className='w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth'>
-                    { children }
-                </div>
-            <ChevronRight onClick={slideRight} className='cursor-pointer fill-[--yellow] w-7 mx-4'/>
+        <section className='relative flex items-center md:m-8 m-4'>
+            <ChevronLeft onClick={slideLeft} className=' block cursor-pointer fill-[--yellow] md:w-7 w-3 md:mx-4 mx-2'/>
+                    { children } 
+            <ChevronRight onClick={slideRight} className=' block cursor-pointer fill-[--yellow] md:w-7 w-3 md:mx-4 mx-2'/>
         </section>
         </>
     );

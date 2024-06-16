@@ -1,4 +1,4 @@
-//añadimos prop className para poder añadir estilos con Tailwind
+//añadimos props className para poder añadir estilos con Tailwind y onClick para efecto al pulsar
 export default function ChevronLeft({className, onClick}) {
 
     return (
