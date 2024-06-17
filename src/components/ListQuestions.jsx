@@ -15,7 +15,7 @@ import { useState } from 'react'
 //importamos slider para mover imgs de izquierda a derecha
 import Slider from './Slider' 
 
-//importamos unseRouter para usar enrutados
+//importamos useRouter para usar enrutados (al hacer click en la imagen lleva a la ruta de cada pregunta)
 import { useRouter } from 'next/navigation'
 
 
@@ -31,14 +31,14 @@ export default function ListQuestions() {
         //funcion que se ejecuta cuando va todo bien :)
         const onSuccess = async (_data) => {
             const questions = _data[0].quizzes[0].questions; //de toda la data(JSON) del back, cojo la parte de las preguntas
+            //me guardo en la constante dataQuestions los datos que quiero 'pintar en el front'
             const dataQuestions = questions.map(question => ({
                 id: question.id,
                 image: question.image,
                 questionNumber: question.questionNumber
             })); //me creo un objeto, dataQuestions con los datos que me interesan (imagen e id)
-        setDataQuizz(dataQuestions); //para setear los datos e imprimir lo que corresponda
-        console.log('dataQuestions', dataQuestions);
-        setModal(!modal); //abre las imgs en un modal
+            setDataQuizz(dataQuestions); //para setear los datos e imprimir lo que corresponda
+            setModal(!modal); //abre las imgs en un modal
         }
     
         //funcion que se ejecuta cuando hay algun error
@@ -65,13 +65,13 @@ export default function ListQuestions() {
         }
     };
 
-    //funcion para que cargue ruta dinámica, al hacer click en la imagen nos lleva a editar la pregunta que toque (id params)
+    //funcion para que cargue ruta dinámica, al hacer click en la imagen nos lleva a editar la pregunta que toque (id params, questionNUmber params)
     const handleRouteQuestion =  (id, questionNumber) => {
-        router.push(`/update-question/${id}/${questionNumber}`) //lleva a la ruta con la id de la pregunta TODO !! esto es una ruta de ejmplo
+        router.push(`/update-question/${id}/${questionNumber}`) //lleva a la ruta con la id de la pregunta TODO !! esto es una ruta de ejemplo
     }
 
     const handleRouteAddQuestion =  () => {
-        router.push(`/create-questions/`) //lleva a la ruta con la id de la pregunta TODO !! esto es una ruta de ejemplo
+        router.push(`/create-questions/`) //lleva a la ruta para crear nueva pregunta TODO !! esto es una ruta de ejemplo
     }
 
 

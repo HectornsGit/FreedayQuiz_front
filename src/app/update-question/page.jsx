@@ -1,3 +1,5 @@
 export default function Preguntas() {
-    return
+    return (
+        <p>Esto es una prueba de ruta</p>
+        );
 }

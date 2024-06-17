@@ -7,13 +7,11 @@ export default function Slider({children}) {
     const slideLeft = () => {
         const slider = document.getElementById('slider')
         slider.scrollLeft = slider.scrollLeft - 265
-        console.log('iz');
     }
 
     const slideRight = () => {
         const slider = document.getElementById('slider')
         slider.scrollLeft = slider.scrollLeft + 265
-        console.log('drcha');
     }
 
 
