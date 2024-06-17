@@ -1,91 +1,147 @@
 'use client'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import io from 'socket.io-client'
 import { v4 as uuidv4 } from 'uuid'
 import { useParams } from 'next/navigation'
 
 const Page = () => {
     const params = useParams()
-
     const { data: session } = useSession()
     const [quizData, setQuizData] = useState(null)
     const [question, setQuestion] = useState(null)
-    const [scores, setScores] = useState(null)
+    const [initialPlayerData, setInitialPlayerData] = useState([])
+    const [playerData, setPlayerData] = useState([])
     const [error, setError] = useState(null)
     const [joinedQuiz, setJoinedQuiz] = useState(false)
     const [socket, setSocket] = useState(null)
+    const [nickName, setNickName] = useState('')
+    const [shuffledQuestionResponses, setShuffledQuestionResponses] =
+        useState(null)
 
-    const userId = uuidv4()
+    const playerId = uuidv4()
     const loggedUserId = session?.user.data.id
     const quizId = params.quizId
-    console.log(question)
+
     useEffect(() => {
-        if (!joinedQuiz) {
-            //Crear una conexión con el servidor:
-            const socket = io(process.env.NEXT_PUBLIC_API_HOST)
-            setSocket(socket)
+        //Crear conexión y guardarla en un estado:
+        const socketInstance = io(process.env.NEXT_PUBLIC_API_HOST)
+        setSocket(socketInstance)
 
-            //Escuchar el evento de conexion al servidor. Aquí se puede poner logica para mostrar al usuario que aterriza en la página:
-            socket.on('connect', () => {
-                console.log('Connected to server')
-            })
-
-            //Escuchar el evento error del servidor y recibir el mensaje de error:
-            socket.on('error', (message) => {
-                setError(message)
-            })
-
-            //Así evito que se creen multiples conexiones al servidor cuando un usuario se une al quiz.
-            //Emito el evento para que pueda ser escuchado y gestionado desde el servidor:
-            socket.emit('joinQuiz', userId)
+        //Se escucha el estado connect. En ese momento se setea el estado joinedQuiz a true para que no se instancien más conexiones si la página se renderiza nuevamente:
+        socketInstance.on('connect', () => {
+            console.log('Connected to server')
             setJoinedQuiz(true)
+        })
 
-            //Escuchar el evento quizData del servidor y recibir la información del quiz:
-            socket.on('quizData', (data) => {
-                setQuizData(data)
-            })
+        //El siguiente paso es que el usuario escriba su nombre de jugado en el el formulario. En ese momento se emite el evento joinQuiz y se envían los datos. El back los guarda en Redis y emite el evento playerJoined.Aquí se guardan en el estado initialPlayerData, de ese modo estarán accesibles durante toda la partida:
 
-            socket.on('question', (data) => {
-                setQuestion(data)
-            })
-            //Escuchar el evento answerSubmitted del servidor y recibir la respuesta enviada por otro usuario:
-            socket.on('answerSubmitted', (data) => {
-                console.log('Answer Submitted:', data)
-                // Aquí puedo manejar la respuesta enviada por otro usuario
-            })
+        //Los datos DE TODOS LOS JUGADORES que llegan desde back a esta sala se guardan en el estado playerData. Así estarán accesibles para actualizar en cada pregunta:
+        socketInstance.on('playerJoined', (data) => {
+            setPlayerData((prevPlayerData) => [...prevPlayerData, data])
+        })
 
-            //Escuchar el evento quizScores del servidor y recibir la información de los puntajes:
-            socket.on('quizScores', (data) => {
-                setScores(data)
-            })
-            //Escuchar el evento 'de desconexión al servidor:
-            socket.on('disconnect', () => {
-                console.log('Disconnected from server')
-            })
-            return () => {
-                socket.disconnect()
-            }
+        socketInstance.on('error', (message) => {
+            setError(message)
+        })
+
+        socketInstance.on('quizData', (data) => {
+            setQuizData(data)
+        })
+
+        //El siguiente paso es que el master inicie una partida desde el botón correspondiente. En ese momento se emite el evento startQuiz. El back hace su lógica y emite el estado question, enviándo la primera pregunta. Aquí se escucha y se guarda en el estado question:
+        socketInstance.on('question', (data) => {
+            setQuestion(data)
+        })
+
+        socketInstance.on('disconnect', () => {
+            console.log('Disconnected from server')
+        })
+
+        //Si el componente se desmonta, se desconecta de la sala:
+        return () => {
+            socketInstance.disconnect()
         }
     }, [])
 
-    const handleAnswerSubmit = (questionId, answerId, userId) => {
-        socket.emit('submitAnswer', {
-            quizId,
-            questionId,
-            answerId,
-            userId,
-        })
+    //En casa respuesta, en el botón correspondiente, se emite el evento submitAnswer y se envían los datos que el jugador ha seleccionado. Este es el callback:
+    const handleAnswerSubmit = useCallback(
+        (response) => {
+            if (socket) {
+                socket.emit('submitAnswer', {
+                    quizId,
+                    questionId: question.id,
+                    questionNumber: question.questionNumber,
+                    answer: response,
+                    playerId: initialPlayerData[0].id,
+                })
+            }
+        },
+        [socket, quizId, question, playerId]
+    )
+
+    //El back comprueba si la respuesta es correcta y emite el evento answerSubmitted, enviándo los datos actualizados del jugador: Ver el callback handleAnswerSubmitted más abajo:
+
+    const handleInitialPlayerData = useCallback(() => {
+        const initialPlayerData = {
+            id: playerId,
+            name: nickName,
+            totalScore: 0,
+        }
+
+        setInitialPlayerData((prevPlayerData) => [
+            ...prevPlayerData,
+            initialPlayerData,
+        ])
+
+        if (socket) {
+            socket.emit('joinQuiz', playerId, quizId, initialPlayerData)
+        }
+    }, [socket, playerId, nickName, quizId])
+
+    const handleGetScores = useCallback(() => {
+        if (socket) {
+            socket.emit('getScores', quizId)
+        }
+    }, [socket, quizId])
+
+    const handleStartQuiz = useCallback(() => {
+        if (socket) {
+            socket.emit('startQuiz', loggedUserId, quizId)
+        }
+    }, [socket, loggedUserId, quizId])
+
+    //Aquí llegan los datos y se actualizan en el estado playerData, para poder ser pintados
+    if (socket) {
+        const handleAnswerSubmitted = (backData) => {
+            playerData.find((frontData) => {
+                if (frontData.id === backData.id) {
+                    frontData.totalScore = backData.totalScore
+                    setPlayerData((prevPlayerData) => [...prevPlayerData])
+                }
+            })
+        }
+
+        socket.on('answerSubmitted', handleAnswerSubmitted)
     }
 
-    const handleGetScores = () => {
-        socket.emit('getScores', quizId)
-    }
-
-    const handleStartQuiz = () => {
-        socket.emit('startQuiz', loggedUserId, quizId)
-    }
+    useEffect(() => {
+        if (question) {
+            const questionResponses = [
+                question.optionA,
+                question.optionB,
+                question.optionC,
+                question.correctAnswer,
+            ]
+            const shuffleArray = (array) => {
+                const shuffledArray = [...array]
+                shuffledArray.sort(() => Math.random() - 0.5)
+                return shuffledArray
+            }
+            const Responses = shuffleArray(questionResponses)
+            setShuffledQuestionResponses(Responses)
+        }
+    }, [question])
 
     if (error) {
         return <div>{error}</div>
@@ -93,15 +149,60 @@ const Page = () => {
 
     return (
         <>
-            {loggedUserId ? (
+            {playerData && (
+                <div>
+                    <h2>Scores</h2>
+                    <ul>
+                        {playerData.map((player) => (
+                            <li key={player.id}>
+                                {player.name}: {player.totalScore}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+            {quizId ? (
                 <>
                     <button onClick={handleStartQuiz}>Start Quiz</button>
-                    <p>{question.question}</p>
+                    <p>{question?.question}</p>
+                    <input
+                        type="text"
+                        placeholder="Introduce tu nombre de jugador"
+                        value={nickName}
+                        onChange={(e) => setNickName(e.target.value)}
+                    />
+                    <p>{nickName}</p>
+                    <button onClick={handleInitialPlayerData}>
+                        Envía tu nombre de jugador
+                    </button>
+                    {question && (
+                        <ul>
+                            <p>{question.question}</p>
+                            {shuffledQuestionResponses &&
+                                shuffledQuestionResponses.map(
+                                    (response, index) => (
+                                        <li key={index}>
+                                            <button
+                                                onClick={() =>
+                                                    handleAnswerSubmit(response)
+                                                }
+                                                style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    gap: '10px',
+                                                }}
+                                            >
+                                                {response}
+                                            </button>
+                                        </li>
+                                    )
+                                )}
+                        </ul>
+                    )}
                 </>
             ) : (
                 <div>
                     <h1>{quizData?.title}</h1>
-                    {/* Renderizar preguntas y respuestas */}
                     {quizData?.questions.map((question) => (
                         <div key={question.questionId}>
                             <h2>{question.text}</h2>
@@ -109,10 +210,7 @@ const Page = () => {
                                 <button
                                     key={answer.answerId}
                                     onClick={() =>
-                                        handleAnswerSubmit(
-                                            question.questionId,
-                                            answer.answerId
-                                        )
+                                        handleAnswerSubmit(answer.text)
                                     }
                                 >
                                     {answer.text}
@@ -121,11 +219,11 @@ const Page = () => {
                         </div>
                     ))}
                     <button onClick={handleGetScores}>Get Scores</button>
-                    {scores && (
+                    {initialPlayerData && (
                         <div>
                             <h2>Scores</h2>
                             <ul>
-                                {Object.entries(scores).map(
+                                {Object.entries(initialPlayerData).map(
                                     ([userId, score]) => (
                                         <li key={userId}>
                                             {userId}: {score}
