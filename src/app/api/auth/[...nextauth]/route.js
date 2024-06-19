@@ -12,7 +12,7 @@ export const authOptions = {
             async authorize(credentials, _req) {
                 const { email, password } = credentials
                 try {
-                    const res = await fetch('http://localhost:3001/login', {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/login`, {
                         method: 'POST',
                         body: JSON.stringify({ email, password }),
                         headers: { 'Content-Type': 'application/json' },

@@ -2,22 +2,24 @@ const host = process.env.NEXT_PUBLIC_API_HOST
 
 export async function fetchAPI(
     path,
-    method,
-    payload,
+    method ='GET',
+    payload = null,
+    additionalHeaders = {},
     onSuccess = () => {},
     onError = () => {}
 ) {
-    method = method ?? 'get'
+    method = method ?? 'GET'
 
     const requestInit = {
         method: method,
-        headers: {},
-    }
+        headers: { ...additionalHeaders },
+    } 
 
-    if (method !== 'get' && method !== 'delete' && payload) {
+    if (method !== 'GET' && method !== 'DELETE' && payload) {
         requestInit.headers['Content-Type'] = 'application/json'
         requestInit.body = JSON.stringify(payload)
     }
+
     try {
         const response = await fetch(host + path, requestInit)
 
