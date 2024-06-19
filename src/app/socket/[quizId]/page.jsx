@@ -3,9 +3,10 @@ import { useSession } from 'next-auth/react'
 import { useState, useEffect, useCallback } from 'react'
 import io from 'socket.io-client'
 import { v4 as uuidv4 } from 'uuid'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 const Page = () => {
+    const router = useRouter()
     const params = useParams()
     const { data: session } = useSession()
     const [quizData, setQuizData] = useState(null)
@@ -13,7 +14,7 @@ const Page = () => {
     const [initialPlayerData, setInitialPlayerData] = useState([])
     const [playerData, setPlayerData] = useState([])
     const [error, setError] = useState(null)
-    const [joinedQuiz, setJoinedQuiz] = useState(false)
+    const [_joinedQuiz, setJoinedQuiz] = useState(false)
     const [socket, setSocket] = useState(null)
     const [nickName, setNickName] = useState('')
     const [shuffledQuestionResponses, setShuffledQuestionResponses] =
@@ -28,43 +29,80 @@ const Page = () => {
         const socketInstance = io(process.env.NEXT_PUBLIC_API_HOST)
         setSocket(socketInstance)
 
-        //Se escucha el estado connect. En ese momento se setea el estado joinedQuiz a true para que no se instancien más conexiones si la página se renderiza nuevamente:
+        //Se escucha el estado connect, que es el momento en el que el front se conecta con el back. En ese instante se setea el estado joinedQuiz a true para que no se instancien más conexiones si la página se renderiza nuevamente:
         socketInstance.on('connect', () => {
             console.log('Connected to server')
             setJoinedQuiz(true)
         })
 
-        //El siguiente paso es que el usuario escriba su nombre de jugado en el el formulario. En ese momento se emite el evento joinQuiz y se envían los datos. El back los guarda en Redis y emite el evento playerJoined.Aquí se guardan en el estado initialPlayerData, de ese modo estarán accesibles durante toda la partida:
-
-        //Los datos DE TODOS LOS JUGADORES que llegan desde back a esta sala se guardan en el estado playerData. Así estarán accesibles para actualizar en cada pregunta:
-        socketInstance.on('playerJoined', (data) => {
-            setPlayerData((prevPlayerData) => [...prevPlayerData, data])
+        //Aquí recibo los errores del back y los guardo en un estado:
+        socketInstance.on('error', (error) => {
+            setError(null)
+            setTimeout(() => {
+                setError(error.message)
+            }, 0)
         })
-
-        socketInstance.on('error', (message) => {
-            setError(message)
-        })
-
-        socketInstance.on('quizData', (data) => {
-            setQuizData(data)
-        })
-
-        //El siguiente paso es que el master inicie una partida desde el botón correspondiente. En ese momento se emite el evento startQuiz. El back hace su lógica y emite el estado question, enviándo la primera pregunta. Aquí se escucha y se guarda en el estado question:
-        socketInstance.on('question', (data) => {
-            setQuestion(data)
-        })
-
-        socketInstance.on('disconnect', () => {
-            console.log('Disconnected from server')
-        })
-
-        //Si el componente se desmonta, se desconecta de la sala:
+        // Si el componente se desmonta, se desconecta de la sala
         return () => {
             socketInstance.disconnect()
         }
     }, [])
 
-    //En casa respuesta, en el botón correspondiente, se emite el evento submitAnswer y se envían los datos que el jugador ha seleccionado. Este es el callback:
+    // Traigo los datos principales del quiz y los guardo en el estado quizData para que estén disponibles inmediatamente:
+    useEffect(() => {
+        if (socket && quizId && loggedUserId) {
+            socket.emit('getQuizData', quizId, loggedUserId)
+
+            socket.on('quizData', (data) => {
+                setQuizData(data)
+            })
+        }
+    }, [socket, quizId, loggedUserId])
+
+    useEffect(() => {
+        //El siguiente paso es que el usuario escriba su nombre de jugado en el el formulario. En ese momento se emite el evento joinQuiz y se envían los datos. El back los guarda en Redis y emite el evento playerJoined.Aquí se guardan en el estado initialPlayerData, de ese modo estarán accesibles durante toda la partida:
+
+        //Los datos DE TODOS LOS JUGADORES que llegan desde back a esta sala se guardan en el estado playerData. Así estarán accesibles para actualizar en cada pregunta:
+        if (socket) {
+            socket.on('playerJoined', (data) => {
+                setPlayerData((prevPlayerData) => [...prevPlayerData, data])
+            })
+
+            socket.on('quizEnded', () => {
+                router.push(`/`)
+            })
+
+            socket.on('disconnect', () => {
+                console.log('Disconnected from server')
+            })
+        }
+    }, [socket])
+
+    //Recepción de las preguntas:
+    //El siguiente paso es que el master inicie una partida desde el botón correspondiente. En ese momento se emite el evento startQuiz. El back hace su lógica y emite el estado question, enviándo la primera pregunta. Aquí se escucha y se guarda en el estado question:
+    useEffect(() => {
+        if (socket) {
+            socket.on('question', (data) => {
+                setQuestion(null)
+                //Trucazo para asegurarse de que primero se ejecute el setQuestion de arriba y luego el de abajo.
+                setTimeout(() => {
+                    setQuestion(data)
+                }, 0)
+            })
+            socket.on('noMoreQuestions', () => {
+                console.log('Ya no hay más preguntas')
+            })
+        }
+
+        // Limpiar el evento cuando el componente se desmonta
+        return () => {
+            if (socket) {
+                socket.off('question')
+            }
+        }
+    }, [socket])
+
+    //En cada respuesta, en el botón correspondiente, se emite el evento submitAnswer y se envían los datos que el jugador ha seleccionado. Este es el callback:
     const handleAnswerSubmit = useCallback(
         (response) => {
             if (socket) {
@@ -99,12 +137,6 @@ const Page = () => {
         }
     }, [socket, playerId, nickName, quizId])
 
-    const handleGetScores = useCallback(() => {
-        if (socket) {
-            socket.emit('getScores', quizId)
-        }
-    }, [socket, quizId])
-
     const handleStartQuiz = useCallback(() => {
         if (socket) {
             socket.emit('startQuiz', loggedUserId, quizId)
@@ -125,6 +157,25 @@ const Page = () => {
         socket.on('answerSubmitted', handleAnswerSubmitted)
     }
 
+    const nextQuestionHandler = async () => {
+        const nextQuestion = question?.questionNumber + 1
+        const numberOfQuestions = quizData.questions.length
+        if (socket) {
+            socket.emit('nextQuestion', quizId, nextQuestion, numberOfQuestions)
+        }
+    }
+
+    const updateQuizDataInBackend = (e) => {
+        e.preventDefault()
+        if (socket) {
+            socket.emit('updateQuizData', quizId, quizData)
+        }
+    }
+    const endQuiz = async () => {
+        if (socket) {
+            socket.emit('endQuiz', quizId)
+        }
+    }
     useEffect(() => {
         if (question) {
             const questionResponses = [
@@ -149,6 +200,24 @@ const Page = () => {
 
     return (
         <>
+            {!quizData ? (
+                <p>Cargando...</p>
+            ) : (
+                <>
+                    <p>{quizData?.description}</p>
+                    <p>{quizData?.title}</p>
+                </>
+            )}
+            {loggedUserId === quizData?.owner_id ? (
+                <>
+                    <button onClick={endQuiz}>Finalizar quiz</button>
+                    <button onClick={nextQuestionHandler}>
+                        Nueva pregunta
+                    </button>
+                    <button onClick={handleStartQuiz}>Start Quiz</button>
+                </>
+            ) : null}
+
             {playerData && (
                 <div>
                     <h2>Scores</h2>
@@ -163,7 +232,6 @@ const Page = () => {
             )}
             {quizId ? (
                 <>
-                    <button onClick={handleStartQuiz}>Start Quiz</button>
                     <p>{question?.question}</p>
                     <input
                         type="text"
@@ -235,6 +303,43 @@ const Page = () => {
                     )}
                 </div>
             )}
+            {loggedUserId === quizData?.owner_id ? (
+                <>
+                    <form>
+                        <label htmlFor="title">Edita el título</label>
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value={quizData?.title}
+                            onChange={(e) => {
+                                const newTitle = e.target.value
+                                setQuizData((prevData) => ({
+                                    ...prevData,
+                                    title: newTitle,
+                                }))
+                            }}
+                        />
+                        <label htmlFor="title">Edita la descripción</label>
+                        <input
+                            type="text"
+                            id="title"
+                            name="description"
+                            value={quizData?.description}
+                            onChange={(e) => {
+                                const newDescription = e.target.value
+                                setQuizData((prevData) => ({
+                                    ...prevData,
+                                    description: newDescription,
+                                }))
+                            }}
+                        />
+                        <button onClick={updateQuizDataInBackend}>
+                            Actualiza el back
+                        </button>
+                    </form>
+                </>
+            ) : null}
         </>
     )
 }
