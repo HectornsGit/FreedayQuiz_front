@@ -121,6 +121,7 @@ const Page = () => {
     //El back comprueba si la respuesta es correcta y emite el evento answerSubmitted, enviándo los datos actualizados del jugador: Ver el callback handleAnswerSubmitted más abajo:
 
     const handleInitialPlayerData = useCallback(() => {
+        console.log(question)
         const initialPlayerData = {
             id: playerId,
             name: nickName,
@@ -167,13 +168,40 @@ const Page = () => {
 
     const updateQuizDataInBackend = (e) => {
         e.preventDefault()
+
         if (socket) {
             socket.emit('updateQuizData', quizId, quizData)
         }
     }
-    const endQuiz = async () => {
+    const updateQuestionDataInBackend = (e) => {
+        e.preventDefault()
         if (socket) {
-            socket.emit('endQuiz', quizId)
+            socket.emit('updateQuestionData', quizId, question)
+        }
+    }
+
+    //Para actualizar datos del quiz:
+    const handleQuizChange = (e) => {
+        const { name, value } = e.target
+        setQuizData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }))
+    }
+
+    //Para actualizar las preguntas:
+    const handleQuestionChange = (e) => {
+        const { name, value } = e.target
+        setQuestion((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }))
+    }
+
+    const endQuiz = async () => {
+        const numberOfQuestions = quizData.questions?.length
+        if (socket) {
+            socket.emit('endQuiz', quizId, numberOfQuestions)
         }
     }
     useEffect(() => {
@@ -312,13 +340,7 @@ const Page = () => {
                             id="title"
                             name="title"
                             value={quizData?.title}
-                            onChange={(e) => {
-                                const newTitle = e.target.value
-                                setQuizData((prevData) => ({
-                                    ...prevData,
-                                    title: newTitle,
-                                }))
-                            }}
+                            onChange={handleQuizChange}
                         />
                         <label htmlFor="title">Edita la descripción</label>
                         <input
@@ -326,16 +348,76 @@ const Page = () => {
                             id="title"
                             name="description"
                             value={quizData?.description}
-                            onChange={(e) => {
-                                const newDescription = e.target.value
-                                setQuizData((prevData) => ({
-                                    ...prevData,
-                                    description: newDescription,
-                                }))
-                            }}
+                            onChange={handleQuizChange}
                         />
                         <button onClick={updateQuizDataInBackend}>
                             Actualiza el back
+                        </button>
+                    </form>
+                    <form>
+                        <label htmlFor="question">Edita la pregunta</label>
+                        <input
+                            type="text"
+                            id="question"
+                            name="question"
+                            value={question?.question}
+                            onChange={handleQuestionChange}
+                        />
+
+                        <label htmlFor="questionTime">
+                            Edita el tiempo de la pregunta
+                        </label>
+                        <input
+                            type="number"
+                            id="questionTime"
+                            name="questionTime"
+                            value={question?.questionTime}
+                            onChange={handleQuestionChange}
+                        />
+
+                        <label htmlFor="optionA">Edita la opción A</label>
+                        <input
+                            type="text"
+                            id="optionA"
+                            name="optionA"
+                            value={question?.optionA}
+                            onChange={handleQuestionChange}
+                        />
+
+                        <label htmlFor="optionB">Edita la opción B</label>
+                        <input
+                            type="text"
+                            id="optionB"
+                            name="optionB"
+                            value={question?.optionB}
+                            onChange={handleQuestionChange}
+                        />
+
+                        <label htmlFor="optionC">Edita la opción C</label>
+                        <input
+                            type="text"
+                            id="optionC"
+                            name="optionC"
+                            value={question?.optionC}
+                            onChange={handleQuestionChange}
+                        />
+
+                        <label htmlFor="correctAnswer">
+                            Edita la respuesta correcta
+                        </label>
+                        <input
+                            type="text"
+                            id="correctAnswer"
+                            name="correctAnswer"
+                            value={question?.correctAnswer}
+                            onChange={handleQuestionChange}
+                        />
+
+                        <button
+                            type="button"
+                            onClick={updateQuestionDataInBackend}
+                        >
+                            Actualiza el back en Redis
                         </button>
                     </form>
                 </>
