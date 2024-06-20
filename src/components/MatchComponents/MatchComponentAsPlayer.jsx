@@ -38,10 +38,10 @@ const MatchComponentAsPlayer = ({ answers }) => {
                             <li
                                 key={index}
                                 className={
-                                    'p-1 bg-gradient-to-r  flex items-center from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                    'p-1 bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
                                 }
                             >
-                                <button className=" flex items-center h-full gap-6 text-start text-2xl p-4 bg-black w-full">
+                                <button className=" flex items-center h-full gap-6 text-start text-2xl p-4  hover:bg-inherit bg-black w-full">
                                     <span className="font-bold">
                                         {answerNames[index]}
                                     </span>
