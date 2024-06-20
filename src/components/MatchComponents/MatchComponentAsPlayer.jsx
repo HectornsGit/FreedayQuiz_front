@@ -23,28 +23,31 @@ const MatchComponentAsPlayer = ({ answers }) => {
         }
         return answers
     }
-    const answerNames = ['A', 'B', 'C', 'D']
+
+    const answerNames = ['🌞', '🌜', '🌟', '⚡']
     useEffect(() => {
         setShuffledAnswers(randomizeAnswers(answers))
     }, [])
 
     return (
-        <div className=" m-auto w-3/6">
+        <div className=" m-auto lg:w-5/6 md:w-full ">
             {shuffledAnswers && (
-                <ul className="flex flex-col gap-4">
+                <ul className="grid grid-cols-2 grid-rows-2 lg:gap-8 gap-4">
                     {shuffledAnswers.map((answer, index) => {
                         return (
                             <li
                                 key={index}
                                 className={
-                                    'p-1 bg-gradient-to-r from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                    'p-1 bg-gradient-to-r  flex items-center from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
                                 }
                             >
-                                <button className=" flex gap-6 text-start text-2xl p-4 bg-black w-full">
+                                <button className=" flex items-center h-full gap-6 text-start text-2xl p-4 bg-black w-full">
                                     <span className="font-bold">
                                         {answerNames[index]}
                                     </span>
-                                    <span>{answer}</span>
+                                    <span className=" lg:text-2xl md:text-xl text-base font-semibold">
+                                        {answer}
+                                    </span>
                                 </button>
                             </li>
                         )
