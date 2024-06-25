@@ -3,8 +3,8 @@ import useQuizLogic from '@/quizEngine/hooks/useQuizLogic'
 
 const Page = () => {
     const {
-        findValue,
         endQuiz,
+        findValue,
         handleQuestionChange,
         handleQuizChange,
         updateQuestionDataInBackend,
@@ -111,7 +111,10 @@ const Page = () => {
                             type="text"
                             id="question"
                             name="question"
-                            value={findValue('question')}
+                            value={findValue(
+                                'question',
+                                shuffledQuestionResponses
+                            )}
                             onChange={handleQuestionChange}
                         />
 
@@ -122,7 +125,10 @@ const Page = () => {
                             type="number"
                             id="questionTime"
                             name="questionTime"
-                            value={findValue('questionTime')}
+                            value={findValue(
+                                'questionTime',
+                                shuffledQuestionResponses
+                            )}
                             onChange={handleQuestionChange}
                         />
 
@@ -131,7 +137,10 @@ const Page = () => {
                             type="text"
                             id="optionA"
                             name="optionA"
-                            value={findValue('optionA')}
+                            value={findValue(
+                                'optionA',
+                                shuffledQuestionResponses
+                            )}
                             onChange={handleQuestionChange}
                         />
 
@@ -140,7 +149,10 @@ const Page = () => {
                             type="text"
                             id="optionB"
                             name="optionB"
-                            value={findValue('optionB')}
+                            value={findValue(
+                                'optionB',
+                                shuffledQuestionResponses
+                            )}
                             onChange={handleQuestionChange}
                         />
 
@@ -149,7 +161,10 @@ const Page = () => {
                             type="text"
                             id="optionC"
                             name="optionC"
-                            value={findValue('optionC')}
+                            value={findValue(
+                                'optionC',
+                                shuffledQuestionResponses
+                            )}
                             onChange={handleQuestionChange}
                         />
 
@@ -160,7 +175,10 @@ const Page = () => {
                             type="text"
                             id="correctAnswer"
                             name="correctAnswer"
-                            value={findValue('correctAnswer')}
+                            value={findValue(
+                                'correctAnswer',
+                                shuffledQuestionResponses
+                            )}
                             onChange={handleQuestionChange}
                         />
 
