@@ -3,8 +3,8 @@ import { fetchAPI } from '@/api/fetch-api'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { signIn } from 'next-auth/react'
-import EyeOpen from './EyeOpen' //icono ojo aberto
-import EyeClose from './EyeClose' //icono ojo cerrado
+import EyeOpen from './icons/EyeOpen' //icono ojo aberto
+import EyeClose from './icons/EyeClose' //icono ojo cerrado
 
 function LoginForm() {
     const [email, setEmail] = useState('')
@@ -31,7 +31,7 @@ function LoginForm() {
             console.log('Error en el inicio de sesión', error.error)
             toast.error(error.error)
         }
-        await fetchAPI('/login', 'POST', payload, onSuccess, onError)
+        await fetchAPI('/login', 'POST', payload, null , onSuccess, onError)
     }
 
     return (

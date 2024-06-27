@@ -75,3 +75,11 @@ body {
     box-shadow: 4px 4px 0 0 #fff;
     }
   }
+
+  /*ocultar barra de scroll para los sliders*/
+  @layer utilities {
+    ::-webkit-scrollbar {
+      display: none;
+  }
+
+  }
