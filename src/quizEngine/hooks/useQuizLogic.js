@@ -18,14 +18,20 @@ const useQuizLogic = () => {
     const params = useParams()
     const router = useRouter()
     const { data: session } = useSession()
+
+    //Estados para manejar el master, con los datos comunes de todos los jugadores en tiempo real del quiz:
     const [quizData, setQuizData] = useState(null)
     const [question, setQuestion] = useState(null)
-    const [initialPlayerData, setInitialPlayerData] = useState([])
     const [playerData, setPlayerData] = useState([])
-    const [error, setError] = useState(null)
+
+    //Estados del cliente local, con la información particular del jugador:
+    const [initialPlayerData, setInitialPlayerData] = useState([])
+    const [nickName, setNickName] = useState('')
+
+    //Estados que se manejan automáticamente:
     const [_joinedQuiz, setJoinedQuiz] = useState(false)
     const [socket, setSocket] = useState(null)
-    const [nickName, setNickName] = useState('')
+    const [error, setError] = useState(null)
     const [shuffledQuestionResponses, setShuffledQuestionResponses] =
         useState(null)
 
@@ -81,7 +87,7 @@ const useQuizLogic = () => {
         handleAnswerSubmitted,
     })
 
-    //Las funciones que dependen de estado, habrá que envolverlas en funciones anónimas. Las demás, no es necesario:
+    //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario:
     return {
         endQuiz: () => endQuiz(quizData, socket, quizId),
         findValue,

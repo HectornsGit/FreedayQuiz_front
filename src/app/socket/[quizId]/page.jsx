@@ -29,26 +29,29 @@ const Page = () => {
 
     return (
         <>
+            {' '}
+            <input
+                type="text"
+                placeholder="Introduce tu nombre de jugador"
+                value={nickName}
+                onChange={(e) => setNickName(e.target.value)}
+            />
+            <button onClick={handleInitialPlayerData}>
+                Envía tu nombre de jugador
+            </button>
             {!quizData ? (
-                <p>Cargando...</p>
+                <>
+                    <p>Esperando que el master inicie el juego...</p>{' '}
+                </>
             ) : (
                 <>
                     <p>{quizData?.description}</p>
                     <p>{quizData?.title}</p>
-                    <input
-                        type="text"
-                        placeholder="Introduce tu nombre de jugador"
-                        value={nickName}
-                        onChange={(e) => setNickName(e.target.value)}
-                    />
-                    <button onClick={handleInitialPlayerData}>
-                        Envía tu nombre de jugador
-                    </button>
                 </>
             )}
             {playerData && (
                 <div>
-                    <h2>Scores</h2>
+                    <h2>Jugadores conectados: {playerData.length}</h2>
                     <ul>
                         {playerData.map((player) => (
                             <li key={player.id}>
@@ -81,8 +84,7 @@ const Page = () => {
                     </ul>
                 </>
             )}
-
-            {loggedUserId === quizData?.owner_id && (
+            {loggedUserId && loggedUserId == quizData?.owner_id && (
                 <>
                     <form>
                         <label htmlFor="title">Edita el título</label>

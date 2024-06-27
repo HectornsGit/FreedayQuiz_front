@@ -10,6 +10,7 @@ import {
     questionHandler,
     quizEndedHandler,
     answerSubmittedHandler,
+    sendUpdatedQuizData,
 } from '../handleEvents'
 
 const useSocketConfig = (argumentsData) => {
@@ -33,7 +34,7 @@ const useSocketConfig = (argumentsData) => {
         setSocket(socketInstance)
 
         //Se escucha el estado connect, que es el momento en el que el front se conecta con el back. En ese instante se setea el estado joinedQuiz a true para que no se instancien más conexiones si la página se renderiza nuevamente:
-        connectHandler(socketInstance, setJoinedQuiz)
+        connectHandler(socketInstance, setJoinedQuiz, quizId)
 
         //Aquí recibo los errores del back y los guardo en un estado:
         errorHandler(socketInstance, setError)
@@ -41,13 +42,32 @@ const useSocketConfig = (argumentsData) => {
 
         // Si el componente se desmonta, se desconecta de la sala
         return () => {
-            socketInstance.disconnect()
+            if (socketInstance) {
+                socketInstance.off('sendQuizId')
+                socketInstance.off('error')
+                socketInstance.disconnect()
+            }
         }
-    }, [setSocket, setError, setJoinedQuiz])
+    }, [setSocket, setError, setJoinedQuiz, quizId])
+
+    //Recuperar los datos de los jugadores, el quiz y la pregunta actual cuando se reconecta:
+    useEffect(() => {
+        sendUpdatedQuizData(socket, setPlayerData, setQuizData, setQuestion)
+        return () => {
+            if (socket) {
+                socket.off('sendUpdatedQuizData')
+            }
+        }
+    }, [socket, setPlayerData, setQuizData, setQuestion])
 
     // Traigo los datos principales del quiz y los guardo en el estado quizData para que estén disponibles inmediatamente:
     useEffect(() => {
         getQuizDataHandler(socket, quizId, loggedUserId, setQuizData)
+        return () => {
+            if (socket) {
+                socket.off('getQuizData')
+            }
+        }
     }, [socket, quizId, loggedUserId, setQuizData])
 
     useEffect(() => {
@@ -57,6 +77,12 @@ const useSocketConfig = (argumentsData) => {
         playerJoinedHandler(socket, setPlayerData)
 
         quizEndedHandler(socket, router)
+        return () => {
+            if (socket) {
+                socket.off('playerJoined')
+                socket.off('quizEnded')
+            }
+        }
     }, [socket, router, setPlayerData])
 
     //Recepción de las preguntas:
@@ -66,10 +92,11 @@ const useSocketConfig = (argumentsData) => {
         questionHandler(socket, setQuestion)
         noMoreQuestionsHandler(socket)
 
-        // Limpiar el evento cuando el componente se desmonta
+        // Limpio el evento cuando el componente se desmonta para evitar duplicidades innecesarias:
         return () => {
             if (socket) {
                 socket.off('question')
+                socket.off('noMoreQuestions')
             }
         }
     }, [socket, setQuestion])
@@ -77,6 +104,11 @@ const useSocketConfig = (argumentsData) => {
     useEffect(() => {
         if (socket) {
             answerSubmittedHandler(socket, handleAnswerSubmitted)
+            return () => {
+                if (socket) {
+                    socket.off('answerSubmitted')
+                }
+            }
         }
     }, [socket, handleAnswerSubmitted])
 }

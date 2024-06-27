@@ -5,7 +5,6 @@ export const useQuizHandlers = ({
     quizId,
     question,
     initialPlayerData,
-    playerData,
     setPlayerData,
     playerId,
     nickName,

@@ -7,6 +7,7 @@ import disconnectHandler from './disconnectHandler'
 import questionHandler from './questionHandler'
 import noMoreQuestionsHandler from './noMoreQuestionsHandler'
 import answerSubmittedHandler from './answerSubmittedHandler'
+import sendUpdatedQuizData from './sendUpdatedQuizData'
 export {
     connectHandler,
     errorHandler,
@@ -17,4 +18,5 @@ export {
     questionHandler,
     noMoreQuestionsHandler,
     answerSubmittedHandler,
+    sendUpdatedQuizData,
 }

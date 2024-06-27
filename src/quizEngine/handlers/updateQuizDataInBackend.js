@@ -4,7 +4,11 @@ const updateQuizDataInBackend = (quizData, socket, quizId) => (e) => {
     e.preventDefault()
     if (socket) {
         socket.emit('updateQuizData', quizId, quizData)
-        socket.once('quizUpdatedMessage', (data) => toast.success(data.message))
+        socket.on('quizUpdatedMessage', (data) => {
+            if (data.status === 'ok') {
+                toast.success(data.message)
+            } else toast.error(data.message)
+        })
     }
 }
 export default updateQuizDataInBackend

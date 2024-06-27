@@ -27,6 +27,7 @@ const updateQuestionDataInBackend =
                     updatedData[key] = value
                 }
             }
+
             // Ahora lo envío al backend:
             if (socket) {
                 socket.emit('updateQuestionData', quizId, updatedData)

@@ -2,7 +2,8 @@ import { toast } from 'react-toastify'
 
 const nextQuestionHandler = async (question, quizData, socket, quizId) => {
     const nextQuestion = question?.questionNumber + 1
-    const numberOfQuestions = quizData?.questions.length
+    const numberOfQuestions = quizData.number_of_questions
+
     if (socket && question && quizId) {
         socket.emit('nextQuestion', quizId, nextQuestion, numberOfQuestions)
     } else {
