@@ -1,5 +1,6 @@
 'use client'
 import useQuizLogic from '@/quizEngine/hooks/useQuizLogic'
+import { signOut } from 'next-auth/react'
 
 const Page = () => {
     const {
@@ -29,7 +30,7 @@ const Page = () => {
 
     return (
         <>
-            {' '}
+            <button onClick={signOut}>Cerrar sesión</button>{' '}
             <input
                 type="text"
                 placeholder="Introduce tu nombre de jugador"

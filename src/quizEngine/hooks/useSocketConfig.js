@@ -11,6 +11,8 @@ import {
     quizEndedHandler,
     answerSubmittedHandler,
     sendUpdatedQuizData,
+    editedQuizData,
+    editedQuestionData,
 } from '../handleEvents'
 
 const useSocketConfig = (argumentsData) => {
@@ -111,5 +113,25 @@ const useSocketConfig = (argumentsData) => {
             }
         }
     }, [socket, handleAnswerSubmitted])
+
+    //Actualizar los datos del quiz que se editan en tiempo real y sincronizarlos en todos los clientes de la sala:
+    useEffect(() => {
+        editedQuizData(socket, setQuizData)
+        return () => {
+            if (socket) {
+                socket.off('quizUpdatedMessage')
+            }
+        }
+    }, [setQuizData, socket])
+
+    //Actualizar las preguntas que se editan en tiempo real y sincronizarlos en todos los clientes de la sala:
+    useEffect(() => {
+        editedQuestionData(socket, setQuestion)
+        return () => {
+            if (socket) {
+                socket.off('questionUpdatedMessage')
+            }
+        }
+    }, [setQuestion, socket])
 }
 export default useSocketConfig

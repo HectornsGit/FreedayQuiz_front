@@ -31,9 +31,6 @@ const updateQuestionDataInBackend =
             // Ahora lo envío al backend:
             if (socket) {
                 socket.emit('updateQuestionData', quizId, updatedData)
-                socket.on('questionUpdatedMessage', (data) =>
-                    toast.success(data.message)
-                )
             }
             return updatedData
         })

@@ -37,7 +37,7 @@ const useQuizLogic = () => {
 
     const playerId = uuidv4()
     const loggedUserId = session?.user.data.id
-    const quizId = params.quizId
+    const quizId = params.quizId.toString()
 
     //Aquí van los handlers que necesitan useCallback:
     const {
@@ -77,6 +77,7 @@ const useQuizLogic = () => {
         quizId,
         loggedUserId,
         setQuizData,
+        setQuestion,
         setError,
         setSocket,
         router,
