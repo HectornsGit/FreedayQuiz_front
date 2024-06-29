@@ -13,6 +13,10 @@ import {
     sendUpdatedQuizData,
     editedQuizData,
     editedQuestionData,
+    questionStartedHandler,
+    timerUpdate,
+    timeUpHandler,
+    scoresHandler,
 } from '../handleEvents'
 
 const useSocketConfig = (argumentsData) => {
@@ -28,6 +32,9 @@ const useSocketConfig = (argumentsData) => {
         setPlayerData,
         setQuestion,
         handleAnswerSubmitted,
+        setIsQuestionRunning,
+        setTimeLeft,
+        setShowScores,
     } = argumentsData
 
     useEffect(() => {
@@ -71,6 +78,16 @@ const useSocketConfig = (argumentsData) => {
             }
         }
     }, [socket, quizId, loggedUserId, setQuizData])
+
+    //Aquí controla el master cuando iniciar cada pregunta:
+    useEffect(() => {
+        questionStartedHandler(socket, setIsQuestionRunning, setShowScores)
+        return () => {
+            if (socket) {
+                socket.off('questionStarted')
+            }
+        }
+    }, [socket, setIsQuestionRunning, setShowScores])
 
     useEffect(() => {
         //El siguiente paso es que el usuario escriba su nombre de jugado en el el formulario. En ese momento se emite el evento joinQuiz y se envían los datos. El back los guarda en Redis y emite el evento playerJoined.Aquí se guardan en el estado initialPlayerData, de ese modo estarán accesibles durante toda la partida:
@@ -133,5 +150,22 @@ const useSocketConfig = (argumentsData) => {
             }
         }
     }, [setQuestion, socket])
+
+    useEffect(() => {
+        timerUpdate(socket, setTimeLeft)
+        return () => {
+            if (socket) {
+                socket.off('timerUpdate')
+            }
+        }
+    }, [socket, setTimeLeft])
+
+    useEffect(() => {
+        timeUpHandler(socket)
+    }, [socket])
+
+    useEffect(() => {
+        scoresHandler(socket, setIsQuestionRunning, setShowScores)
+    }, [socket, setIsQuestionRunning, setShowScores])
 }
 export default useSocketConfig
