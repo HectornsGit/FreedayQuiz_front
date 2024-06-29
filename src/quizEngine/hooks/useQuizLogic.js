@@ -11,6 +11,8 @@ import {
     updateQuizDataInBackend,
     handleQuizChange,
     endQuiz,
+    initQuestion,
+    showScoresHandler,
 } from '../handlers/index'
 import { useQuizHandlers } from './useQuizHandlers'
 
@@ -34,10 +36,15 @@ const useQuizLogic = () => {
     const [error, setError] = useState(null)
     const [shuffledQuestionResponses, setShuffledQuestionResponses] =
         useState(null)
+    const [isQuestionRunning, setIsQuestionRunning] = useState(false)
+    const [timeLeft, setTimeLeft] = useState(
+        question ? question.questionTime : null
+    )
+    const [showScores, setShowScores] = useState(false)
 
     const playerId = uuidv4()
     const loggedUserId = session?.user.data.id
-    const quizId = params.quizId
+    const quizId = params.quizId.toString()
 
     //Aquí van los handlers que necesitan useCallback:
     const {
@@ -77,6 +84,7 @@ const useQuizLogic = () => {
         quizId,
         loggedUserId,
         setQuizData,
+        setQuestion,
         setError,
         setSocket,
         router,
@@ -85,6 +93,10 @@ const useQuizLogic = () => {
         setQuestion,
         playerData,
         handleAnswerSubmitted,
+        setIsQuestionRunning,
+        setTimeLeft,
+        timeLeft,
+        setShowScores,
     })
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario:
@@ -111,7 +123,9 @@ const useQuizLogic = () => {
         nextQuestionHandler: () =>
             nextQuestionHandler(question, quizData, socket, quizId),
         handleAnswerSubmit,
+        initQuestion: () => initQuestion(socket, quizId, question),
         handleStartQuiz,
+        showScoresHandler: () => showScoresHandler(socket, quizId),
         handleInitialPlayerData,
         question,
         quizData,
@@ -123,6 +137,10 @@ const useQuizLogic = () => {
         playerData,
         nickName,
         shuffledQuestionResponses,
+        isQuestionRunning,
+        setIsQuestionRunning,
+        timeLeft,
+        showScores,
     }
 }
 export default useQuizLogic

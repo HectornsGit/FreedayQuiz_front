@@ -34,6 +34,7 @@ export const useQuizHandlers = ({
                     questionNumber: question.questionNumber,
                     answer: response,
                     playerId: initialPlayerData[0].id,
+                    totalTime: question.questionTime,
                 })
             }
         },
@@ -45,6 +46,7 @@ export const useQuizHandlers = ({
             id: playerId,
             name: nickName,
             totalScore: 0,
+            streak: 0,
         }
 
         setInitialPlayerData((prevPlayerData) => [

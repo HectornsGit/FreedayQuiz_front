@@ -4,6 +4,8 @@ import updateQuestionDataInBackend from './updateQuestionDataInBackend'
 import updateQuizDataInBackend from './updateQuizDataInBackend'
 import endQuiz from './endQuiz'
 import handleQuizChange from './handleQuizChange'
+import initQuestion from './initQuestion'
+import showScoresHandler from './showScoresHandler'
 
 export {
     nextQuestionHandler,
@@ -12,4 +14,6 @@ export {
     updateQuizDataInBackend,
     handleQuizChange,
     endQuiz,
+    initQuestion,
+    showScoresHandler,
 }
