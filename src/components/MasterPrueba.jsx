@@ -8,7 +8,6 @@ const MasterPrueba = ({ masterProps }) => {
         updateQuestionDataInBackend,
         updateQuizDataInBackend,
         nextQuestionHandler,
-        handleAnswerSubmit,
         handleStartQuiz,
         question,
         quizData,
@@ -37,6 +36,8 @@ const MasterPrueba = ({ masterProps }) => {
                             <li key={player.id}>
                                 Nickname: {player.name} Puntos:{' '}
                                 {player.totalScore} Streak: {player.streak}
+                                Puntos ultima pregunta:
+                                {player.lastCorrectAnswer}
                             </li>
                         ))}
                     </ul>
@@ -47,21 +48,11 @@ const MasterPrueba = ({ masterProps }) => {
                     <p>Tiempo restante: {timeLeft}</p>
                     <p>Pregunta: {question?.question}</p>
                     <ul>
-                        <p>Respuestas:</p>
-                        {shuffledQuestionResponses &&
-                            shuffledQuestionResponses.map((response, index) => (
-                                <li key={index}>
-                                    <button
-                                        onClick={() =>
-                                            handleAnswerSubmit(
-                                                Object.values(response)[0]
-                                            )
-                                        }
-                                    >
-                                        {Object.values(response)[0]}
-                                    </button>
-                                </li>
-                            ))}
+                        <h2>Respuestas:</h2>
+                        <p>Respuesta correcta:{question.correctAnswer}</p>
+                        <p>opción A:{question.optionA}</p>
+                        <p>opción B:{question.optionB}</p>
+                        <p>opción C:{question.optionC}</p>
                     </ul>
                 </>
             )}

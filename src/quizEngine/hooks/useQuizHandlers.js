@@ -10,13 +10,19 @@ export const useQuizHandlers = ({
     nickName,
     setInitialPlayerData,
     loggedUserId,
+    timeLeft,
 }) => {
     const handleAnswerSubmitted = useCallback(
         (backData) => {
             setPlayerData((prevPlayerData) =>
                 prevPlayerData.map((frontData) => {
                     if (frontData.id === backData.id) {
-                        return { ...frontData, totalScore: backData.totalScore }
+                        return {
+                            ...frontData,
+                            totalScore: backData.totalScore,
+                            streak: backData.streak,
+                            lastCorrectAnswer: backData.lastCorrectAnswer,
+                        }
                     }
                     return frontData
                 })
@@ -35,10 +41,11 @@ export const useQuizHandlers = ({
                     answer: response,
                     playerId: initialPlayerData[0].id,
                     totalTime: question.questionTime,
+                    timeTaken: question.questionTime - timeLeft,
                 })
             }
         },
-        [socket, quizId, question, initialPlayerData]
+        [socket, quizId, question, initialPlayerData, timeLeft]
     )
 
     const handleInitialPlayerData = useCallback(() => {
@@ -47,6 +54,7 @@ export const useQuizHandlers = ({
             name: nickName,
             totalScore: 0,
             streak: 0,
+            lastCorrectAnswer: 0,
         }
 
         setInitialPlayerData((prevPlayerData) => [

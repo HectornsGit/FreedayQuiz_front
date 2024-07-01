@@ -29,6 +29,7 @@ const Page = () => {
         timeLeft,
         showScores,
         showScoresHandler,
+        isDisabled,
     } = useQuizLogic()
 
     const masterProps = {
@@ -64,6 +65,7 @@ const Page = () => {
         isQuestionRunning,
         timeLeft,
         showScores,
+        isDisabled,
     }
 
     if (error) {

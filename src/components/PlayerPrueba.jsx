@@ -12,6 +12,7 @@ const PlayerPrueba = ({ playerProps }) => {
         isQuestionRunning,
         timeLeft,
         showScores,
+        isDisabled,
     } = playerProps
 
     return (
@@ -26,6 +27,8 @@ const PlayerPrueba = ({ playerProps }) => {
                             <li key={player.id}>
                                 Nickname: {player.name} Puntos:{' '}
                                 {player.totalScore} Streak: {player.streak}
+                                Puntos ultima pregunta:
+                                {player.lastCorrectAnswer}
                             </li>
                         ))}
                     </ul>
@@ -65,6 +68,7 @@ const PlayerPrueba = ({ playerProps }) => {
                                         (response, index) => (
                                             <li key={index}>
                                                 <button
+                                                    disabled={isDisabled}
                                                     onClick={() =>
                                                         handleAnswerSubmit(
                                                             Object.values(
