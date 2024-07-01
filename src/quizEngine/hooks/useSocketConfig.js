@@ -35,6 +35,7 @@ const useSocketConfig = (argumentsData) => {
         setIsQuestionRunning,
         setTimeLeft,
         setShowScores,
+        setIsDisabled,
     } = argumentsData
 
     useEffect(() => {
@@ -81,7 +82,12 @@ const useSocketConfig = (argumentsData) => {
 
     //Aquí controla el master cuando iniciar cada pregunta:
     useEffect(() => {
-        questionStartedHandler(socket, setIsQuestionRunning, setShowScores)
+        questionStartedHandler(
+            socket,
+            setIsQuestionRunning,
+            setShowScores,
+            setIsDisabled
+        )
         return () => {
             if (socket) {
                 socket.off('questionStarted')

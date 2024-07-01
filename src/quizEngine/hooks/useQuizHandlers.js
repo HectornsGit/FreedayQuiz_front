@@ -11,6 +11,7 @@ export const useQuizHandlers = ({
     setInitialPlayerData,
     loggedUserId,
     timeLeft,
+    setIsDisabled,
 }) => {
     const handleAnswerSubmitted = useCallback(
         (backData) => {
@@ -43,9 +44,10 @@ export const useQuizHandlers = ({
                     totalTime: question.questionTime,
                     timeTaken: question.questionTime - timeLeft,
                 })
+                setIsDisabled(true)
             }
         },
-        [socket, quizId, question, initialPlayerData, timeLeft]
+        [socket, quizId, question, initialPlayerData, timeLeft, setIsDisabled]
     )
 
     const handleInitialPlayerData = useCallback(() => {

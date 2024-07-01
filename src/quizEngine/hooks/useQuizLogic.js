@@ -41,7 +41,7 @@ const useQuizLogic = () => {
         question ? question.questionTime : null
     )
     const [showScores, setShowScores] = useState(false)
-    const [isDisabled, setIsDisabled] = useState(false)
+    const [isDisabled, setIsDisabled] = useState(true)
 
     const playerId = uuidv4()
     const loggedUserId = session?.user.data.id
@@ -65,6 +65,7 @@ const useQuizLogic = () => {
         setInitialPlayerData,
         loggedUserId,
         timeLeft,
+        setIsDisabled,
     })
 
     useEffect(() => {
