@@ -41,6 +41,7 @@ const useQuizLogic = () => {
         question ? question.questionTime : null
     )
     const [showScores, setShowScores] = useState(false)
+    const [isDisabled, setIsDisabled] = useState(true)
 
     const playerId = uuidv4()
     const loggedUserId = session?.user.data.id
@@ -63,6 +64,8 @@ const useQuizLogic = () => {
         nickName,
         setInitialPlayerData,
         loggedUserId,
+        timeLeft,
+        setIsDisabled,
     })
 
     useEffect(() => {
@@ -97,6 +100,7 @@ const useQuizLogic = () => {
         setTimeLeft,
         timeLeft,
         setShowScores,
+        setIsDisabled,
     })
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario:
@@ -141,6 +145,9 @@ const useQuizLogic = () => {
         setIsQuestionRunning,
         timeLeft,
         showScores,
+        isDisabled,
+        initialPlayerData,
+        socket,
     }
 }
 export default useQuizLogic

@@ -1,12 +1,14 @@
 const questionStartedHandler = (
     socket,
     setIsQuestionRunning,
-    setShowScores
+    setShowScores,
+    setIsDisabled
 ) => {
     if (socket) {
         socket.on('questionStarted', () => {
             setIsQuestionRunning(true)
             setShowScores(false)
+            setIsDisabled(false)
         })
     }
 }

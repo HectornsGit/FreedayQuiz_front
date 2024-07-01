@@ -7,11 +7,13 @@ const PlayerPrueba = ({ playerProps }) => {
         playerData,
         shuffledQuestionResponses,
         handleAnswerSubmit,
-        nickName,
+        socket,
         setNickName,
         isQuestionRunning,
         timeLeft,
         showScores,
+        isDisabled,
+        initialPlayerData,
     } = playerProps
 
     return (
@@ -26,6 +28,8 @@ const PlayerPrueba = ({ playerProps }) => {
                             <li key={player.id}>
                                 Nickname: {player.name} Puntos:{' '}
                                 {player.totalScore} Streak: {player.streak}
+                                Puntos ultima pregunta:
+                                {player.lastCorrectAnswer}
                             </li>
                         ))}
                     </ul>
@@ -35,12 +39,20 @@ const PlayerPrueba = ({ playerProps }) => {
                     <input
                         type="text"
                         placeholder="Introduce tu nombre de jugador"
-                        value={nickName}
+                        value={
+                            initialPlayerData[0]?.name &&
+                            initialPlayerData[0]?.name
+                        }
+                        hidden={socket?.Mydata?.name ? true : false}
                         onChange={(e) => setNickName(e.target.value)}
                     />
-                    <button onClick={handleInitialPlayerData}>
+                    <button
+                        onClick={handleInitialPlayerData}
+                        hidden={socket?.Mydata?.name ? true : false}
+                    >
                         Envía tu nombre de jugador
                     </button>
+                    <p>Jugador: {initialPlayerData[0]?.name}</p>
                     {!quizData ? (
                         <>
                             <p>Esperando que el master inicie el juego...</p>{' '}
@@ -65,6 +77,7 @@ const PlayerPrueba = ({ playerProps }) => {
                                         (response, index) => (
                                             <li key={index}>
                                                 <button
+                                                    disabled={isDisabled}
                                                     onClick={() =>
                                                         handleAnswerSubmit(
                                                             Object.values(
