@@ -30,6 +30,8 @@ const Page = () => {
         showScores,
         showScoresHandler,
         isDisabled,
+        initialPlayerData,
+        socket,
     } = useQuizLogic()
 
     const masterProps = {
@@ -66,6 +68,8 @@ const Page = () => {
         timeLeft,
         showScores,
         isDisabled,
+        initialPlayerData,
+        socket,
     }
 
     if (error) {

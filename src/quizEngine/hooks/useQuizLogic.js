@@ -146,6 +146,8 @@ const useQuizLogic = () => {
         timeLeft,
         showScores,
         isDisabled,
+        initialPlayerData,
+        socket,
     }
 }
 export default useQuizLogic

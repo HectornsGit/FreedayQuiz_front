@@ -62,13 +62,29 @@ const useSocketConfig = (argumentsData) => {
 
     //Recuperar los datos de los jugadores, el quiz y la pregunta actual cuando se reconecta:
     useEffect(() => {
-        sendUpdatedQuizData(socket, setPlayerData, setQuizData, setQuestion)
+        sendUpdatedQuizData(
+            socket,
+            setPlayerData,
+            setQuizData,
+            setQuestion,
+            setIsQuestionRunning,
+            setShowScores,
+            setIsDisabled
+        )
         return () => {
             if (socket) {
-                socket.off('sendUpdatedQuizData')
+                socket.off('sendRecoveryQuizData')
             }
         }
-    }, [socket, setPlayerData, setQuizData, setQuestion])
+    }, [
+        socket,
+        setPlayerData,
+        setQuizData,
+        setQuestion,
+        setIsQuestionRunning,
+        setShowScores,
+        setIsDisabled,
+    ])
 
     // Traigo los datos principales del quiz y los guardo en el estado quizData para que estén disponibles inmediatamente:
     useEffect(() => {
@@ -93,7 +109,7 @@ const useSocketConfig = (argumentsData) => {
                 socket.off('questionStarted')
             }
         }
-    }, [socket, setIsQuestionRunning, setShowScores])
+    }, [socket, setIsQuestionRunning, setShowScores, setIsDisabled])
 
     useEffect(() => {
         //El siguiente paso es que el usuario escriba su nombre de jugado en el el formulario. En ese momento se emite el evento joinQuiz y se envían los datos. El back los guarda en Redis y emite el evento playerJoined.Aquí se guardan en el estado initialPlayerData, de ese modo estarán accesibles durante toda la partida:
@@ -167,8 +183,8 @@ const useSocketConfig = (argumentsData) => {
     }, [socket, setTimeLeft])
 
     useEffect(() => {
-        timeUpHandler(socket)
-    }, [socket])
+        timeUpHandler(socket, setIsDisabled)
+    }, [socket, setIsDisabled])
 
     useEffect(() => {
         scoresHandler(socket, setIsQuestionRunning, setShowScores)
