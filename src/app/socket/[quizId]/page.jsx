@@ -32,6 +32,7 @@ const Page = () => {
         isDisabled,
         initialPlayerData,
         socket,
+        connectedClients,
     } = useQuizLogic()
 
     const masterProps = {
@@ -53,6 +54,7 @@ const Page = () => {
         initQuestion,
         timeLeft,
         showScoresHandler,
+        connectedClients,
     }
     const playerProps = {
         signOut,
@@ -70,6 +72,7 @@ const Page = () => {
         isDisabled,
         initialPlayerData,
         socket,
+        connectedClients,
     }
 
     if (error) {

@@ -17,6 +17,7 @@ const MasterPrueba = ({ masterProps }) => {
         initQuestion,
         timeLeft,
         showScoresHandler,
+        connectedClients,
     } = masterProps
 
     return (
@@ -30,7 +31,7 @@ const MasterPrueba = ({ masterProps }) => {
             )}
             {playerData && (
                 <div>
-                    <h2>Jugadores conectados: {playerData.length}</h2>
+                    <h2>Jugadores conectados: {connectedClients}</h2>
                     <ul>
                         {playerData.map((player) => (
                             <li key={player.id}>
@@ -38,6 +39,7 @@ const MasterPrueba = ({ masterProps }) => {
                                 {player.totalScore} Streak: {player.streak}
                                 Puntos ultima pregunta:
                                 {player.lastCorrectAnswer}
+                                State: {player.state}
                             </li>
                         ))}
                     </ul>

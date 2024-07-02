@@ -14,9 +14,12 @@ import questionStartedHandler from './questionStartedHandler'
 import timerUpdate from './timerUpdate'
 import timeUpHandler from './timeUpHandler'
 import scoresHandler from './scoresHandler'
+import clientsNumberHandler from './clientsNumberHandler'
+import quizDataHandler from './quizDataHandler'
 export {
     connectHandler,
     errorHandler,
+    quizDataHandler,
     getQuizDataHandler,
     playerJoinedHandler,
     quizEndedHandler,
@@ -28,6 +31,7 @@ export {
     editedQuizData,
     editedQuestionData,
     questionStartedHandler,
+    clientsNumberHandler,
     timerUpdate,
     timeUpHandler,
     scoresHandler,
