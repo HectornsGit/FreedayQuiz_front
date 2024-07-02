@@ -54,6 +54,7 @@ export const useQuizHandlers = ({
         const initialPlayer = {
             id: playerId,
             name: nickName,
+            state: 'online',
             totalScore: 0,
             streak: 0,
             lastCorrectAnswer: 0,
@@ -63,6 +64,12 @@ export const useQuizHandlers = ({
             ...prevPlayerData,
             initialPlayer,
         ])
+        //Guardo el nickName y el id en el socket, para acceder a él en caso necesario:
+        socket.Mydata = { name: nickName, id: playerId }
+        socket.data = { name: nickName, id: playerId }
+
+        //Se envía petición para sincronizar los datos, por si el quiz está en curso:
+        socket.emit('requestRecoveryData', quizId)
 
         if (socket) {
             socket.emit('joinQuiz', playerId, quizId, initialPlayer)

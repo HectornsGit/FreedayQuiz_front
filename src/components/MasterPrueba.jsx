@@ -39,6 +39,7 @@ const MasterPrueba = ({ masterProps }) => {
                                 {player.totalScore} Streak: {player.streak}
                                 Puntos ultima pregunta:
                                 {player.lastCorrectAnswer}
+                                State: {player.state}
                             </li>
                         ))}
                     </ul>

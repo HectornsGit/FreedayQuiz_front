@@ -98,11 +98,14 @@ const useQuizLogic = () => {
         playerData,
         handleAnswerSubmitted,
         setIsQuestionRunning,
+        isQuestionRunning,
         setTimeLeft,
         timeLeft,
         setShowScores,
+        showScores,
         setIsDisabled,
         setConnectedClients,
+        playerData,
     })
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario:

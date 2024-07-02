@@ -39,6 +39,7 @@ const useSocketConfig = (argumentsData) => {
         setShowScores,
         setIsDisabled,
         setConnectedClients,
+        playerData,
     } = argumentsData
 
     useEffect(() => {
@@ -87,8 +88,7 @@ const useSocketConfig = (argumentsData) => {
             setQuestion,
             setIsQuestionRunning,
             setShowScores,
-            setIsDisabled,
-            setConnectedClients
+            setIsDisabled
         )
         return () => {
             if (socket) {
@@ -103,7 +103,6 @@ const useSocketConfig = (argumentsData) => {
         setIsQuestionRunning,
         setShowScores,
         setIsDisabled,
-        setConnectedClients,
     ])
 
     //Aquí controla el master cuando iniciar cada pregunta:
@@ -125,7 +124,7 @@ const useSocketConfig = (argumentsData) => {
         //El siguiente paso es que el usuario escriba su nombre de jugado en el el formulario. En ese momento se emite el evento joinQuiz y se envían los datos. El back los guarda en Redis y emite el evento playerJoined.Aquí se guardan en el estado initialPlayerData, de ese modo estarán accesibles durante toda la partida:
 
         //Los datos DE TODOS LOS JUGADORES que llegan desde back a esta sala se guardan en el estado playerData. Así estarán accesibles para actualizar en cada pregunta:
-        playerJoinedHandler(socket, setPlayerData)
+        playerJoinedHandler(socket, setPlayerData, quizId)
 
         quizEndedHandler(socket, router)
         return () => {
@@ -134,11 +133,10 @@ const useSocketConfig = (argumentsData) => {
                 socket.off('quizEnded')
             }
         }
-    }, [socket, router, setPlayerData])
+    }, [router, socket, setPlayerData, quizId])
 
     //Recepción de las preguntas:
     //El back hace su lógica y emite el estado question, enviándo la primera pregunta. Aquí se escucha y se guarda en el estado question:
-
     useEffect(() => {
         questionHandler(socket, setQuestion)
         noMoreQuestionsHandler(socket)
@@ -215,12 +213,17 @@ const useSocketConfig = (argumentsData) => {
 
     //Cada vez que se conecta o desconecta un cliente, se envía el nuevo estado a todos los clientes de la sala:
     useEffect(() => {
-        clientsNumberHandler(socket, setConnectedClients)
+        clientsNumberHandler(
+            socket,
+            setConnectedClients,
+            playerData,
+            setPlayerData
+        )
         return () => {
             if (socket) {
                 socket.off('clientsNumber')
             }
         }
-    }, [socket, setConnectedClients])
+    }, [socket, setConnectedClients, setPlayerData, playerData])
 }
 export default useSocketConfig
