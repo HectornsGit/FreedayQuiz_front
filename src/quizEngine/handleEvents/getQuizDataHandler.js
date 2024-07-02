@@ -1,9 +1,6 @@
-const getQuizDataHandler = (socket, quizId, loggedUserId, setQuizData) => {
+const getQuizDataHandler = (socket, quizId, loggedUserId) => {
     if (socket && quizId && loggedUserId) {
         socket.emit('getQuizData', quizId, loggedUserId)
-        socket.on('quizData', (data) => {
-            setQuizData(data)
-        })
     }
 }
 

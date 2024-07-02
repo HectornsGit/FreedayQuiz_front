@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify'
+
 const connectHandler = (socketInstance, setJoinedQuiz, quizId) => {
     socketInstance.on('connect', () => {
         if (socketInstance.recovered) {

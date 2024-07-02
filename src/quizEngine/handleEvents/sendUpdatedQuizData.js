@@ -5,19 +5,21 @@ const sendUpdatedQuizData = (
     setQuestion,
     setIsQuestionRunning,
     setShowScores,
-    setIsDisabled
+    setIsDisabled,
+    _setConnectedClients
 ) => {
     if (socket) {
         socket.on(
             'sendRecoveryQuizData',
             (backPlayersData, backQuizData, currentQuestion, updatedStates) => {
-                console.log(updatedStates)
-                setPlayerData(backPlayersData)
-                setQuizData(backQuizData)
-                setQuestion(currentQuestion)
                 // setIsQuestionRunning(updatedStates.isQuestionRunning)
                 // setShowScores(updatedStates.showScores)
                 // setIsDisabled(updatedStates.isDisabled)
+                // setInterval(() => {
+                //     setPlayerData(backPlayersData)
+                //     setQuizData(backQuizData)
+                //     setQuestion(currentQuestion)
+                // }, 0)
             }
         )
     }
