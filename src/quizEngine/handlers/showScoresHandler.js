@@ -1,7 +1,7 @@
 const showScoresHandler = (socket, quizId) => {
     const states = {
         isQuestionRunning: false,
-        showStates: true,
+        showScores: true,
         isDisabled: true,
     }
     if (socket) {

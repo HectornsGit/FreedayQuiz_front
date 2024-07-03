@@ -17,6 +17,8 @@ import {
     timerUpdate,
     timeUpHandler,
     scoresHandler,
+    clientsNumberHandler,
+    quizDataHandler,
 } from '../handleEvents'
 
 const useSocketConfig = (argumentsData) => {
@@ -36,6 +38,8 @@ const useSocketConfig = (argumentsData) => {
         setTimeLeft,
         setShowScores,
         setIsDisabled,
+        setConnectedClients,
+        playerData,
     } = argumentsData
 
     useEffect(() => {
@@ -59,6 +63,21 @@ const useSocketConfig = (argumentsData) => {
             }
         }
     }, [setSocket, setError, setJoinedQuiz, quizId])
+
+    //Si se conecta el master, se envía la petición de datos del quiz:
+    useEffect(() => {
+        getQuizDataHandler(socket, quizId, loggedUserId, setQuizData)
+        return () => {
+            if (socket) {
+                socket.off('getQuizData')
+            }
+        }
+    }, [socket, quizId, loggedUserId, setQuizData])
+
+    // Traigo los datos principales del quiz y los guardo en el estado quizData para que estén disponibles inmediatamente:
+    useEffect(() => {
+        quizDataHandler(socket, setQuizData)
+    }, [socket, setQuizData])
 
     //Recuperar los datos de los jugadores, el quiz y la pregunta actual cuando se reconecta:
     useEffect(() => {
@@ -86,16 +105,6 @@ const useSocketConfig = (argumentsData) => {
         setIsDisabled,
     ])
 
-    // Traigo los datos principales del quiz y los guardo en el estado quizData para que estén disponibles inmediatamente:
-    useEffect(() => {
-        getQuizDataHandler(socket, quizId, loggedUserId, setQuizData)
-        return () => {
-            if (socket) {
-                socket.off('getQuizData')
-            }
-        }
-    }, [socket, quizId, loggedUserId, setQuizData])
-
     //Aquí controla el master cuando iniciar cada pregunta:
     useEffect(() => {
         questionStartedHandler(
@@ -115,7 +124,7 @@ const useSocketConfig = (argumentsData) => {
         //El siguiente paso es que el usuario escriba su nombre de jugado en el el formulario. En ese momento se emite el evento joinQuiz y se envían los datos. El back los guarda en Redis y emite el evento playerJoined.Aquí se guardan en el estado initialPlayerData, de ese modo estarán accesibles durante toda la partida:
 
         //Los datos DE TODOS LOS JUGADORES que llegan desde back a esta sala se guardan en el estado playerData. Así estarán accesibles para actualizar en cada pregunta:
-        playerJoinedHandler(socket, setPlayerData)
+        playerJoinedHandler(socket, setPlayerData, quizId)
 
         quizEndedHandler(socket, router)
         return () => {
@@ -124,11 +133,10 @@ const useSocketConfig = (argumentsData) => {
                 socket.off('quizEnded')
             }
         }
-    }, [socket, router, setPlayerData])
+    }, [router, socket, setPlayerData, quizId])
 
     //Recepción de las preguntas:
-    //El siguiente paso es que el master inicie una partida desde el botón correspondiente. En ese momento se emite el evento startQuiz. El back hace su lógica y emite el estado question, enviándo la primera pregunta. Aquí se escucha y se guarda en el estado question:
-
+    //El back hace su lógica y emite el estado question, enviándo la primera pregunta. Aquí se escucha y se guarda en el estado question:
     useEffect(() => {
         questionHandler(socket, setQuestion)
         noMoreQuestionsHandler(socket)
@@ -173,6 +181,7 @@ const useSocketConfig = (argumentsData) => {
         }
     }, [setQuestion, socket])
 
+    //Lógica cuando se acaba el tiempo:
     useEffect(() => {
         timerUpdate(socket, setTimeLeft)
         return () => {
@@ -182,12 +191,39 @@ const useSocketConfig = (argumentsData) => {
         }
     }, [socket, setTimeLeft])
 
+    //Actualización del estado contador:
     useEffect(() => {
         timeUpHandler(socket, setIsDisabled)
+        return () => {
+            if (socket) {
+                socket.off('timeUp')
+            }
+        }
     }, [socket, setIsDisabled])
 
+    //Para pasar a los jugadores a la pantalla de puntuación, entre pregunta y pregunta:
     useEffect(() => {
         scoresHandler(socket, setIsQuestionRunning, setShowScores)
+        return () => {
+            if (socket) {
+                socket.off('scores')
+            }
+        }
     }, [socket, setIsQuestionRunning, setShowScores])
+
+    //Cada vez que se conecta o desconecta un cliente, se envía el nuevo estado a todos los clientes de la sala:
+    useEffect(() => {
+        clientsNumberHandler(
+            socket,
+            setConnectedClients,
+            playerData,
+            setPlayerData
+        )
+        return () => {
+            if (socket) {
+                socket.off('clientsNumber')
+            }
+        }
+    }, [socket, setConnectedClients, setPlayerData, playerData])
 }
 export default useSocketConfig

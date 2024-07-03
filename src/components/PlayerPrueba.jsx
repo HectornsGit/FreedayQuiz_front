@@ -14,15 +14,16 @@ const PlayerPrueba = ({ playerProps }) => {
         showScores,
         isDisabled,
         initialPlayerData,
+        connectedClients,
     } = playerProps
 
     return (
         <>
             {' '}
+            <h2>Jugadores conectados: {connectedClients}</h2>{' '}
             <button onClick={signOut}>Cerrar sesión</button>
             {showScores && !isQuestionRunning ? (
                 <div>
-                    <h2>Jugadores conectados: {playerData.length}</h2>
                     <ul>
                         {playerData.map((player) => (
                             <li key={player.id}>

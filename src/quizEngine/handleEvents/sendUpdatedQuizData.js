@@ -8,16 +8,17 @@ const sendUpdatedQuizData = (
     setIsDisabled
 ) => {
     if (socket) {
-        socket.on(
+        socket.once(
             'sendRecoveryQuizData',
             (backPlayersData, backQuizData, currentQuestion, updatedStates) => {
-                console.log(updatedStates)
-                setPlayerData(backPlayersData)
-                setQuizData(backQuizData)
-                setQuestion(currentQuestion)
-                // setIsQuestionRunning(updatedStates.isQuestionRunning)
-                // setShowScores(updatedStates.showScores)
-                // setIsDisabled(updatedStates.isDisabled)
+                setIsQuestionRunning(updatedStates.isQuestionRunning)
+                setShowScores(updatedStates.showScores)
+                setIsDisabled(updatedStates.isDisabled)
+                setInterval(() => {
+                    setPlayerData(backPlayersData)
+                    setQuizData(backQuizData)
+                    setQuestion(currentQuestion)
+                }, 0)
             }
         )
     }

@@ -1,8 +1,7 @@
-const playerJoinedHandler = (socket, setPlayerData) => {
+const playerJoinedHandler = (socket, setPlayerData, quizId) => {
     if (socket) {
         socket.on('playerJoined', (data) => {
-            //Guardo el nickName en el socket, para acceder a él en caso necesario:
-            socket.Mydata = { name: data.name }
+            //Actualizo el estado playerData:
             setPlayerData((prevPlayerData) => [...prevPlayerData, data])
         })
     }

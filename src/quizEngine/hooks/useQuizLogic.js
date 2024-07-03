@@ -42,6 +42,7 @@ const useQuizLogic = () => {
     )
     const [showScores, setShowScores] = useState(false)
     const [isDisabled, setIsDisabled] = useState(true)
+    const [connectedClients, setConnectedClients] = useState(0)
 
     const playerId = uuidv4()
     const loggedUserId = session?.user.data.id
@@ -97,10 +98,14 @@ const useQuizLogic = () => {
         playerData,
         handleAnswerSubmitted,
         setIsQuestionRunning,
+        isQuestionRunning,
         setTimeLeft,
         timeLeft,
         setShowScores,
+        showScores,
         setIsDisabled,
+        setConnectedClients,
+        playerData,
     })
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario:
@@ -148,6 +153,7 @@ const useQuizLogic = () => {
         isDisabled,
         initialPlayerData,
         socket,
+        connectedClients,
     }
 }
 export default useQuizLogic
