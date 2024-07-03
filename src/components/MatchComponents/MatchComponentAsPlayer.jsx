@@ -32,7 +32,7 @@ const MatchComponentAsPlayer = ({ answers }) => {
 
     useEffect(() => {
         setShuffledAnswers(randomizeAnswers(answers))
-    }, [])
+    }, [answers])
 
     const sendAnswer = (answer) => {
         // Le restamos al epoch en el que entramos la pregunta el epoch de cuando clicamos y eso nos da el tiempo en ms que tardamos en responder.
@@ -46,7 +46,7 @@ const MatchComponentAsPlayer = ({ answers }) => {
 
     return (
         startingTime && (
-            <div className=" m-auto lg:w-5/6 md:w-full ">
+            <div className="m-auto lg:w-5/6 sm:w-full ">
                 {shuffledAnswers && (
                     <ul className="grid grid-cols-2 grid-rows-2 lg:gap-8 gap-4">
                         {shuffledAnswers.map((answer, index) => {
