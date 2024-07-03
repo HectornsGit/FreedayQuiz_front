@@ -18,7 +18,12 @@ const MasterPrueba = ({ masterProps }) => {
         timeLeft,
         showScoresHandler,
         connectedClients,
+        isQuestionRunning,
+        showScores,
     } = masterProps
+
+    const disableButton =
+        showScores || (isQuestionRunning && timeLeft > 0) ? true : false
 
     return (
         <>
@@ -56,10 +61,6 @@ const MasterPrueba = ({ masterProps }) => {
                         <p>opción B:{question.optionB}</p>
                         <p>opción C:{question.optionC}</p>
                     </ul>
-                </>
-            )}
-            {loggedUserId && loggedUserId == quizData?.owner_id && (
-                <>
                     <form>
                         <label htmlFor="title">Edita el título</label>
                         <input
@@ -165,6 +166,10 @@ const MasterPrueba = ({ masterProps }) => {
                             Actualiza la pregunta
                         </button>
                     </form>
+                </>
+            )}
+            {loggedUserId && loggedUserId == quizData?.owner_id && (
+                <>
                     <button onClick={endQuiz}>Finalizar quiz</button>
                     <button
                         onClick={
@@ -173,10 +178,13 @@ const MasterPrueba = ({ masterProps }) => {
                     >
                         Nueva pregunta
                     </button>
-                    <button onClick={initQuestion}>
+                    <button onClick={initQuestion} disabled={isQuestionRunning}>
                         Iniciar pregunta para los jugadores
                     </button>
-                    <button onClick={showScoresHandler}>
+                    <button
+                        onClick={showScoresHandler}
+                        disabled={disableButton}
+                    >
                         Mostrar puntaciones
                     </button>
                 </>

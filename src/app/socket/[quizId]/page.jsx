@@ -55,6 +55,8 @@ const Page = () => {
         timeLeft,
         showScoresHandler,
         connectedClients,
+        isQuestionRunning,
+        showScores,
     }
     const playerProps = {
         signOut,
