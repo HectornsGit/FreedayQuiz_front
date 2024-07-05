@@ -1,6 +1,6 @@
 const MasterPrueba = ({ masterProps }) => {
     const {
-        signOut,
+        signOutHandler,
         endQuiz,
         findValue,
         handleQuestionChange,
@@ -27,7 +27,7 @@ const MasterPrueba = ({ masterProps }) => {
 
     return (
         <>
-            <button onClick={signOut}>Cerrar sesión</button>{' '}
+            <button onClick={signOutHandler}>Cerrar sesión</button>{' '}
             {quizData && (
                 <>
                     <p>{quizData?.description}</p>
@@ -38,7 +38,7 @@ const MasterPrueba = ({ masterProps }) => {
                 <div>
                     <h2>Jugadores conectados: {connectedClients}</h2>
                     <ul>
-                        {playerData.map((player) => (
+                        {playerData?.map((player) => (
                             <li key={player.id}>
                                 Nickname: {player.name} Puntos:{' '}
                                 {player.totalScore} Streak: {player.streak}

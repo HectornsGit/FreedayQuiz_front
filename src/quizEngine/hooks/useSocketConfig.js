@@ -40,6 +40,9 @@ const useSocketConfig = (argumentsData) => {
         setIsDisabled,
         setConnectedClients,
         playerData,
+        sessionRecovery,
+        setSessionRecovery,
+        setInitialPlayerData,
     } = argumentsData
 
     useEffect(() => {
@@ -76,8 +79,13 @@ const useSocketConfig = (argumentsData) => {
 
     // Traigo los datos principales del quiz y los guardo en el estado quizData para que estén disponibles inmediatamente:
     useEffect(() => {
-        quizDataHandler(socket, setQuizData)
-    }, [socket, setQuizData])
+        quizDataHandler(socket, setQuizData, setPlayerData, setQuestion)
+        return () => {
+            if (socket) {
+                socket.off('quizData')
+            }
+        }
+    }, [socket, setQuizData, setPlayerData, setQuestion])
 
     //Recuperar los datos de los jugadores, el quiz y la pregunta actual cuando se reconecta:
     useEffect(() => {
@@ -88,7 +96,10 @@ const useSocketConfig = (argumentsData) => {
             setQuestion,
             setIsQuestionRunning,
             setShowScores,
-            setIsDisabled
+            setIsDisabled,
+            sessionRecovery,
+            setSessionRecovery,
+            setInitialPlayerData
         )
         return () => {
             if (socket) {
@@ -103,6 +114,9 @@ const useSocketConfig = (argumentsData) => {
         setIsQuestionRunning,
         setShowScores,
         setIsDisabled,
+        sessionRecovery,
+        setSessionRecovery,
+        setInitialPlayerData,
     ])
 
     //Aquí controla el master cuando iniciar cada pregunta:
