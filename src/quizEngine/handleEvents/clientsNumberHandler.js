@@ -7,26 +7,29 @@ const clientsNumberHandler = (
     setPlayerData
 ) => {
     if (socket) {
-        socket.on('clientsNumber', (data, socketData, connectionState) => {
-            setConnectedClients(data)
+        socket.on(
+            'clientsNumber',
+            (clientsNumber, socketData, connectionState) => {
+                setConnectedClients(clientsNumber)
 
-            //Recibo el socket de las conexiones y desconexiones, las comparto y actualizo el campo state de playerData:
-            if (playerData.length > 0) {
-                setPlayerData((prevPlayerData) =>
-                    prevPlayerData.map((player) => {
-                        if (player.id === socketData.playerId) {
-                            if (connectionState === 'connected') {
-                                return { ...player, state: 'online' }
+                //Recibo el socket de las conexiones y desconexiones, las comparto y actualizo el campo state de playerData:
+                if (playerData.length > 0) {
+                    setPlayerData((prevPlayerData) =>
+                        prevPlayerData.map((player) => {
+                            if (player.id === socketData.playerId) {
+                                if (connectionState === 'connected') {
+                                    return { ...player, state: 'online' }
+                                } else {
+                                    return { ...player, state: 'offline' }
+                                }
                             } else {
-                                return { ...player, state: 'offline' }
+                                return player
                             }
-                        } else {
-                            return player
-                        }
-                    })
-                )
+                        })
+                    )
+                }
             }
-        })
+        )
     }
 }
 export default clientsNumberHandler

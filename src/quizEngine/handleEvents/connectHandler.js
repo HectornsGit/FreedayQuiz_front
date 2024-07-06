@@ -3,8 +3,9 @@ import { toast } from 'react-toastify'
 const connectHandler = (socketInstance, setJoinedQuiz, quizId, playerId) => {
     socketInstance.on('connect', () => {
         //Se envía el quizId al back para unir a los jugadores a una sala:
-        socketInstance.emit('sendQuizId', quizId)
-        // socketInstance.emit('setOnline', { playerId: playerId })
+
+        socketInstance.emit('joinRoom', quizId)
+
         //Se manejan los casos de conexión y reconexión:
         if (socketInstance.recovered) {
             console.log('Reconnected to server')

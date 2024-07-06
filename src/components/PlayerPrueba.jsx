@@ -79,9 +79,7 @@ const PlayerPrueba = ({ playerProps }) => {
                             <p>{quizData?.title}</p>
                         </>
                     )}
-                    {playerData && (
-                        <h2>Jugadores conectados: {playerData.length}</h2>
-                    )}
+
                     {question && isQuestionRunning && (
                         <>
                             <p>Tiempo restante: {timeLeft}</p>

@@ -13,7 +13,24 @@ const sendUpdatedQuizData = (
     if (socket) {
         socket.on(
             'sendRecoveryQuizData',
-            (backPlayersData, backQuizData, currentQuestion, updatedStates) => {
+            (
+                backPlayersData,
+                backQuizData,
+                currentQuestion,
+                updatedStates,
+                quizId
+            ) => {
+                console.log(
+                    'players',
+                    backPlayersData,
+                    'quiz',
+                    backQuizData,
+                    'question',
+                    currentQuestion,
+                    'estados',
+                    updatedStates,
+                    quizId
+                )
                 //Lógica para recuperar la sesión después de refrescar la página:
                 if (sessionRecovery) {
                     const storedId = window.localStorage.getItem('idNewPlayer')
@@ -38,8 +55,13 @@ const sendUpdatedQuizData = (
                         setInitialPlayerData([recoveryPlayer])
                         setSessionRecovery(false)
                     }
+
                     //Actualizar el estado a todos los usuarios de la sala:
-                    socket.emit('setOnline', { playerId: recoveryPlayer.id })
+                    socket.emit(
+                        'setOnline',
+                        { playerId: recoveryPlayer.id },
+                        quizId
+                    )
                 }
 
                 setIsQuestionRunning(updatedStates.isQuestionRunning)
