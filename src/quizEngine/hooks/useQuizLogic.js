@@ -137,6 +137,7 @@ const useQuizLogic = () => {
         sessionRecovery,
         setSessionRecovery,
         setInitialPlayerData,
+        playerId,
     })
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:
@@ -175,7 +176,8 @@ const useQuizLogic = () => {
         setNickName,
         error,
         playerData,
-        startNewPlayer: () => startNewPlayer(router, params, setIsNameSetted),
+        startNewPlayer: () =>
+            startNewPlayer(router, params, setIsNameSetted, setSessionRecovery),
         signOutHandler: () => signOutHandler(router, setIsNameSetted),
         recoverySession: () => recoverySession(socket, quizId),
         nickName,

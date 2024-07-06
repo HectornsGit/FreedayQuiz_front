@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify'
-const disconnectHandler = (socket) => {
+const disconnectHandler = (socket, playerId) => {
     if (socket) {
         socket.on('disconnect', () => {
             toast.warning('Disconnected from server')

@@ -43,6 +43,7 @@ const useSocketConfig = (argumentsData) => {
         sessionRecovery,
         setSessionRecovery,
         setInitialPlayerData,
+        playerId,
     } = argumentsData
 
     useEffect(() => {
@@ -51,11 +52,11 @@ const useSocketConfig = (argumentsData) => {
         setSocket(socketInstance)
 
         //Se escucha el estado connect, que es el momento en el que el front se conecta con el back. En ese instante se setea el estado joinedQuiz a true para que no se instancien más conexiones si la página se renderiza nuevamente:
-        connectHandler(socketInstance, setJoinedQuiz, quizId)
+        connectHandler(socketInstance, setJoinedQuiz, quizId, playerId)
 
         //Aquí recibo los errores del back y los guardo en un estado:
         errorHandler(socketInstance, setError)
-        disconnectHandler(socketInstance)
+        disconnectHandler(socketInstance, playerId)
 
         // Si el componente se desmonta, se desconecta de la sala
         return () => {
@@ -65,7 +66,7 @@ const useSocketConfig = (argumentsData) => {
                 socketInstance.disconnect()
             }
         }
-    }, [setSocket, setError, setJoinedQuiz, quizId])
+    }, [setSocket, setError, setJoinedQuiz, quizId, playerId])
 
     //Si se conecta el master, se envía la petición de datos del quiz:
     useEffect(() => {

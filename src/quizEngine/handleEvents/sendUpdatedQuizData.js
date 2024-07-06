@@ -7,7 +7,7 @@ const sendUpdatedQuizData = (
     setShowScores,
     setIsDisabled,
     sessionRecovery,
-    SetSessionRecovery,
+    setSessionRecovery,
     setInitialPlayerData
 ) => {
     if (socket) {
@@ -36,10 +36,10 @@ const sendUpdatedQuizData = (
                         }
 
                         setInitialPlayerData([recoveryPlayer])
-                        SetSessionRecovery(false)
+                        setSessionRecovery(false)
                     }
                     //Actualizar el estado a todos los usuarios de la sala:
-                    socket.emit('setOnline', recoveryPlayer.id)
+                    socket.emit('setOnline', { playerId: recoveryPlayer.id })
                 }
 
                 setIsQuestionRunning(updatedStates.isQuestionRunning)

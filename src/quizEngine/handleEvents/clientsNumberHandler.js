@@ -9,7 +9,7 @@ const clientsNumberHandler = (
     if (socket) {
         socket.on('clientsNumber', (data, socketData, connectionState) => {
             setConnectedClients(data)
-            console.log('ee', socketData)
+
             //Recibo el socket de las conexiones y desconexiones, las comparto y actualizo el campo state de playerData:
             if (playerData.length > 0) {
                 setPlayerData((prevPlayerData) =>
