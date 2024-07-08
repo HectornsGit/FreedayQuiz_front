@@ -1,6 +1,6 @@
 const PlayerPrueba = ({ playerProps }) => {
     const {
-        signOut,
+        signOutHandler,
         handleInitialPlayerData,
         quizData,
         question,
@@ -15,13 +15,28 @@ const PlayerPrueba = ({ playerProps }) => {
         isDisabled,
         initialPlayerData,
         connectedClients,
+        sessionRecovery,
+        startNewPlayer,
+        isNameSetted,
+        recoverySession,
     } = playerProps
 
+    if (sessionRecovery && isNameSetted) {
+        return (
+            <>
+                <button onClick={recoverySession}>
+                    Recupera tu sesión en el quiz
+                </button>
+                <button onClick={startNewPlayer}>
+                    Inicia como nuevo jugador
+                </button>
+            </>
+        )
+    }
     return (
         <>
-            {' '}
             <h2>Jugadores conectados: {connectedClients}</h2>{' '}
-            <button onClick={signOut}>Cerrar sesión</button>
+            <button onClick={signOutHandler}>Cerrar sesión</button>
             {showScores && !isQuestionRunning ? (
                 <div>
                     <ul>
@@ -64,9 +79,7 @@ const PlayerPrueba = ({ playerProps }) => {
                             <p>{quizData?.title}</p>
                         </>
                     )}
-                    {playerData && (
-                        <h2>Jugadores conectados: {playerData.length}</h2>
-                    )}
+
                     {question && isQuestionRunning && (
                         <>
                             <p>Tiempo restante: {timeLeft}</p>

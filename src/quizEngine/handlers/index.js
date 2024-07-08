@@ -6,6 +6,7 @@ import endQuiz from './endQuiz'
 import handleQuizChange from './handleQuizChange'
 import initQuestion from './initQuestion'
 import showScoresHandler from './showScoresHandler'
+import recoverySession from './recoverySession'
 
 export {
     nextQuestionHandler,
@@ -16,4 +17,5 @@ export {
     endQuiz,
     initQuestion,
     showScoresHandler,
+    recoverySession,
 }

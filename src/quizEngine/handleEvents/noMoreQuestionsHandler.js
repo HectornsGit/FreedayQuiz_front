@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify'
 const noMoreQuestionsHandler = (socket) => {
     if (socket) {
-        socket.once('noMoreQuestions', () => {
+        socket.on('noMoreQuestions', () => {
             toast.warning('Ya no hay más preguntas')
         })
     }

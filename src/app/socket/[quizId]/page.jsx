@@ -2,7 +2,6 @@
 import MasterPrueba from '@/components/MasterPrueba'
 import PlayerPrueba from '@/components/PlayerPrueba'
 import useQuizLogic from '@/quizEngine/hooks/useQuizLogic'
-import { signOut } from 'next-auth/react'
 
 const Page = () => {
     const {
@@ -33,10 +32,15 @@ const Page = () => {
         initialPlayerData,
         socket,
         connectedClients,
+        sessionRecovery,
+        startNewPlayer,
+        isNameSetted,
+        signOutHandler,
+        recoverySession,
     } = useQuizLogic()
 
     const masterProps = {
-        signOut,
+        signOutHandler,
         endQuiz,
         findValue,
         handleQuestionChange,
@@ -55,9 +59,11 @@ const Page = () => {
         timeLeft,
         showScoresHandler,
         connectedClients,
+        isQuestionRunning,
+        showScores,
     }
     const playerProps = {
-        signOut,
+        signOutHandler,
         handleInitialPlayerData,
         quizData,
         question,
@@ -73,6 +79,10 @@ const Page = () => {
         initialPlayerData,
         socket,
         connectedClients,
+        sessionRecovery,
+        startNewPlayer,
+        isNameSetted,
+        recoverySession,
     }
 
     if (error) {
@@ -81,6 +91,7 @@ const Page = () => {
 
     return (
         <>
+            {' '}
             {loggedUserId && loggedUserId == quizData?.owner_id ? (
                 <MasterPrueba masterProps={masterProps} />
             ) : (
