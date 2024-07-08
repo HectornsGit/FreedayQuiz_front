@@ -20,17 +20,6 @@ const sendUpdatedQuizData = (
                 updatedStates,
                 quizId
             ) => {
-                console.log(
-                    'players',
-                    backPlayersData,
-                    'quiz',
-                    backQuizData,
-                    'question',
-                    currentQuestion,
-                    'estados',
-                    updatedStates,
-                    quizId
-                )
                 //Lógica para recuperar la sesión después de refrescar la página:
                 if (sessionRecovery) {
                     const storedId = window.localStorage.getItem('idNewPlayer')

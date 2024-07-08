@@ -51,6 +51,11 @@ export const useQuizHandlers = ({
     )
 
     const handleInitialPlayerData = useCallback(() => {
+        //El campo no puede estar vacío:
+        if (nickName.trim() === '') {
+            alert('Por favor, introduce tu nombre de jugador.')
+            return
+        }
         //Se guarda en el localStorage para comprobar la recuperación de sesión en caso necesario:
         window.localStorage.setItem('playerName', nickName)
 
