@@ -61,8 +61,9 @@ const useSocketConfig = (argumentsData) => {
         // Si el componente se desmonta, se desconecta de la sala
         return () => {
             if (socketInstance) {
-                socketInstance.off('sendQuizId')
+                socketInstance.off('joinRoom')
                 socketInstance.off('error')
+                socketInstance.off('disconnect')
                 socketInstance.disconnect()
             }
         }
@@ -80,13 +81,19 @@ const useSocketConfig = (argumentsData) => {
 
     // Traigo los datos principales del quiz y los guardo en el estado quizData para que estén disponibles inmediatamente:
     useEffect(() => {
-        quizDataHandler(socket, setQuizData, setPlayerData, setQuestion)
+        quizDataHandler(
+            socket,
+            setQuizData,
+            setPlayerData,
+            setQuestion,
+            loggedUserId
+        )
         return () => {
             if (socket) {
                 socket.off('quizData')
             }
         }
-    }, [socket, setQuizData, setPlayerData, setQuestion])
+    }, [socket, setQuizData, setPlayerData, setQuestion, loggedUserId])
 
     //Recuperar los datos de los jugadores, el quiz y la pregunta actual cuando se reconecta:
     useEffect(() => {
@@ -136,9 +143,7 @@ const useSocketConfig = (argumentsData) => {
     }, [socket, setIsQuestionRunning, setShowScores, setIsDisabled])
 
     useEffect(() => {
-        //El siguiente paso es que el usuario escriba su nombre de jugado en el el formulario. En ese momento se emite el evento joinQuiz y se envían los datos. El back los guarda en Redis y emite el evento playerJoined.Aquí se guardan en el estado initialPlayerData, de ese modo estarán accesibles durante toda la partida:
-
-        //Los datos DE TODOS LOS JUGADORES que llegan desde back a esta sala se guardan en el estado playerData. Así estarán accesibles para actualizar en cada pregunta:
+        //Aquí el usuario ingresa su nombre de jugador, se setea su estado players y se envía al back para que este notifique a todos los usuarios de la sala, incluyendo el master:
         playerJoinedHandler(socket, setPlayerData, quizId)
 
         quizEndedHandler(socket, router)

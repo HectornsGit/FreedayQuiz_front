@@ -7,6 +7,7 @@ const quizEndedHandler = (socket, router) => {
             window.localStorage.removeItem('idNewPlayer')
             window.localStorage.removeItem('playerName')
             toast.success(message.message)
+            socket.disconnect()
             router.push('/')
         })
     }

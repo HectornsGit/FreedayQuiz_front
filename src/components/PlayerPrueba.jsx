@@ -61,6 +61,7 @@ const PlayerPrueba = ({ playerProps }) => {
                         }
                         hidden={socket?.Mydata?.name ? true : false}
                         onChange={(e) => setNickName(e.target.value)}
+                        required
                     />
                     <button
                         onClick={handleInitialPlayerData}
