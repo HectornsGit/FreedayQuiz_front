@@ -5,6 +5,7 @@ const endQuiz = async (quizData, socket, quizId) => {
     if (!confirmation) return
     const numberOfQuestions = quizData.number_of_questions
     if (socket) {
+        socket.emit('closeSessionIntervals', quizId)
         socket.emit('endQuiz', quizId, numberOfQuestions)
     }
 }

@@ -16,6 +16,7 @@ import timeUpHandler from './timeUpHandler'
 import scoresHandler from './scoresHandler'
 import clientsNumberHandler from './clientsNumberHandler'
 import quizDataHandler from './quizDataHandler'
+import sessionTimeLeftHandler from './sessionTimeLeftHandler'
 export {
     connectHandler,
     errorHandler,
@@ -35,4 +36,5 @@ export {
     timerUpdate,
     timeUpHandler,
     scoresHandler,
+    sessionTimeLeftHandler,
 }

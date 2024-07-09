@@ -1,3 +1,4 @@
+import ShowTime from '../components/ShowTime'
 const MasterPrueba = ({ masterProps }) => {
     const {
         signOutHandler,
@@ -20,15 +21,35 @@ const MasterPrueba = ({ masterProps }) => {
         connectedClients,
         isQuestionRunning,
         showScores,
+        sessionTime,
+        setSessionTimeHandler,
+        sessionTimeLeft,
     } = masterProps
 
     const disableButton =
         showScores || (isQuestionRunning && timeLeft > 0) ? true : false
 
+    if (!sessionTime) {
+        return (
+            <>
+                <form onSubmit={setSessionTimeHandler}>
+                    <label htmlFor="session">
+                        Establezca la duración máxima de la sesión (en minutos)
+                    </label>
+                    <input type="text" id="session" name="session" required />
+
+                    <button>Enviar</button>
+                </form>
+            </>
+        )
+    }
+
     return (
         <>
-            <button onClick={signOutHandler}>Cerrar sesión</button>{' '}
-            {quizData && (
+            {sessionTimeLeft && <ShowTime time={sessionTimeLeft} />}
+            <button onClick={signOutHandler}>Cerrar sesión</button>
+
+            {quizData && sessionTime && (
                 <>
                     <p>{quizData?.description}</p>
                     <p>{quizData?.title}</p>

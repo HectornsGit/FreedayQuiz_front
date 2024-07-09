@@ -37,6 +37,9 @@ const Page = () => {
         isNameSetted,
         signOutHandler,
         recoverySession,
+        sessionTime,
+        setSessionTimeHandler,
+        sessionTimeLeft,
     } = useQuizLogic()
 
     const masterProps = {
@@ -61,6 +64,9 @@ const Page = () => {
         connectedClients,
         isQuestionRunning,
         showScores,
+        sessionTime,
+        setSessionTimeHandler,
+        sessionTimeLeft,
     }
     const playerProps = {
         signOutHandler,

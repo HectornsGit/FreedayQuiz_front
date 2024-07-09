@@ -7,6 +7,7 @@ import handleQuizChange from './handleQuizChange'
 import initQuestion from './initQuestion'
 import showScoresHandler from './showScoresHandler'
 import recoverySession from './recoverySession'
+import setSessionTimeHandler from './setSessionTimeHandler'
 
 export {
     nextQuestionHandler,
@@ -18,4 +19,5 @@ export {
     initQuestion,
     showScoresHandler,
     recoverySession,
+    setSessionTimeHandler,
 }
