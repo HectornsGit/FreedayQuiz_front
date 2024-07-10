@@ -20,12 +20,15 @@ import {
     clientsNumberHandler,
     quizDataHandler,
     sessionTimeLeftHandler,
+    questionDeletedHandler,
 } from '../handleEvents'
 
 const useSocketConfig = (argumentsData) => {
     const {
         socket,
         quizId,
+        question,
+        quizData,
         loggedUserId,
         setQuizData,
         setSocket,
@@ -257,5 +260,14 @@ const useSocketConfig = (argumentsData) => {
             }
         }
     }, [socket, setConnectedClients, setPlayerData, playerData])
+
+    useEffect(() => {
+        questionDeletedHandler(question, quizData, socket, quizId)
+        return () => {
+            if (socket) {
+                socket.off('questionDeleted')
+            }
+        }
+    }, [question, quizData, socket, quizId])
 }
 export default useSocketConfig

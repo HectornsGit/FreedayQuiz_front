@@ -1,4 +1,4 @@
-const endQuiz = async (quizData, socket, quizId) => {
+const endQuiz = async (quizData, socket, quizId, questionsToDelete) => {
     const confirmation = window.confirm(
         '¿Estás seguro de que quieres finalizar el quiz?'
     )
@@ -6,7 +6,7 @@ const endQuiz = async (quizData, socket, quizId) => {
     const numberOfQuestions = quizData.number_of_questions
     if (socket) {
         socket.emit('closeSessionIntervals', quizId)
-        socket.emit('endQuiz', quizId, numberOfQuestions)
+        socket.emit('endQuiz', quizId, numberOfQuestions, questionsToDelete)
     }
 }
 export default endQuiz

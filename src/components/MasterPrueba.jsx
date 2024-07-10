@@ -9,6 +9,7 @@ const MasterPrueba = ({ masterProps }) => {
         updateQuestionDataInBackend,
         updateQuizDataInBackend,
         nextQuestionHandler,
+        previousQuestionHandler,
         handleStartQuiz,
         question,
         quizData,
@@ -24,6 +25,7 @@ const MasterPrueba = ({ masterProps }) => {
         sessionTime,
         setSessionTimeHandler,
         sessionTimeLeft,
+        deleteQuestionHandler,
     } = masterProps
 
     const disableButton =
@@ -75,6 +77,7 @@ const MasterPrueba = ({ masterProps }) => {
                 <>
                     <p>Tiempo restante: {timeLeft}</p>
                     <p>Pregunta: {question?.question}</p>
+                    <p>Pregunta número: {question?.questionNumber}</p>
                     <ul>
                         <h2>Respuestas:</h2>
                         <p>Respuesta correcta:{question.correctAnswer}</p>
@@ -186,18 +189,25 @@ const MasterPrueba = ({ masterProps }) => {
                         >
                             Actualiza la pregunta
                         </button>
+
+                        <button type="button" onClick={deleteQuestionHandler}>
+                            Elimina la pregunta
+                        </button>
                     </form>
                 </>
             )}
             {loggedUserId && loggedUserId == quizData?.owner_id && (
                 <>
-                    <button onClick={endQuiz}>Finalizar quiz</button>
+                    <button onClick={endQuiz}>Finalizar sesión</button>
+                    <button onClick={previousQuestionHandler}>
+                        Pregunta anterior
+                    </button>
                     <button
                         onClick={
                             question ? nextQuestionHandler : handleStartQuiz
                         }
                     >
-                        Nueva pregunta
+                        Siguiente pregunta
                     </button>
                     <button onClick={initQuestion} disabled={isQuestionRunning}>
                         Iniciar pregunta para los jugadores

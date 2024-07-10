@@ -5,7 +5,13 @@ const nextQuestionHandler = async (question, quizData, socket, quizId) => {
     const numberOfQuestions = quizData.number_of_questions
 
     if (socket && question && quizId) {
-        socket.emit('nextQuestion', quizId, nextQuestion, numberOfQuestions)
+        socket.emit(
+            'nextQuestion',
+            quizId,
+            nextQuestion,
+            numberOfQuestions,
+            'forward'
+        )
     } else {
         toast.warning(
             'No hay preguntas. Clica en "Start Quiz" para traer la primera'
