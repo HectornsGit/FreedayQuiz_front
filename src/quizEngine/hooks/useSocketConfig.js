@@ -19,6 +19,7 @@ import {
     scoresHandler,
     clientsNumberHandler,
     quizDataHandler,
+    sessionTimeLeftHandler,
 } from '../handleEvents'
 
 const useSocketConfig = (argumentsData) => {
@@ -44,6 +45,7 @@ const useSocketConfig = (argumentsData) => {
         setSessionRecovery,
         setInitialPlayerData,
         playerId,
+        setSessionTimeLeft,
     } = argumentsData
 
     useEffect(() => {
@@ -201,7 +203,7 @@ const useSocketConfig = (argumentsData) => {
         }
     }, [setQuestion, socket])
 
-    //Lógica cuando se acaba el tiempo:
+    //Tiempo de cada pregunta:
     useEffect(() => {
         timerUpdate(socket, setTimeLeft)
         return () => {
@@ -210,6 +212,16 @@ const useSocketConfig = (argumentsData) => {
             }
         }
     }, [socket, setTimeLeft])
+
+    //Tiempo de la sesión:
+    useEffect(() => {
+        sessionTimeLeftHandler(socket, setSessionTimeLeft)
+        return () => {
+            if (socket) {
+                socket.off('sessionTimeLeft')
+            }
+        }
+    }, [socket, setSessionTimeLeft])
 
     //Actualización del estado contador:
     useEffect(() => {

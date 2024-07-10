@@ -21,6 +21,7 @@ import {
     initQuestion,
     showScoresHandler,
     recoverySession,
+    setSessionTimeHandler,
 } from '../handlers/index'
 import { useQuizHandlers } from './useQuizHandlers'
 
@@ -52,13 +53,19 @@ const useQuizLogic = () => {
     const [showScores, setShowScores] = useState(false)
     const [isDisabled, setIsDisabled] = useState(true)
     const [sessionRecovery, setSessionRecovery] = useState(true)
+    const [sessionTime, setSessionTime] = useState()
+    const [sessionTimeLeft, setSessionTimeLeft] = useState()
     const [connectedClients, setConnectedClients] = useState(0)
 
     //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
     let playerId
     let playerName
+    let quizSessionDuration
+
     playerId = window.localStorage.getItem('idNewPlayer')
     playerName = window.localStorage.getItem('playerName')
+    //Solo para el master:
+    quizSessionDuration = window.localStorage.getItem('QuizSessionDuration')
 
     //Solo se ejecutará una vez al montar el componente, para evitar el bucle infinito de renderizaciones:
     useEffect(() => {
@@ -69,6 +76,9 @@ const useQuizLogic = () => {
         }
         if (playerName) {
             setIsNameSetted(true)
+        }
+        if (quizSessionDuration) {
+            setSessionTime(quizSessionDuration)
         }
     }, [playerId])
 
@@ -138,6 +148,7 @@ const useQuizLogic = () => {
         setSessionRecovery,
         setInitialPlayerData,
         playerId,
+        setSessionTimeLeft,
     })
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:
@@ -184,6 +195,12 @@ const useQuizLogic = () => {
         shuffledQuestionResponses,
         isQuestionRunning,
         setIsQuestionRunning,
+        setSessionTimeHandler: setSessionTimeHandler(
+            socket,
+            setSessionTime,
+            quizId,
+            quizData?.number_of_questions
+        ),
         timeLeft,
         showScores,
         isDisabled,
@@ -192,6 +209,8 @@ const useQuizLogic = () => {
         connectedClients,
         sessionRecovery,
         isNameSetted,
+        sessionTime,
+        sessionTimeLeft,
     }
 }
 export default useQuizLogic
