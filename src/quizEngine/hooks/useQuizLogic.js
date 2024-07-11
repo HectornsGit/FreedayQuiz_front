@@ -1,9 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { useParams, useRouter } from 'next/navigation'
-import { shuffleArray, findValue } from '../utils'
+import {
+    shuffleArray,
+    findValue,
+    startNewPlayer,
+    signOutHandler,
+} from '../utils'
 import useSocketConfig from './useSocketConfig'
+
 import {
     handleQuestionChange,
     nextQuestionHandler,
@@ -13,6 +20,8 @@ import {
     endQuiz,
     initQuestion,
     showScoresHandler,
+    recoverySession,
+    setSessionTimeHandler,
 } from '../handlers/index'
 import { useQuizHandlers } from './useQuizHandlers'
 
@@ -29,6 +38,7 @@ const useQuizLogic = () => {
     //Estados del cliente local, con la información particular del jugador:
     const [initialPlayerData, setInitialPlayerData] = useState([])
     const [nickName, setNickName] = useState('')
+    const [isNameSetted, setIsNameSetted] = useState(false)
 
     //Estados que se manejan automáticamente:
     const [_joinedQuiz, setJoinedQuiz] = useState(false)
@@ -42,9 +52,36 @@ const useQuizLogic = () => {
     )
     const [showScores, setShowScores] = useState(false)
     const [isDisabled, setIsDisabled] = useState(true)
+    const [sessionRecovery, setSessionRecovery] = useState(true)
+    const [sessionTime, setSessionTime] = useState()
+    const [sessionTimeLeft, setSessionTimeLeft] = useState()
     const [connectedClients, setConnectedClients] = useState(0)
 
-    const playerId = uuidv4()
+    //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
+    let playerId
+    let playerName
+    let quizSessionDuration
+
+    playerId = window.localStorage.getItem('idNewPlayer')
+    playerName = window.localStorage.getItem('playerName')
+    //Solo para el master:
+    quizSessionDuration = window.localStorage.getItem('QuizSessionDuration')
+
+    //Solo se ejecutará una vez al montar el componente, para evitar el bucle infinito de renderizaciones:
+    useEffect(() => {
+        if (!playerId) {
+            playerId = uuidv4()
+            window.localStorage.setItem('idNewPlayer', playerId)
+            setSessionRecovery(false)
+        }
+        if (playerName) {
+            setIsNameSetted(true)
+        }
+        if (quizSessionDuration) {
+            setSessionTime(quizSessionDuration)
+        }
+    }, [playerId])
+
     const loggedUserId = session?.user.data.id
     const quizId = params.quizId.toString()
 
@@ -106,9 +143,15 @@ const useQuizLogic = () => {
         setIsDisabled,
         setConnectedClients,
         playerData,
+        isNameSetted,
+        sessionRecovery,
+        setSessionRecovery,
+        setInitialPlayerData,
+        playerId,
+        setSessionTimeLeft,
     })
 
-    //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario:
+    //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:
     return {
         endQuiz: () => endQuiz(quizData, socket, quizId),
         findValue,
@@ -144,16 +187,30 @@ const useQuizLogic = () => {
         setNickName,
         error,
         playerData,
+        startNewPlayer: () =>
+            startNewPlayer(router, params, setIsNameSetted, setSessionRecovery),
+        signOutHandler: () => signOutHandler(router, setIsNameSetted),
+        recoverySession: () => recoverySession(socket, quizId),
         nickName,
         shuffledQuestionResponses,
         isQuestionRunning,
         setIsQuestionRunning,
+        setSessionTimeHandler: setSessionTimeHandler(
+            socket,
+            setSessionTime,
+            quizId,
+            quizData?.number_of_questions
+        ),
         timeLeft,
         showScores,
         isDisabled,
         initialPlayerData,
         socket,
         connectedClients,
+        sessionRecovery,
+        isNameSetted,
+        sessionTime,
+        sessionTimeLeft,
     }
 }
 export default useQuizLogic

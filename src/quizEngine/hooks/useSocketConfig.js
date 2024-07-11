@@ -19,6 +19,7 @@ import {
     scoresHandler,
     clientsNumberHandler,
     quizDataHandler,
+    sessionTimeLeftHandler,
 } from '../handleEvents'
 
 const useSocketConfig = (argumentsData) => {
@@ -40,6 +41,11 @@ const useSocketConfig = (argumentsData) => {
         setIsDisabled,
         setConnectedClients,
         playerData,
+        sessionRecovery,
+        setSessionRecovery,
+        setInitialPlayerData,
+        playerId,
+        setSessionTimeLeft,
     } = argumentsData
 
     useEffect(() => {
@@ -48,21 +54,22 @@ const useSocketConfig = (argumentsData) => {
         setSocket(socketInstance)
 
         //Se escucha el estado connect, que es el momento en el que el front se conecta con el back. En ese instante se setea el estado joinedQuiz a true para que no se instancien más conexiones si la página se renderiza nuevamente:
-        connectHandler(socketInstance, setJoinedQuiz, quizId)
+        connectHandler(socketInstance, setJoinedQuiz, quizId, playerId)
 
         //Aquí recibo los errores del back y los guardo en un estado:
         errorHandler(socketInstance, setError)
-        disconnectHandler(socketInstance)
+        disconnectHandler(socketInstance, playerId)
 
         // Si el componente se desmonta, se desconecta de la sala
         return () => {
             if (socketInstance) {
-                socketInstance.off('sendQuizId')
+                socketInstance.off('joinRoom')
                 socketInstance.off('error')
+                socketInstance.off('disconnect')
                 socketInstance.disconnect()
             }
         }
-    }, [setSocket, setError, setJoinedQuiz, quizId])
+    }, [setSocket, setError, setJoinedQuiz, quizId, playerId])
 
     //Si se conecta el master, se envía la petición de datos del quiz:
     useEffect(() => {
@@ -76,8 +83,19 @@ const useSocketConfig = (argumentsData) => {
 
     // Traigo los datos principales del quiz y los guardo en el estado quizData para que estén disponibles inmediatamente:
     useEffect(() => {
-        quizDataHandler(socket, setQuizData)
-    }, [socket, setQuizData])
+        quizDataHandler(
+            socket,
+            setQuizData,
+            setPlayerData,
+            setQuestion,
+            loggedUserId
+        )
+        return () => {
+            if (socket) {
+                socket.off('quizData')
+            }
+        }
+    }, [socket, setQuizData, setPlayerData, setQuestion, loggedUserId])
 
     //Recuperar los datos de los jugadores, el quiz y la pregunta actual cuando se reconecta:
     useEffect(() => {
@@ -88,7 +106,10 @@ const useSocketConfig = (argumentsData) => {
             setQuestion,
             setIsQuestionRunning,
             setShowScores,
-            setIsDisabled
+            setIsDisabled,
+            sessionRecovery,
+            setSessionRecovery,
+            setInitialPlayerData
         )
         return () => {
             if (socket) {
@@ -103,6 +124,9 @@ const useSocketConfig = (argumentsData) => {
         setIsQuestionRunning,
         setShowScores,
         setIsDisabled,
+        sessionRecovery,
+        setSessionRecovery,
+        setInitialPlayerData,
     ])
 
     //Aquí controla el master cuando iniciar cada pregunta:
@@ -121,9 +145,7 @@ const useSocketConfig = (argumentsData) => {
     }, [socket, setIsQuestionRunning, setShowScores, setIsDisabled])
 
     useEffect(() => {
-        //El siguiente paso es que el usuario escriba su nombre de jugado en el el formulario. En ese momento se emite el evento joinQuiz y se envían los datos. El back los guarda en Redis y emite el evento playerJoined.Aquí se guardan en el estado initialPlayerData, de ese modo estarán accesibles durante toda la partida:
-
-        //Los datos DE TODOS LOS JUGADORES que llegan desde back a esta sala se guardan en el estado playerData. Así estarán accesibles para actualizar en cada pregunta:
+        //Aquí el usuario ingresa su nombre de jugador, se setea su estado players y se envía al back para que este notifique a todos los usuarios de la sala, incluyendo el master:
         playerJoinedHandler(socket, setPlayerData, quizId)
 
         quizEndedHandler(socket, router)
@@ -181,7 +203,7 @@ const useSocketConfig = (argumentsData) => {
         }
     }, [setQuestion, socket])
 
-    //Lógica cuando se acaba el tiempo:
+    //Tiempo de cada pregunta:
     useEffect(() => {
         timerUpdate(socket, setTimeLeft)
         return () => {
@@ -190,6 +212,16 @@ const useSocketConfig = (argumentsData) => {
             }
         }
     }, [socket, setTimeLeft])
+
+    //Tiempo de la sesión:
+    useEffect(() => {
+        sessionTimeLeftHandler(socket, setSessionTimeLeft)
+        return () => {
+            if (socket) {
+                socket.off('sessionTimeLeft')
+            }
+        }
+    }, [socket, setSessionTimeLeft])
 
     //Actualización del estado contador:
     useEffect(() => {

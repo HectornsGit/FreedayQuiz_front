@@ -5,20 +5,60 @@ const sendUpdatedQuizData = (
     setQuestion,
     setIsQuestionRunning,
     setShowScores,
-    setIsDisabled
+    setIsDisabled,
+    sessionRecovery,
+    setSessionRecovery,
+    setInitialPlayerData
 ) => {
     if (socket) {
-        socket.once(
+        socket.on(
             'sendRecoveryQuizData',
-            (backPlayersData, backQuizData, currentQuestion, updatedStates) => {
+            (
+                backPlayersData,
+                backQuizData,
+                currentQuestion,
+                updatedStates,
+                quizId
+            ) => {
+                //Lógica para recuperar la sesión después de refrescar la página:
+                if (sessionRecovery) {
+                    const storedId = window.localStorage.getItem('idNewPlayer')
+
+                    let recoveryPlayer
+                    if (storedId) {
+                        recoveryPlayer = backPlayersData.find((player) => {
+                            if (player.id === storedId) {
+                                return { ...player, state: 'online' }
+                            }
+                        })
+
+                        socket.Mydata = {
+                            name: recoveryPlayer.name,
+                            id: recoveryPlayer.id,
+                        }
+                        socket.data = {
+                            name: recoveryPlayer.name,
+                            id: recoveryPlayer.id,
+                        }
+
+                        setInitialPlayerData([recoveryPlayer])
+                        setSessionRecovery(false)
+                    }
+
+                    //Actualizar el estado a todos los usuarios de la sala:
+                    socket.emit(
+                        'setOnline',
+                        { playerId: recoveryPlayer.id },
+                        quizId
+                    )
+                }
+
                 setIsQuestionRunning(updatedStates.isQuestionRunning)
                 setShowScores(updatedStates.showScores)
                 setIsDisabled(updatedStates.isDisabled)
-                setInterval(() => {
-                    setPlayerData(backPlayersData)
-                    setQuizData(backQuizData)
-                    setQuestion(currentQuestion)
-                }, 0)
+                setQuizData(backQuizData)
+                setQuestion(currentQuestion)
+                setPlayerData(backPlayersData)
             }
         )
     }

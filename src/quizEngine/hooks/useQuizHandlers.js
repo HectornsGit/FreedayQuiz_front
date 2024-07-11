@@ -51,6 +51,14 @@ export const useQuizHandlers = ({
     )
 
     const handleInitialPlayerData = useCallback(() => {
+        //El campo no puede estar vacío:
+        if (nickName.trim() === '') {
+            alert('Por favor, introduce tu nombre de jugador.')
+            return
+        }
+        //Se guarda en el localStorage para comprobar la recuperación de sesión en caso necesario:
+        window.localStorage.setItem('playerName', nickName)
+
         const initialPlayer = {
             id: playerId,
             name: nickName,
@@ -68,12 +76,14 @@ export const useQuizHandlers = ({
         socket.Mydata = { name: nickName, id: playerId }
         socket.data = { name: nickName, id: playerId }
 
-        //Se envía petición para sincronizar los datos, por si el quiz está en curso:
-        socket.emit('requestRecoveryData', quizId)
-
         if (socket) {
             socket.emit('joinQuiz', playerId, quizId, initialPlayer)
         }
+
+        setTimeout(() => {
+            //Se envía petición para sincronizar los datos, por si el quiz está en curso, pero ha de hacerse en último lugar, para que no cree conflicto con los datos que llegan y se actualizan desde el evento joinQuiz:
+            socket.emit('requestRecoveryData', quizId)
+        }, 0)
     }, [socket, playerId, nickName, quizId, setInitialPlayerData])
 
     const handleStartQuiz = useCallback(() => {

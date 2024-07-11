@@ -1,9 +1,14 @@
+'use client'
 import { toast } from 'react-toastify'
 
 const quizEndedHandler = (socket, router) => {
     if (socket) {
         socket.on('quizEnded', (message) => {
+            window.localStorage.removeItem('idNewPlayer')
+            window.localStorage.removeItem('playerName')
+            window.localStorage.removeItem('QuizSessionDuration')
             toast.success(message.message)
+            socket.disconnect()
             router.push('/')
         })
     }
