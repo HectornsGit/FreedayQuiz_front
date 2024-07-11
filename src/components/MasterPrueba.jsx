@@ -106,7 +106,7 @@ const MasterPrueba = ({ masterProps }) => {
                             Actualiza los datos del quiz
                         </button>
                     </form>
-                    <form>
+                    <form onSubmit={updateQuestionDataInBackend}>
                         <label htmlFor="question">Edita la pregunta</label>
                         <input
                             type="text"
@@ -183,17 +183,11 @@ const MasterPrueba = ({ masterProps }) => {
                             onChange={handleQuestionChange}
                         />
 
-                        <button
-                            type="button"
-                            onClick={updateQuestionDataInBackend}
-                        >
-                            Actualiza la pregunta
-                        </button>
-
-                        <button type="button" onClick={deleteQuestionHandler}>
-                            Elimina la pregunta
-                        </button>
+                        <button type="submit">Actualiza la pregunta</button>
                     </form>
+                    <button type="button" onClick={deleteQuestionHandler}>
+                        Elimina la pregunta
+                    </button>
                 </>
             )}
             {loggedUserId && loggedUserId == quizData?.owner_id && (

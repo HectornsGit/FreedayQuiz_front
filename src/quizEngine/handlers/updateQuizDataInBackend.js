@@ -1,5 +1,5 @@
 const updateQuizDataInBackend =
-    (quizData, socket, quizId, setQuizData) => (e) => {
+    (quizData, socket, quizId, _setQuizData) => (e) => {
         e.preventDefault()
         if (socket) {
             socket.emit('updateQuizData', quizId, quizData)

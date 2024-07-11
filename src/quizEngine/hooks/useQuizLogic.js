@@ -93,6 +93,7 @@ const useQuizLogic = () => {
     } = useQuizHandlers({
         socket,
         quizId,
+        quizData,
         question,
         initialPlayerData,
         playerData,
