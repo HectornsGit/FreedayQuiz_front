@@ -1,8 +1,7 @@
 /* NOTA: Este hook utiliza una lógica para listar preguntas de un quizz creado*/
 
 //Voy a necesitar hacer un fetch para traer las preguntas
-//import { fetchAPI } from '@/api/fetch-api'
-import useFetch from './useFetch'
+import { fetchAPI } from '@/api/fetch-api'
 
 //me traigo info de sesion para coger el token
 import { useSession } from 'next-auth/react'
@@ -11,7 +10,6 @@ import { useState } from 'react'
 
 export const useListQuestions =  () => {
     const { data: session } = useSession() //para obtener el token de la sesion.
-    const { apiFetch } = useFetch(); //llamo al hokk para poder hacer fetch
     const [dataQuizz, setDataQuizz] = useState([]) //iniciamos con un array vacío para poder hacer un .map
 
     const [modal, setModal]  = useState(false) // para activar un modal (se abre cuando haces click al boton)
@@ -45,12 +43,8 @@ export const useListQuestions =  () => {
             'Authorization': `Bearer ${token}` //metemos token en la cabecera
             }
 
-            const data = {
-                method: 'GET',
-                headers: headers
-            }
-
-            apiFetch('/user-info', data, onSuccess, onError);
+            await fetchAPI('/user-info','GET', null, onSuccess, onError, headers);
+            
         } catch (error) {
             console.error(error)
         }

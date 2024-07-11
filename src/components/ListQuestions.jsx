@@ -6,10 +6,10 @@ import AddQuestion from './icons/AddQuestion'; //recuadro dentro de modal para a
 import Slider from './Slider';
 
 //me traigo el hook que lista las preguntas
-import { useListQuestions } from '@/app/hooks/useListQuestions';
+import { useListQuestions } from '@/hooks/useListQuestions';
 
 //me traigo hook para eliminar preguntas
-import { useDeleteQuestions } from '@/app/hooks/useDeleteQuestions';
+import { useDeleteQuestions } from '@/hooks/useDeleteQuestions';
 
 //importamos useRouter para usar enrutados (al hacer click en la imagen lleva a la ruta de cada pregunta)
 import { useRouter } from 'next/navigation';
@@ -22,7 +22,7 @@ export default function ListQuestions() {
     const [valueCheckbox, setValueCheckbox] = useState([]);
     const { getQuestions, dataQuizz, modal, closeModal } = useListQuestions();
 
-    const { deleteQuestions } = useDeleteQuestions(
+    const { deleteQuestions, handleValue } = useDeleteQuestions(
         valueCheckbox,
         dataQuizz,
         setValueCheckbox,
@@ -36,25 +36,8 @@ export default function ListQuestions() {
         router.push(`/update-question/${id}/${questionNumber}`); //lleva a la ruta con la id de la pregunta TODO !! esto es una ruta de ejemplo
     };
 
-    const handleRouteAddQuestion = () => {
+    const handleAddQuestion = () => {
         router.push(`/create-questions/`); //lleva a la ruta para crear nueva pregunta TODO !! esto es una ruta de ejemplo
-    };
-
-    console.log('2.recibo por props el id', valueCheckbox);
-    const handleValue = (e) => {
-        const checked = e.target.checked;
-        const value = e.target.value;
-
-        if (checked) {
-            setValueCheckbox((prevstate) => [...prevstate, value]);
-            console.log(valueCheckbox, 'que es valuecheckbox');
-        } else {
-            setValueCheckbox((prevState) =>
-                prevState.filter((item) => item !== value)
-            );
-        }
-
-        console.log(valueCheckbox, 'valor ESTADO');
     };
 
     return (
@@ -94,12 +77,12 @@ export default function ListQuestions() {
                             <div className="w-[200px] md:w-[400px] inline-flex mx-8 md:mx-4 justify-center">
                                 {' '}
                                 <AddQuestion
-                                    onClick={() => handleRouteAddQuestion()}
+                                    onClick={() => handleAddQuestion()}
                                 />{' '}
                             </div>
 
                             {dataQuizz &&
-                                dataQuizz.map((question) => (
+                                dataQuizz?.map((question) => (
                                     <div
                                         key={question.questionId}
                                         className="w-[200px] md:w-[400px] inline-flex mx-8 md:mx-4 justify-center"
@@ -112,7 +95,7 @@ export default function ListQuestions() {
                                                 type="checkbox"
                                                 value={question.questionId}
                                                 onChange={handleValue}
-                                                className="appearance-none cursor-pointer w-[30px] h-[30px] border-2 border-solid border-[#fcff00] 
+                                                className="appearance-none cursor-pointer w-[30px] h-[30px] border-2 border-solid border-[#fcff00] bg-black
                                             checked:before:content-['✔']
                                             text-center
                                             text-[#fcff00]

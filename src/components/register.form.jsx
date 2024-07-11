@@ -1,14 +1,11 @@
 'use client';
 import { useState, useRef } from 'react';
-//import { fetchAPI } from '@/api/fetch-api';
-import useFetch from '@/app/hooks/useFetch'; //importo hook del fetch
+import { fetchAPI } from '@/api/fetch-api';
 import { toast } from 'react-toastify';
 import EyeOpen from './icons/EyeOpen'; //icono ojo aberto
 import EyeClose from './icons/EyeClose'; //icono ojo cerrado
 
 function RegisterForm() {
-    const { apiFetch } = useFetch();
-
     const [showPass, setShowPass] = useState(false); //para mostrar o no el texto en el campo contraseña
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -34,6 +31,9 @@ function RegisterForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const payload = { name, email, password, avatar };
+        console.log('Datos del formulario:', payload);
+
         const onSuccess = (data) => {
             toast.success('Registrado correctamente');
             setEmail('');
@@ -46,32 +46,8 @@ function RegisterForm() {
             console.log('Ha habido un error en el registro', error);
             setPassword('');
         };
-        /* LA PRIMERA FETCHAPI
-        const payload = { name, email, password, avatar };
-        console.log('Datos del formulario:', payload); 
-        fetchAPI('/register', 'POST', null, payload, onSuccess, onError);
 
-        */
-        try {
-            const body = {
-                name: name,
-                email: email,
-                password: password,
-            };
-
-            //la request para enviar al back
-            const data = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body),
-            };
-
-            apiFetch('/register', data, onSuccess, onError);
-        } catch (error) {
-            console.error(error);
-        }
+        fetchAPI('/register', 'POST', payload, onSuccess, onError, null);
     };
 
     return (

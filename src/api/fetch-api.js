@@ -4,9 +4,9 @@ export async function fetchAPI(
     path,
     method ='GET',
     payload = null,
-    additionalHeaders = {},
     onSuccess = () => {},
-    onError = () => {}
+    onError = () => {},
+    additionalHeaders = {}
 ) {
     method = method ?? 'GET'
 
@@ -15,7 +15,8 @@ export async function fetchAPI(
         headers: { ...additionalHeaders },
     } 
 
-    if (method !== 'GET' && method !== 'DELETE' && payload) {
+    //LIDIA: elimino && method !== 'DELETE'de este if ya que para pegarle al endpoint de elminar preguntas necesito enviar body
+    if (method !== 'GET' && payload) {
         requestInit.headers['Content-Type'] = 'application/json'
         requestInit.body = JSON.stringify(payload)
     }
