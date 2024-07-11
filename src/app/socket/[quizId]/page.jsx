@@ -12,6 +12,7 @@ const Page = () => {
         updateQuestionDataInBackend,
         updateQuizDataInBackend,
         nextQuestionHandler,
+        previousQuestionHandler,
         handleAnswerSubmit,
         handleStartQuiz,
         handleInitialPlayerData,
@@ -40,6 +41,7 @@ const Page = () => {
         sessionTime,
         setSessionTimeHandler,
         sessionTimeLeft,
+        deleteQuestionHandler,
     } = useQuizLogic()
 
     const masterProps = {
@@ -51,6 +53,7 @@ const Page = () => {
         updateQuestionDataInBackend,
         updateQuizDataInBackend,
         nextQuestionHandler,
+        previousQuestionHandler,
         handleAnswerSubmit,
         handleStartQuiz,
         question,
@@ -67,6 +70,7 @@ const Page = () => {
         sessionTime,
         setSessionTimeHandler,
         sessionTimeLeft,
+        deleteQuestionHandler,
     }
     const playerProps = {
         signOutHandler,

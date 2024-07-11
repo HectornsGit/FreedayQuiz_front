@@ -20,12 +20,15 @@ import {
     clientsNumberHandler,
     quizDataHandler,
     sessionTimeLeftHandler,
+    questionDeletedHandler,
 } from '../handleEvents'
 
 const useSocketConfig = (argumentsData) => {
     const {
         socket,
         quizId,
+        question,
+        quizData,
         loggedUserId,
         setQuizData,
         setSocket,
@@ -148,14 +151,14 @@ const useSocketConfig = (argumentsData) => {
         //Aquí el usuario ingresa su nombre de jugador, se setea su estado players y se envía al back para que este notifique a todos los usuarios de la sala, incluyendo el master:
         playerJoinedHandler(socket, setPlayerData, quizId)
 
-        quizEndedHandler(socket, router)
+        quizEndedHandler(socket, router, loggedUserId, quizData)
         return () => {
             if (socket) {
                 socket.off('playerJoined')
                 socket.off('quizEnded')
             }
         }
-    }, [router, socket, setPlayerData, quizId])
+    }, [router, socket, setPlayerData, quizId, loggedUserId, quizData])
 
     //Recepción de las preguntas:
     //El back hace su lógica y emite el estado question, enviándo la primera pregunta. Aquí se escucha y se guarda en el estado question:
@@ -185,23 +188,23 @@ const useSocketConfig = (argumentsData) => {
 
     //Actualizar los datos del quiz que se editan en tiempo real y sincronizarlos en todos los clientes de la sala:
     useEffect(() => {
-        editedQuizData(socket, setQuizData)
+        editedQuizData(socket, setQuizData, loggedUserId)
         return () => {
             if (socket) {
                 socket.off('quizUpdatedMessage')
             }
         }
-    }, [setQuizData, socket])
+    }, [setQuizData, socket, loggedUserId])
 
     //Actualizar las preguntas que se editan en tiempo real y sincronizarlos en todos los clientes de la sala:
     useEffect(() => {
-        editedQuestionData(socket, setQuestion)
+        editedQuestionData(socket, setQuestion, loggedUserId, quizData)
         return () => {
             if (socket) {
                 socket.off('questionUpdatedMessage')
             }
         }
-    }, [setQuestion, socket])
+    }, [setQuestion, socket, loggedUserId, quizData])
 
     //Tiempo de cada pregunta:
     useEffect(() => {
@@ -257,5 +260,14 @@ const useSocketConfig = (argumentsData) => {
             }
         }
     }, [socket, setConnectedClients, setPlayerData, playerData])
+
+    useEffect(() => {
+        questionDeletedHandler(question, quizData, socket, quizId)
+        return () => {
+            if (socket) {
+                socket.off('questionDeleted')
+            }
+        }
+    }, [question, quizData, socket, quizId])
 }
 export default useSocketConfig
