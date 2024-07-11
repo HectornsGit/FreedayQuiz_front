@@ -4,7 +4,6 @@ import { toast } from 'react-toastify'
 export const useQuizHandlers = ({
     socket,
     quizId,
-    quizData,
     question,
     initialPlayerData,
     setPlayerData,
@@ -17,15 +16,6 @@ export const useQuizHandlers = ({
 }) => {
     const handleAnswerSubmitted = useCallback(
         (backData) => {
-            const id = loggedUserId?.toString()
-
-            //Solo se ejecuta para los jugadores:
-            if (!id || id !== quizData?.owner_id) {
-                if (backData.lastAnswer === 'correct') {
-                    toast.success('Has acertado')
-                } else toast.error('Has fallado')
-            }
-
             setPlayerData((prevPlayerData) =>
                 prevPlayerData.map((frontData) => {
                     if (frontData.id === backData.id) {
@@ -40,7 +30,7 @@ export const useQuizHandlers = ({
                 })
             )
         },
-        [setPlayerData, loggedUserId, quizData?.owner_id]
+        [setPlayerData]
     )
 
     const handleAnswerSubmit = useCallback(
@@ -78,6 +68,7 @@ export const useQuizHandlers = ({
             streak: 0,
             lastCorrectAnswer: 0,
             lastAnswer: '',
+            lastAnswerText: '',
         }
 
         setInitialPlayerData((prevPlayerData) => [
