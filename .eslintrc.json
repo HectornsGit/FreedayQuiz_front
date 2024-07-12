@@ -1,13 +1,6 @@
 {
-    "extends": [
-        "next/babel", 
-        "next/core-web-vitals",
-        "eslint:recommended",
-        "plugin:prettier/recommended"
-    ],
+    "extends": ["next/core-web-vitals"],
     "rules": {
-        "semi": ["error", "always"],
-        "quotes": ["error", "single"],
-        "prettier/prettier": "warn"
+        "quotes": ["error", "single"]
     }
 }
