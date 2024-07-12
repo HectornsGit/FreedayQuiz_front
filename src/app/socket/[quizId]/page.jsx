@@ -96,7 +96,7 @@ const Page = () => {
     }
 
     if (error) {
-        return <div>{error}</div>
+        return <div>{error}</div>;
     }
 
     return (
@@ -108,7 +108,7 @@ const Page = () => {
                 <PlayerPrueba playerProps={playerProps} />
             )}
         </>
-    )
-}
+    );
+};
 
-export default Page
+export default Page;
