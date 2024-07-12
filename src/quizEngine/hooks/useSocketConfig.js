@@ -21,6 +21,7 @@ import {
     quizDataHandler,
     sessionTimeLeftHandler,
     questionDeletedHandler,
+    answerMessage,
 } from '../handleEvents'
 
 const useSocketConfig = (argumentsData) => {
@@ -49,6 +50,7 @@ const useSocketConfig = (argumentsData) => {
         setInitialPlayerData,
         playerId,
         setSessionTimeLeft,
+        setClickedResponses,
     } = argumentsData
 
     useEffect(() => {
@@ -112,7 +114,8 @@ const useSocketConfig = (argumentsData) => {
             setIsDisabled,
             sessionRecovery,
             setSessionRecovery,
-            setInitialPlayerData
+            setInitialPlayerData,
+            setClickedResponses
         )
         return () => {
             if (socket) {
@@ -130,6 +133,7 @@ const useSocketConfig = (argumentsData) => {
         sessionRecovery,
         setSessionRecovery,
         setInitialPlayerData,
+        setClickedResponses,
     ])
 
     //Aquí controla el master cuando iniciar cada pregunta:
@@ -238,13 +242,18 @@ const useSocketConfig = (argumentsData) => {
 
     //Para pasar a los jugadores a la pantalla de puntuación, entre pregunta y pregunta:
     useEffect(() => {
-        scoresHandler(socket, setIsQuestionRunning, setShowScores)
+        scoresHandler(
+            socket,
+            setIsQuestionRunning,
+            setShowScores,
+            setClickedResponses
+        )
         return () => {
             if (socket) {
                 socket.off('scores')
             }
         }
-    }, [socket, setIsQuestionRunning, setShowScores])
+    }, [socket, setIsQuestionRunning, setShowScores, setClickedResponses])
 
     //Cada vez que se conecta o desconecta un cliente, se envía el nuevo estado a todos los clientes de la sala:
     useEffect(() => {
@@ -269,5 +278,14 @@ const useSocketConfig = (argumentsData) => {
             }
         }
     }, [question, quizData, socket, quizId])
+
+    useEffect(() => {
+        answerMessage(socket)
+        return () => {
+            if (socket) {
+                socket.off('answerSubmittedMessage')
+            }
+        }
+    }, [socket])
 }
 export default useSocketConfig

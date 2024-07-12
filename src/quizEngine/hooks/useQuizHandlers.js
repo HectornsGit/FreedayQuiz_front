@@ -24,6 +24,8 @@ export const useQuizHandlers = ({
                             totalScore: backData.totalScore,
                             streak: backData.streak,
                             lastCorrectAnswer: backData.lastCorrectAnswer,
+                            lastAnswer: backData.lastAnswer,
+                            lastAnswerText: backData.lastAnswerText,
                         }
                     }
                     return frontData

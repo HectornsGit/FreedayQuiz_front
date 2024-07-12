@@ -35,6 +35,7 @@ const useQuizLogic = () => {
     const [quizData, setQuizData] = useState(null)
     const [question, setQuestion] = useState(null)
     const [playerData, setPlayerData] = useState([])
+    const [clickedResponses, setClickedResponses] = useState({})
 
     //Estados del cliente local, con la información particular del jugador:
     const [initialPlayerData, setInitialPlayerData] = useState([])
@@ -151,6 +152,7 @@ const useQuizLogic = () => {
         setInitialPlayerData,
         playerId,
         setSessionTimeLeft,
+        setClickedResponses,
     })
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:
@@ -181,7 +183,7 @@ const useQuizLogic = () => {
         handleAnswerSubmit,
         initQuestion: () => initQuestion(socket, quizId, question),
         handleStartQuiz,
-        showScoresHandler: () => showScoresHandler(socket, quizId),
+        showScoresHandler: () => showScoresHandler(socket, quizId, playerData),
         handleInitialPlayerData,
         question,
         quizData,
@@ -223,6 +225,7 @@ const useQuizLogic = () => {
         isNameSetted,
         sessionTime,
         sessionTimeLeft,
+        clickedResponses,
     }
 }
 export default useQuizLogic
