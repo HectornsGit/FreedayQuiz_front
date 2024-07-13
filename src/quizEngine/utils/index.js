@@ -2,4 +2,11 @@ import findValue from './findValue'
 import shuffleArray from './shuffleArray'
 import startNewPlayer from './startNewPlayer'
 import signOutHandler from './signOutHandler'
-export { findValue, shuffleArray, startNewPlayer, signOutHandler }
+import calculateResults from './calculateResults'
+export {
+    findValue,
+    shuffleArray,
+    startNewPlayer,
+    signOutHandler,
+    calculateResults,
+}

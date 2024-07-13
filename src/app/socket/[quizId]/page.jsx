@@ -42,6 +42,7 @@ const Page = () => {
         setSessionTimeHandler,
         sessionTimeLeft,
         deleteQuestionHandler,
+        clickedResponses,
     } = useQuizLogic()
 
     const masterProps = {
@@ -93,6 +94,7 @@ const Page = () => {
         startNewPlayer,
         isNameSetted,
         recoverySession,
+        clickedResponses,
     }
 
     if (error) {
