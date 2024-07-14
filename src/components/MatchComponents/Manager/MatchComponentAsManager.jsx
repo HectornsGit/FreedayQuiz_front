@@ -1,6 +1,9 @@
+'use client'
 import TextInput from '@/components/TextInput'
 import NumberInput from '@/components/NumberInput'
 import ListAnswerInputs from './ListAnswerInputs'
+import YellowPencil from '@/components/icons/YellowPencil'
+import { useState } from 'react'
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const {
@@ -54,6 +57,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
             handleChange: handleQuestionChange,
         },
     ]
+    const [isInput, setIsInput] = useState(false)
     return (
         <section>
             {quizData && (
@@ -62,7 +66,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                         <h1 className="text-3xl font-bold">
                             {quizData?.title}
                         </h1>
-                        <h2 className="text-lg ">{quizData?.description}</h2>
+                        <img src="https://cloudfront-eu-central-1.images.arcpublishing.com/prisaradiolos40/C4OWUGLJ2JIBDDLJOU7QRABT7Y.jpg" />
                     </article>
                 </section>
             )}
@@ -103,13 +107,14 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             id={'title'}
                             value={quizData?.title}
                             handleChange={handleQuizChange}
+                            isInput={isInput}
                         ></TextInput>
                         <TextInput
                             text={'Descripción'}
                             id={'description'}
                             value={quizData?.description}
                             handleChange={handleQuizChange}
-                            isArea={true}
+                            isInput={isInput}
                         ></TextInput>
 
                         <button
@@ -121,6 +126,14 @@ const MatchComponentAsManager = ({ managerProps }) => {
                         </button>
                     </form>
                     <form className="grid place-items-center  grid-cols-2 grid-rows-2">
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault()
+                                setIsInput(!isInput)
+                            }}
+                        >
+                            <YellowPencil className={'w-4'}></YellowPencil>
+                        </button>
                         <TextInput
                             text={'Pregunta Siguiente'}
                             id={'question'}
@@ -130,7 +143,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 shuffledQuestionResponses
                             )}
                             handleChange={handleQuestionChange}
-                            isArea={true}
+                            isInput={isInput}
                         ></TextInput>
                         <NumberInput
                             text={'Tiempo'}

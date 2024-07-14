@@ -48,7 +48,7 @@ const MatchComponentAsPlayer = ({ answers }) => {
         startingTime && (
             <div className="m-auto lg:w-5/6 sm:w-full ">
                 {shuffledAnswers && (
-                    <ul className="grid grid-cols-2 grid-rows-2 lg:gap-8 gap-4">
+                    <ul className="flex flex-col lg:gap-8 gap-4">
                         {shuffledAnswers.map((answer, index) => {
                             return (
                                 <li
