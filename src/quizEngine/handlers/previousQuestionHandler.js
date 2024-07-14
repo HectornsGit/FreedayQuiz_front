@@ -1,7 +1,8 @@
 import { toast } from 'react-toastify'
 
-const nextQuestionHandler = async (question, quizData, socket, quizId) => {
-    const nextQuestion = question?.questionNumber + 1
+toast
+const previousQuestionHandler = (question, quizData, socket, quizId) => {
+    const nextQuestion = question?.questionNumber - 1
     const numberOfQuestions = quizData.number_of_questions
 
     if (socket && question && quizId) {
@@ -10,12 +11,10 @@ const nextQuestionHandler = async (question, quizData, socket, quizId) => {
             quizId,
             nextQuestion,
             numberOfQuestions,
-            'forward'
+            'backward'
         )
     } else {
-        toast.warning(
-            'No hay preguntas. Clica en "Start Quiz" para traer la primera'
-        )
+        toast.warning('No hay preguntas.')
     }
 }
-export default nextQuestionHandler
+export default previousQuestionHandler

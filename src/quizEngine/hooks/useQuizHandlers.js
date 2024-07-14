@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { toast } from 'react-toastify'
 
 export const useQuizHandlers = ({
     socket,
@@ -23,6 +24,8 @@ export const useQuizHandlers = ({
                             totalScore: backData.totalScore,
                             streak: backData.streak,
                             lastCorrectAnswer: backData.lastCorrectAnswer,
+                            lastAnswer: backData.lastAnswer,
+                            lastAnswerText: backData.lastAnswerText,
                         }
                     }
                     return frontData
@@ -66,6 +69,8 @@ export const useQuizHandlers = ({
             totalScore: 0,
             streak: 0,
             lastCorrectAnswer: 0,
+            lastAnswer: '',
+            lastAnswerText: '',
         }
 
         setInitialPlayerData((prevPlayerData) => [

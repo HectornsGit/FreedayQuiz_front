@@ -19,6 +19,7 @@ const PlayerPrueba = ({ playerProps }) => {
         startNewPlayer,
         isNameSetted,
         recoverySession,
+        clickedResponses,
     } = playerProps
 
     if (sessionRecovery && isNameSetted) {
@@ -38,18 +39,43 @@ const PlayerPrueba = ({ playerProps }) => {
             <h2>Jugadores conectados: {connectedClients}</h2>{' '}
             <button onClick={signOutHandler}>Cerrar sesión</button>
             {showScores && !isQuestionRunning ? (
-                <div>
-                    <ul>
-                        {playerData.map((player) => (
-                            <li key={player.id}>
-                                Nickname: {player.name} Puntos:{' '}
-                                {player.totalScore} Streak: {player.streak}
-                                Puntos ultima pregunta:
-                                {player.lastCorrectAnswer}
+                <>
+                    <div>
+                        <ul>
+                            {playerData.map((player) => (
+                                <li key={player.id}>
+                                    Nickname: {player.name} Puntos:{' '}
+                                    {player.totalScore} Streak: {player.streak}
+                                    Puntos ultima pregunta:
+                                    {player.lastCorrectAnswer}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    {shuffledQuestionResponses &&
+                        shuffledQuestionResponses.map((response, index) => (
+                            <li key={index}>
+                                <button
+                                    disabled={isDisabled}
+                                    onClick={() =>
+                                        handleAnswerSubmit(
+                                            Object.values(response)[0]
+                                        )
+                                    }
+                                >
+                                    {Object.values(response)[0]}
+                                    {clickedResponses[
+                                        Object.values(response)[0]
+                                    ] &&
+                                        ` pulsado ${
+                                            clickedResponses[
+                                                Object.values(response)[0]
+                                            ]
+                                        } veces`}
+                                </button>
                             </li>
                         ))}
-                    </ul>
-                </div>
+                </>
             ) : (
                 <>
                     <input

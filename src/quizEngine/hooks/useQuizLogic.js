@@ -10,10 +10,11 @@ import {
     signOutHandler,
 } from '../utils'
 import useSocketConfig from './useSocketConfig'
-
+import { useQuizHandlers } from './useQuizHandlers'
 import {
     handleQuestionChange,
     nextQuestionHandler,
+    previousQuestionHandler,
     updateQuestionDataInBackend,
     updateQuizDataInBackend,
     handleQuizChange,
@@ -22,8 +23,8 @@ import {
     showScoresHandler,
     recoverySession,
     setSessionTimeHandler,
+    deleteQuestionHandler,
 } from '../handlers/index'
-import { useQuizHandlers } from './useQuizHandlers'
 
 const useQuizLogic = () => {
     const params = useParams()
@@ -34,6 +35,7 @@ const useQuizLogic = () => {
     const [quizData, setQuizData] = useState(null)
     const [question, setQuestion] = useState(null)
     const [playerData, setPlayerData] = useState([])
+    const [clickedResponses, setClickedResponses] = useState({})
 
     //Estados del cliente local, con la información particular del jugador:
     const [initialPlayerData, setInitialPlayerData] = useState([])
@@ -47,21 +49,19 @@ const useQuizLogic = () => {
     const [shuffledQuestionResponses, setShuffledQuestionResponses] =
         useState(null)
     const [isQuestionRunning, setIsQuestionRunning] = useState(false)
-    const [timeLeft, setTimeLeft] = useState(
-        question ? question.questionTime : null
-    )
+    const [questionsToDelete, setQuestionsToDelete] = useState([])
+    const [timeLeft, setTimeLeft] = useState(null)
     const [showScores, setShowScores] = useState(false)
     const [isDisabled, setIsDisabled] = useState(true)
     const [sessionRecovery, setSessionRecovery] = useState(true)
-    const [sessionTime, setSessionTime] = useState()
-    const [sessionTimeLeft, setSessionTimeLeft] = useState()
+    const [sessionTime, setSessionTime] = useState(0)
+    const [sessionTimeLeft, setSessionTimeLeft] = useState(0)
     const [connectedClients, setConnectedClients] = useState(0)
 
     //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
     let playerId
     let playerName
     let quizSessionDuration
-
     playerId = window.localStorage.getItem('idNewPlayer')
     playerName = window.localStorage.getItem('playerName')
     //Solo para el master:
@@ -94,6 +94,7 @@ const useQuizLogic = () => {
     } = useQuizHandlers({
         socket,
         quizId,
+        quizData,
         question,
         initialPlayerData,
         playerData,
@@ -123,6 +124,8 @@ const useQuizLogic = () => {
     useSocketConfig({
         socket,
         quizId,
+        question,
+        quizData,
         loggedUserId,
         setQuizData,
         setQuestion,
@@ -149,11 +152,12 @@ const useQuizLogic = () => {
         setInitialPlayerData,
         playerId,
         setSessionTimeLeft,
+        setClickedResponses,
     })
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:
     return {
-        endQuiz: () => endQuiz(quizData, socket, quizId),
+        endQuiz: () => endQuiz(quizData, socket, quizId, questionsToDelete),
         findValue,
         handleQuestionChange: () =>
             handleQuestionChange(
@@ -174,10 +178,12 @@ const useQuizLogic = () => {
         ),
         nextQuestionHandler: () =>
             nextQuestionHandler(question, quizData, socket, quizId),
+        previousQuestionHandler: () =>
+            previousQuestionHandler(question, quizData, socket, quizId),
         handleAnswerSubmit,
         initQuestion: () => initQuestion(socket, quizId, question),
         handleStartQuiz,
-        showScoresHandler: () => showScoresHandler(socket, quizId),
+        showScoresHandler: () => showScoresHandler(socket, quizId, playerData),
         handleInitialPlayerData,
         question,
         quizData,
@@ -205,12 +211,21 @@ const useQuizLogic = () => {
         showScores,
         isDisabled,
         initialPlayerData,
+        deleteQuestionHandler: deleteQuestionHandler(
+            socket,
+            quizId,
+            question?.questionNumber,
+            setQuestionsToDelete,
+            question?.id,
+            setQuizData
+        ),
         socket,
         connectedClients,
         sessionRecovery,
         isNameSetted,
         sessionTime,
         sessionTimeLeft,
+        clickedResponses,
     }
 }
 export default useQuizLogic

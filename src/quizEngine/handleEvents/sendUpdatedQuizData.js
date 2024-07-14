@@ -8,7 +8,8 @@ const sendUpdatedQuizData = (
     setIsDisabled,
     sessionRecovery,
     setSessionRecovery,
-    setInitialPlayerData
+    setInitialPlayerData,
+    setClickedResponses
 ) => {
     if (socket) {
         socket.on(
@@ -18,7 +19,8 @@ const sendUpdatedQuizData = (
                 backQuizData,
                 currentQuestion,
                 updatedStates,
-                quizId
+                quizId,
+                backClickedResponses
             ) => {
                 //Lógica para recuperar la sesión después de refrescar la página:
                 if (sessionRecovery) {
@@ -59,6 +61,7 @@ const sendUpdatedQuizData = (
                 setQuizData(backQuizData)
                 setQuestion(currentQuestion)
                 setPlayerData(backPlayersData)
+                setClickedResponses(backClickedResponses)
             }
         )
     }

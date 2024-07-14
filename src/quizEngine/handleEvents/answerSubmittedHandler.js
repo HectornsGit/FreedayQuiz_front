@@ -3,9 +3,6 @@ const answerSubmittedHandler = (socket, handleAnswerSubmitted) => {
 
     if (socket) {
         socket.on('answerSubmitted', handleAnswerSubmitted)
-        return () => {
-            socket.off('answerSubmitted', handleAnswerSubmitted)
-        }
     }
 }
 export default answerSubmittedHandler

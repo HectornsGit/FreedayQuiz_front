@@ -12,6 +12,7 @@ const Page = () => {
         updateQuestionDataInBackend,
         updateQuizDataInBackend,
         nextQuestionHandler,
+        previousQuestionHandler,
         handleAnswerSubmit,
         handleStartQuiz,
         handleInitialPlayerData,
@@ -40,6 +41,8 @@ const Page = () => {
         sessionTime,
         setSessionTimeHandler,
         sessionTimeLeft,
+        deleteQuestionHandler,
+        clickedResponses,
     } = useQuizLogic()
 
     const masterProps = {
@@ -51,6 +54,7 @@ const Page = () => {
         updateQuestionDataInBackend,
         updateQuizDataInBackend,
         nextQuestionHandler,
+        previousQuestionHandler,
         handleAnswerSubmit,
         handleStartQuiz,
         question,
@@ -67,6 +71,7 @@ const Page = () => {
         sessionTime,
         setSessionTimeHandler,
         sessionTimeLeft,
+        deleteQuestionHandler,
     }
     const playerProps = {
         signOutHandler,
@@ -89,10 +94,11 @@ const Page = () => {
         startNewPlayer,
         isNameSetted,
         recoverySession,
+        clickedResponses,
     }
 
     if (error) {
-        return <div>{error}</div>
+        return <div>{error}</div>;
     }
 
     return (
@@ -104,7 +110,7 @@ const Page = () => {
                 <PlayerPrueba playerProps={playerProps} />
             )}
         </>
-    )
-}
+    );
+};
 
-export default Page
+export default Page;

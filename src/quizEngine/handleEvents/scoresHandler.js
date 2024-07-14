@@ -1,8 +1,14 @@
-const scoresHandler = (socket, setIsQuestionRunning, setShowScores) => {
+const scoresHandler = (
+    socket,
+    setIsQuestionRunning,
+    setShowScores,
+    setClickedResponses
+) => {
     if (socket) {
-        socket.on('scores', () => {
+        socket.on('scores', (hitsResults) => {
             setIsQuestionRunning(false)
             setShowScores(true)
+            setClickedResponses(hitsResults)
         })
     }
 }
