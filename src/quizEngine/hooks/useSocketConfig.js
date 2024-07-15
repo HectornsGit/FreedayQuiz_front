@@ -1,5 +1,5 @@
-import { io } from 'socket.io-client'
-import { useEffect } from 'react'
+import { io } from 'socket.io-client';
+import { useEffect } from 'react';
 import {
     connectHandler,
     disconnectHandler,
@@ -22,7 +22,8 @@ import {
     sessionTimeLeftHandler,
     questionDeletedHandler,
     answerMessage,
-} from '../handleEvents'
+    firstDataHandler,
+} from '../handleEvents';
 
 const useSocketConfig = (argumentsData) => {
     const {
@@ -51,40 +52,42 @@ const useSocketConfig = (argumentsData) => {
         playerId,
         setSessionTimeLeft,
         setClickedResponses,
-    } = argumentsData
+        isNameSetted,
+        setIsMasterOnline,
+    } = argumentsData;
 
     useEffect(() => {
         //Crear conexión y guardarla en un estado:
-        const socketInstance = io(process.env.NEXT_PUBLIC_API_HOST)
-        setSocket(socketInstance)
+        const socketInstance = io(process.env.NEXT_PUBLIC_API_HOST);
+        setSocket(socketInstance);
 
         //Se escucha el estado connect, que es el momento en el que el front se conecta con el back. En ese instante se setea el estado joinedQuiz a true para que no se instancien más conexiones si la página se renderiza nuevamente:
-        connectHandler(socketInstance, setJoinedQuiz, quizId, playerId)
+        connectHandler(socketInstance, setJoinedQuiz, quizId, playerId);
 
         //Aquí recibo los errores del back y los guardo en un estado:
-        errorHandler(socketInstance, setError)
-        disconnectHandler(socketInstance, playerId)
+        errorHandler(socketInstance, setError);
+        disconnectHandler(socketInstance, playerId);
 
         // Si el componente se desmonta, se desconecta de la sala
         return () => {
             if (socketInstance) {
-                socketInstance.off('joinRoom')
-                socketInstance.off('error')
-                socketInstance.off('disconnect')
-                socketInstance.disconnect()
+                socketInstance.off('joinRoom');
+                socketInstance.off('error');
+                socketInstance.off('disconnect');
+                socketInstance.disconnect();
             }
-        }
-    }, [setSocket, setError, setJoinedQuiz, quizId, playerId])
+        };
+    }, [setSocket, setError, setJoinedQuiz, quizId, playerId]);
 
     //Si se conecta el master, se envía la petición de datos del quiz:
     useEffect(() => {
-        getQuizDataHandler(socket, quizId, loggedUserId, setQuizData)
+        getQuizDataHandler(socket, quizId, loggedUserId, setQuizData);
         return () => {
             if (socket) {
-                socket.off('getQuizData')
+                socket.off('getQuizData');
             }
-        }
-    }, [socket, quizId, loggedUserId, setQuizData])
+        };
+    }, [socket, quizId, loggedUserId, setQuizData]);
 
     // Traigo los datos principales del quiz y los guardo en el estado quizData para que estén disponibles inmediatamente:
     useEffect(() => {
@@ -93,14 +96,22 @@ const useSocketConfig = (argumentsData) => {
             setQuizData,
             setPlayerData,
             setQuestion,
-            loggedUserId
-        )
+            loggedUserId,
+            setIsMasterOnline
+        );
         return () => {
             if (socket) {
-                socket.off('quizData')
+                socket.off('quizData');
             }
-        }
-    }, [socket, setQuizData, setPlayerData, setQuestion, loggedUserId])
+        };
+    }, [
+        socket,
+        setQuizData,
+        setPlayerData,
+        setQuestion,
+        loggedUserId,
+        setIsMasterOnline,
+    ]);
 
     //Recuperar los datos de los jugadores, el quiz y la pregunta actual cuando se reconecta:
     useEffect(() => {
@@ -116,12 +127,12 @@ const useSocketConfig = (argumentsData) => {
             setSessionRecovery,
             setInitialPlayerData,
             setClickedResponses
-        )
+        );
         return () => {
             if (socket) {
-                socket.off('sendRecoveryQuizData')
+                socket.off('sendRecoveryQuizData');
             }
-        }
+        };
     }, [
         socket,
         setPlayerData,
@@ -134,7 +145,7 @@ const useSocketConfig = (argumentsData) => {
         setSessionRecovery,
         setInitialPlayerData,
         setClickedResponses,
-    ])
+    ]);
 
     //Aquí controla el master cuando iniciar cada pregunta:
     useEffect(() => {
@@ -143,102 +154,104 @@ const useSocketConfig = (argumentsData) => {
             setIsQuestionRunning,
             setShowScores,
             setIsDisabled
-        )
+        );
         return () => {
             if (socket) {
-                socket.off('questionStarted')
+                socket.off('questionStarted');
             }
-        }
-    }, [socket, setIsQuestionRunning, setShowScores, setIsDisabled])
+        };
+    }, [socket, setIsQuestionRunning, setShowScores, setIsDisabled]);
 
     useEffect(() => {
         //Aquí el usuario ingresa su nombre de jugador, se setea su estado players y se envía al back para que este notifique a todos los usuarios de la sala, incluyendo el master:
-        playerJoinedHandler(socket, setPlayerData, quizId)
+        playerJoinedHandler(socket, setPlayerData, quizId);
 
-        quizEndedHandler(socket, router, loggedUserId, quizData)
+        quizEndedHandler(socket, router, loggedUserId, quizData);
         return () => {
             if (socket) {
-                socket.off('playerJoined')
-                socket.off('quizEnded')
+                socket.off('playerJoined');
+                socket.off('quizEnded');
             }
-        }
-    }, [router, socket, setPlayerData, quizId, loggedUserId, quizData])
+        };
+    }, [router, socket, setPlayerData, quizId, loggedUserId, quizData]);
 
     //Recepción de las preguntas:
     //El back hace su lógica y emite el estado question, enviándo la primera pregunta. Aquí se escucha y se guarda en el estado question:
     useEffect(() => {
-        questionHandler(socket, setQuestion)
-        noMoreQuestionsHandler(socket)
+        questionHandler(socket, setQuestion);
+        noMoreQuestionsHandler(socket);
 
         // Limpio el evento cuando el componente se desmonta para evitar duplicidades innecesarias:
         return () => {
             if (socket) {
-                socket.off('question')
-                socket.off('noMoreQuestions')
+                socket.off('question');
+                socket.off('noMoreQuestions');
             }
-        }
-    }, [socket, setQuestion])
+        };
+    }, [socket, setQuestion]);
 
     useEffect(() => {
         if (socket) {
-            answerSubmittedHandler(socket, handleAnswerSubmitted)
+            answerSubmittedHandler(socket, handleAnswerSubmitted);
             return () => {
                 if (socket) {
-                    socket.off('answerSubmitted')
+                    socket.off('answerSubmitted');
                 }
-            }
+            };
         }
-    }, [socket, handleAnswerSubmitted])
+    }, [socket, handleAnswerSubmitted]);
 
     //Actualizar los datos del quiz que se editan en tiempo real y sincronizarlos en todos los clientes de la sala:
     useEffect(() => {
-        editedQuizData(socket, setQuizData, loggedUserId)
+        editedQuizData(socket, setQuizData, loggedUserId);
+        firstDataHandler(socket, setQuizData);
         return () => {
             if (socket) {
-                socket.off('quizUpdatedMessage')
+                socket.off('quizUpdatedMessage');
+                socket.off('firstData');
             }
-        }
-    }, [setQuizData, socket, loggedUserId])
+        };
+    }, [setQuizData, socket, loggedUserId]);
 
     //Actualizar las preguntas que se editan en tiempo real y sincronizarlos en todos los clientes de la sala:
     useEffect(() => {
-        editedQuestionData(socket, setQuestion, loggedUserId, quizData)
+        editedQuestionData(socket, setQuestion, loggedUserId, quizData);
         return () => {
             if (socket) {
-                socket.off('questionUpdatedMessage')
+                socket.off('questionUpdatedMessage');
             }
-        }
-    }, [setQuestion, socket, loggedUserId, quizData])
+        };
+    }, [setQuestion, socket, loggedUserId, quizData]);
 
     //Tiempo de cada pregunta:
     useEffect(() => {
-        timerUpdate(socket, setTimeLeft)
+        timerUpdate(socket, setTimeLeft);
         return () => {
             if (socket) {
-                socket.off('timerUpdate')
+                socket.off('timerUpdate');
             }
-        }
-    }, [socket, setTimeLeft])
+        };
+    }, [socket, setTimeLeft]);
 
     //Tiempo de la sesión:
     useEffect(() => {
-        sessionTimeLeftHandler(socket, setSessionTimeLeft)
+        sessionTimeLeftHandler(socket, setSessionTimeLeft);
         return () => {
             if (socket) {
-                socket.off('sessionTimeLeft')
+                socket.off('sessionTimeLeft');
             }
-        }
-    }, [socket, setSessionTimeLeft])
+        };
+    }, [socket, setSessionTimeLeft]);
 
     //Actualización del estado contador:
     useEffect(() => {
-        timeUpHandler(socket, setIsDisabled)
+        timeUpHandler(socket, setIsDisabled);
         return () => {
             if (socket) {
-                socket.off('timeUp')
+                socket.off('timeUp');
             }
-        }
-    }, [socket, setIsDisabled])
+        };
+    }, [socket, setIsDisabled]);
 
     //Para pasar a los jugadores a la pantalla de puntuación, entre pregunta y pregunta:
     useEffect(() => {
@@ -247,13 +260,13 @@ const useSocketConfig = (argumentsData) => {
             setIsQuestionRunning,
             setShowScores,
             setClickedResponses
-        )
+        );
         return () => {
             if (socket) {
-                socket.off('scores')
+                socket.off('scores');
             }
-        }
-    }, [socket, setIsQuestionRunning, setShowScores, setClickedResponses])
+        };
+    }, [socket, setIsQuestionRunning, setShowScores, setClickedResponses]);
 
     //Cada vez que se conecta o desconecta un cliente, se envía el nuevo estado a todos los clientes de la sala:
     useEffect(() => {
@@ -262,30 +275,30 @@ const useSocketConfig = (argumentsData) => {
             setConnectedClients,
             playerData,
             setPlayerData
-        )
+        );
         return () => {
             if (socket) {
-                socket.off('clientsNumber')
+                socket.off('clientsNumber');
             }
-        }
-    }, [socket, setConnectedClients, setPlayerData, playerData])
+        };
+    }, [socket, setConnectedClients, setPlayerData, playerData]);
 
     useEffect(() => {
-        questionDeletedHandler(question, quizData, socket, quizId)
+        questionDeletedHandler(question, quizData, socket, quizId);
         return () => {
             if (socket) {
-                socket.off('questionDeleted')
+                socket.off('questionDeleted');
             }
-        }
-    }, [question, quizData, socket, quizId])
+        };
+    }, [question, quizData, socket, quizId]);
 
     useEffect(() => {
-        answerMessage(socket)
+        answerMessage(socket);
         return () => {
             if (socket) {
-                socket.off('answerSubmittedMessage')
+                socket.off('answerSubmittedMessage');
             }
-        }
-    }, [socket])
-}
-export default useSocketConfig
+        };
+    }, [socket]);
+};
+export default useSocketConfig;
