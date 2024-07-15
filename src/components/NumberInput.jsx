@@ -1,20 +1,26 @@
-'use client'
+'use client';
 
-const NumberInput = ({ id, text, value, handleChange }) => {
+const NumberInput = ({ id, text, value, isInput, handleChange }) => {
     return (
-        <div className="flex w-20 my-6 flex-col items-start m-2">
-            <label className=" bg-black px-2 text-md " htmlFor={id}>
+        <div className="flex font-medium  text-left my-6 flex-col items-start m-2">
+            <label className="text-md " htmlFor={id}>
                 {text}
             </label>
-            <input
-                className="font-semibold w-20  p-2  text-black text-md py-2"
-                type="number"
-                id={id}
-                name={id}
-                value={value}
-                onChange={handleChange}
-            />
+            {isInput ? (
+                <input
+                    className="font-semibold w-20  p-2  text-black text-md py-2"
+                    type="number"
+                    id={id}
+                    name={id}
+                    value={value}
+                    onChange={handleChange}
+                />
+            ) : (
+                <p className="font-semibold w-20  p-2  text-black text-md py-2">
+                    {value}
+                </p>
+            )}
         </div>
-    )
-}
-export default NumberInput
+    );
+};
+export default NumberInput;
