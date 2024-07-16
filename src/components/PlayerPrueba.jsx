@@ -20,7 +20,7 @@ const PlayerPrueba = ({ playerProps }) => {
         isNameSetted,
         recoverySession,
         clickedResponses,
-    } = playerProps
+    } = playerProps;
 
     if (sessionRecovery && isNameSetted) {
         return (
@@ -32,7 +32,7 @@ const PlayerPrueba = ({ playerProps }) => {
                     Inicia como nuevo jugador
                 </button>
             </>
-        )
+        );
     }
     return (
         <>
@@ -52,29 +52,6 @@ const PlayerPrueba = ({ playerProps }) => {
                             ))}
                         </ul>
                     </div>
-                    {shuffledQuestionResponses &&
-                        shuffledQuestionResponses.map((response, index) => (
-                            <li key={index}>
-                                <button
-                                    disabled={isDisabled}
-                                    onClick={() =>
-                                        handleAnswerSubmit(
-                                            Object.values(response)[0]
-                                        )
-                                    }
-                                >
-                                    {Object.values(response)[0]}
-                                    {clickedResponses[
-                                        Object.values(response)[0]
-                                    ] &&
-                                        ` pulsado ${
-                                            clickedResponses[
-                                                Object.values(response)[0]
-                                            ]
-                                        } veces`}
-                                </button>
-                            </li>
-                        ))}
                 </>
             ) : (
                 <>
@@ -128,6 +105,18 @@ const PlayerPrueba = ({ playerProps }) => {
                                                     }
                                                 >
                                                     {Object.values(response)[0]}
+                                                    {clickedResponses[
+                                                        Object.values(
+                                                            response
+                                                        )[0]
+                                                    ] &&
+                                                        ` pulsado ${
+                                                            clickedResponses[
+                                                                Object.values(
+                                                                    response
+                                                                )[0]
+                                                            ]
+                                                        } veces`}
                                                 </button>
                                             </li>
                                         )
@@ -138,6 +127,6 @@ const PlayerPrueba = ({ playerProps }) => {
                 </>
             )}
         </>
-    )
-}
-export default PlayerPrueba
+    );
+};
+export default PlayerPrueba;

@@ -3,19 +3,22 @@ const quizDataHandler = (
     setQuizData,
     setPlayerData,
     setQuestion,
-    loggedUserId
+    loggedUserId,
+    setIsMasterOnline
 ) => {
     if (socket) {
         socket.on('quizData', (data, playersData, currentQuestion) => {
+            setIsMasterOnline(true);
             if (loggedUserId && data.owner_id == loggedUserId) {
-                setQuizData(data)
-                if (playersData.length > 0) setPlayerData(playersData)
-                if (currentQuestion) setQuestion(currentQuestion)
+                window.localStorage.setItem('isMaster', true);
+                setQuizData(data);
+                if (playersData.length > 0) setPlayerData(playersData);
+                if (currentQuestion) setQuestion(currentQuestion);
             }
             if (!loggedUserId || loggedUserId != data.owner_id) {
-                setQuizData(data)
+                setQuizData(data);
             }
-        })
+        });
     }
-}
-export default quizDataHandler
+};
+export default quizDataHandler;

@@ -1,3 +1,6 @@
+'use client';
+import { toast } from 'react-toastify';
+
 const questionStartedHandler = (
     socket,
     setIsQuestionRunning,
@@ -6,10 +9,20 @@ const questionStartedHandler = (
 ) => {
     if (socket) {
         socket.on('questionStarted', () => {
-            setIsQuestionRunning(true)
-            setShowScores(false)
-            setIsDisabled(false)
-        })
+            const playerName = window.localStorage.getItem('playerName');
+            const isMaster = window.localStorage.getItem('isMaster');
+
+            if (!playerName && !isMaster) {
+                toast.warning(
+                    '¡El quiz ha comenzado!, ¡Introduce tu nombre de usuario para unirte!',
+                    { autoClose: false }
+                );
+                return;
+            }
+            setIsQuestionRunning(true);
+            setShowScores(false);
+            setIsDisabled(false);
+        });
     }
-}
-export default questionStartedHandler
+};
+export default questionStartedHandler;
