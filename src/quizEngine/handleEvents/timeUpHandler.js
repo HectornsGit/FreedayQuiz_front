@@ -1,10 +1,12 @@
 'use client';
+import { getItemWithExpiry } from '../utils';
 import { toast } from 'react-toastify';
 import { calculateResults } from '../utils';
 
 const timeUpHandler = (socket, setIsDisabled, playerData, quizId) => {
-    const playerName = window.localStorage.getItem('playerName');
-    const isMaster = window.localStorage.getItem('isMaster');
+    const playerName = getItemWithExpiry('playerName');
+    const isMaster = getItemWithExpiry('isMaster');
+
     if (socket && playerName) {
         socket.on('timeUp', () => {
             setIsDisabled(true);

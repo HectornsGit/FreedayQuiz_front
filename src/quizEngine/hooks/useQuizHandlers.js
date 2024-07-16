@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
+import { setItemWithExpiry } from '../utils';
 
 export const useQuizHandlers = ({
     socket,
@@ -75,7 +76,7 @@ export const useQuizHandlers = ({
             return;
         }
         //Se guarda en el localStorage para comprobar la recuperación de sesión en caso necesario:
-        window.localStorage.setItem('playerName', nickName);
+        setItemWithExpiry('playerName', nickName, 12);
         toast.dismiss();
 
         const initialPlayer = {

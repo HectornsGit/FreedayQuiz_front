@@ -1,3 +1,4 @@
+import { getItemWithExpiry } from '../utils';
 const sendUpdatedQuizData = (
     socket,
     setPlayerData,
@@ -24,8 +25,7 @@ const sendUpdatedQuizData = (
             ) => {
                 //Lógica para recuperar la sesión después de refrescar la página:
                 if (sessionRecovery) {
-                    const storedId = window.localStorage.getItem('idNewPlayer');
-
+                    const storedId = getItemWithExpiry('idNewPlayer');
                     let recoveryPlayer;
                     if (storedId) {
                         recoveryPlayer = backPlayersData.find((player) => {
