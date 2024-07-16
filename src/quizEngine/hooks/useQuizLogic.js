@@ -26,6 +26,7 @@ import {
     recoverySession,
     setSessionTimeHandler,
     deleteQuestionHandler,
+    getQuestionFromList,
 } from '../handlers/index';
 
 const useQuizLogic = () => {
@@ -239,6 +240,7 @@ const useQuizLogic = () => {
         sessionRecovery,
         isNameSetted,
         sessionTime,
+        getQuestionFromList: getQuestionFromList(quizId, socket),
         sessionTimeLeft,
         clickedResponses,
     };
