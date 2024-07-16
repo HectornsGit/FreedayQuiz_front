@@ -1,5 +1,5 @@
-import { useCallback } from 'react'
-import { toast } from 'react-toastify'
+import { useCallback } from 'react';
+import { toast } from 'react-toastify';
 
 export const useQuizHandlers = ({
     socket,
@@ -16,6 +16,7 @@ export const useQuizHandlers = ({
 }) => {
     const handleAnswerSubmitted = useCallback(
         (backData) => {
+            //Se actualiza para todos los jugadores en cada una de las respuestas de todos los jugadores:
             setPlayerData((prevPlayerData) =>
                 prevPlayerData.map((frontData) => {
                     if (frontData.id === backData.id) {
@@ -26,14 +27,14 @@ export const useQuizHandlers = ({
                             lastCorrectAnswer: backData.lastCorrectAnswer,
                             lastAnswer: backData.lastAnswer,
                             lastAnswerText: backData.lastAnswerText,
-                        }
+                        };
                     }
-                    return frontData
+                    return frontData;
                 })
-            )
+            );
         },
         [setPlayerData]
-    )
+    );
 
     const handleAnswerSubmit = useCallback(
         (response) => {
@@ -46,21 +47,36 @@ export const useQuizHandlers = ({
                     playerId: initialPlayerData[0].id,
                     totalTime: question.questionTime,
                     timeTaken: question.questionTime - timeLeft,
-                })
-                setIsDisabled(true)
+                });
+                setIsDisabled(true);
+
+                setInitialPlayerData((prevData) => {
+                    prevData[0].lastAnswerText = response;
+                    prevData[0].lastQuestionNumber = question.questionNumber;
+                    return [...prevData];
+                });
             }
         },
-        [socket, quizId, question, initialPlayerData, timeLeft, setIsDisabled]
-    )
+        [
+            socket,
+            quizId,
+            question,
+            initialPlayerData,
+            timeLeft,
+            setIsDisabled,
+            setInitialPlayerData,
+        ]
+    );
 
     const handleInitialPlayerData = useCallback(() => {
         //El campo no puede estar vacío:
         if (nickName.trim() === '') {
-            alert('Por favor, introduce tu nombre de jugador.')
-            return
+            alert('Por favor, introduce tu nombre de jugador.');
+            return;
         }
         //Se guarda en el localStorage para comprobar la recuperación de sesión en caso necesario:
-        window.localStorage.setItem('playerName', nickName)
+        window.localStorage.setItem('playerName', nickName);
+        toast.dismiss();
 
         const initialPlayer = {
             id: playerId,
@@ -71,36 +87,37 @@ export const useQuizHandlers = ({
             lastCorrectAnswer: 0,
             lastAnswer: '',
             lastAnswerText: '',
-        }
+            lastQuestionNumber: 0,
+        };
 
         setInitialPlayerData((prevPlayerData) => [
             ...prevPlayerData,
             initialPlayer,
-        ])
+        ]);
         //Guardo el nickName y el id en el socket, para acceder a él en caso necesario:
-        socket.Mydata = { name: nickName, id: playerId }
-        socket.data = { name: nickName, id: playerId }
+        socket.Mydata = { name: nickName, id: playerId };
+        socket.data = { name: nickName, id: playerId };
 
         if (socket) {
-            socket.emit('joinQuiz', playerId, quizId, initialPlayer)
+            socket.emit('joinQuiz', playerId, quizId, initialPlayer);
         }
 
         setTimeout(() => {
             //Se envía petición para sincronizar los datos, por si el quiz está en curso, pero ha de hacerse en último lugar, para que no cree conflicto con los datos que llegan y se actualizan desde el evento joinQuiz:
-            socket.emit('requestRecoveryData', quizId)
-        }, 0)
-    }, [socket, playerId, nickName, quizId, setInitialPlayerData])
+            socket.emit('requestRecoveryData', quizId);
+        }, 0);
+    }, [socket, playerId, nickName, quizId, setInitialPlayerData]);
 
     const handleStartQuiz = useCallback(() => {
         if (socket) {
-            socket.emit('startQuiz', loggedUserId, quizId)
+            socket.emit('startQuiz', loggedUserId, quizId);
         }
-    }, [socket, loggedUserId, quizId])
+    }, [socket, loggedUserId, quizId]);
 
     return {
         handleAnswerSubmitted,
         handleAnswerSubmit,
         handleInitialPlayerData,
         handleStartQuiz,
-    }
-}
+    };
+};

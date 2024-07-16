@@ -24,46 +24,47 @@ const sendUpdatedQuizData = (
             ) => {
                 //Lógica para recuperar la sesión después de refrescar la página:
                 if (sessionRecovery) {
-                    const storedId = window.localStorage.getItem('idNewPlayer')
+                    const storedId = window.localStorage.getItem('idNewPlayer');
 
-                    let recoveryPlayer
+                    let recoveryPlayer;
                     if (storedId) {
                         recoveryPlayer = backPlayersData.find((player) => {
                             if (player.id === storedId) {
-                                return { ...player, state: 'online' }
+                                return { ...player, state: 'online' };
                             }
-                        })
+                        });
 
                         socket.Mydata = {
-                            name: recoveryPlayer.name,
-                            id: recoveryPlayer.id,
-                        }
+                            name: recoveryPlayer?.name,
+                            id: recoveryPlayer?.id,
+                        };
                         socket.data = {
-                            name: recoveryPlayer.name,
-                            id: recoveryPlayer.id,
-                        }
+                            name: recoveryPlayer?.name,
+                            id: recoveryPlayer?.id,
+                        };
 
-                        setInitialPlayerData([recoveryPlayer])
-                        setSessionRecovery(false)
+                        setInitialPlayerData([recoveryPlayer]);
+                        setSessionRecovery(false);
                     }
 
                     //Actualizar el estado a todos los usuarios de la sala:
                     socket.emit(
                         'setOnline',
-                        { playerId: recoveryPlayer.id },
+                        { playerId: recoveryPlayer?.id },
                         quizId
-                    )
+                    );
                 }
 
-                setIsQuestionRunning(updatedStates.isQuestionRunning)
-                setShowScores(updatedStates.showScores)
-                setIsDisabled(updatedStates.isDisabled)
-                setQuizData(backQuizData)
-                setQuestion(currentQuestion)
-                setPlayerData(backPlayersData)
-                setClickedResponses(backClickedResponses)
+                setIsQuestionRunning(updatedStates.isQuestionRunning);
+                setShowScores(updatedStates.showScores);
+                setIsDisabled(updatedStates.isDisabled);
+                setQuizData(backQuizData);
+                setQuestion(currentQuestion);
+                setPlayerData(backPlayersData);
+                if (backClickedResponses)
+                    setClickedResponses(backClickedResponses);
             }
-        )
+        );
     }
-}
-export default sendUpdatedQuizData
+};
+export default sendUpdatedQuizData;
