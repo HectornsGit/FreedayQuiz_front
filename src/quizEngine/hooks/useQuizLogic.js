@@ -57,7 +57,7 @@ const useQuizLogic = () => {
     const [sessionTime, setSessionTime] = useState(0);
     const [sessionTimeLeft, setSessionTimeLeft] = useState(0);
     const [connectedClients, setConnectedClients] = useState(0);
-    const [isMasterOnline, setIsMasterOnline] = useState(false);
+    const [, setIsMasterOnline] = useState(false);
 
     //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
     const loggedUserId = session?.user.data.id;
@@ -90,7 +90,7 @@ const useQuizLogic = () => {
             setSessionTime(quizSessionDuration);
         }
     }, [playerId]);
-
+    console.log('PlayerData', initialPlayerData);
     //Aquí van los handlers que necesitan useCallback:
     const {
         handleAnswerSubmitted,

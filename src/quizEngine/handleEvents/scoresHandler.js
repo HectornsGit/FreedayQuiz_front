@@ -5,10 +5,11 @@ const scoresHandler = (
     socket,
     setIsQuestionRunning,
     setShowScores,
-    setClickedResponses
+    setClickedResponses,
+    setInitialPlayerData
 ) => {
     if (socket) {
-        socket.on('scores', (hitsResults) => {
+        socket.on('scores', () => {
             const playerName = window.localStorage.getItem('playerName');
             const isMaster = window.localStorage.getItem('isMaster');
 
@@ -21,7 +22,14 @@ const scoresHandler = (
             }
             setIsQuestionRunning(false);
             setShowScores(true);
-            setClickedResponses(hitsResults);
+            setClickedResponses({});
+            if (!isMaster) {
+                setInitialPlayerData((prevData) => {
+                    prevData[0].lastAnswerText = '';
+                    prevData[0].lastQuestionNumber = 0;
+                    return [...prevData];
+                });
+            }
         });
     }
 };

@@ -16,6 +16,7 @@ export const useQuizHandlers = ({
 }) => {
     const handleAnswerSubmitted = useCallback(
         (backData) => {
+            //Se actualiza para todos los jugadores en cada una de las respuestas de todos los jugadores:
             setPlayerData((prevPlayerData) =>
                 prevPlayerData.map((frontData) => {
                     if (frontData.id === backData.id) {
@@ -48,9 +49,23 @@ export const useQuizHandlers = ({
                     timeTaken: question.questionTime - timeLeft,
                 });
                 setIsDisabled(true);
+
+                setInitialPlayerData((prevData) => {
+                    prevData[0].lastAnswerText = response;
+                    prevData[0].lastQuestionNumber = question.questionNumber;
+                    return [...prevData];
+                });
             }
         },
-        [socket, quizId, question, initialPlayerData, timeLeft, setIsDisabled]
+        [
+            socket,
+            quizId,
+            question,
+            initialPlayerData,
+            timeLeft,
+            setIsDisabled,
+            setInitialPlayerData,
+        ]
     );
 
     const handleInitialPlayerData = useCallback(() => {
@@ -72,6 +87,7 @@ export const useQuizHandlers = ({
             lastCorrectAnswer: 0,
             lastAnswer: '',
             lastAnswerText: '',
+            lastQuestionNumber: 0,
         };
 
         setInitialPlayerData((prevPlayerData) => [

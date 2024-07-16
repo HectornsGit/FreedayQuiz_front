@@ -23,6 +23,7 @@ import {
     questionDeletedHandler,
     answerMessage,
     firstDataHandler,
+    getResults,
 } from '../handleEvents';
 
 const useSocketConfig = (argumentsData) => {
@@ -245,13 +246,13 @@ const useSocketConfig = (argumentsData) => {
 
     //Actualización del estado contador:
     useEffect(() => {
-        timeUpHandler(socket, setIsDisabled);
+        timeUpHandler(socket, setIsDisabled, playerData, quizId);
         return () => {
             if (socket) {
                 socket.off('timeUp');
             }
         };
-    }, [socket, setIsDisabled]);
+    }, [socket, setIsDisabled, playerData, quizId]);
 
     //Para pasar a los jugadores a la pantalla de puntuación, entre pregunta y pregunta:
     useEffect(() => {
@@ -259,14 +260,21 @@ const useSocketConfig = (argumentsData) => {
             socket,
             setIsQuestionRunning,
             setShowScores,
-            setClickedResponses
+            setClickedResponses,
+            setInitialPlayerData
         );
         return () => {
             if (socket) {
                 socket.off('scores');
             }
         };
-    }, [socket, setIsQuestionRunning, setShowScores, setClickedResponses]);
+    }, [
+        socket,
+        setIsQuestionRunning,
+        setShowScores,
+        setClickedResponses,
+        setInitialPlayerData,
+    ]);
 
     //Cada vez que se conecta o desconecta un cliente, se envía el nuevo estado a todos los clientes de la sala:
     useEffect(() => {
@@ -282,6 +290,15 @@ const useSocketConfig = (argumentsData) => {
             }
         };
     }, [socket, setConnectedClients, setPlayerData, playerData]);
+
+    useEffect(() => {
+        getResults(socket, setClickedResponses);
+        return () => {
+            if (socket) {
+                socket.off('results');
+            }
+        };
+    }, [socket, setClickedResponses]);
 
     useEffect(() => {
         questionDeletedHandler(question, quizData, socket, quizId);

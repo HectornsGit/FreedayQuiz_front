@@ -61,7 +61,8 @@ const sendUpdatedQuizData = (
                 setQuizData(backQuizData);
                 setQuestion(currentQuestion);
                 setPlayerData(backPlayersData);
-                setClickedResponses(backClickedResponses);
+                if (backClickedResponses)
+                    setClickedResponses(backClickedResponses);
             }
         );
     }

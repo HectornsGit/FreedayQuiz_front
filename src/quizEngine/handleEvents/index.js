@@ -20,11 +20,13 @@ import sessionTimeLeftHandler from './sessionTimeLeftHandler';
 import questionDeletedHandler from './questionDeletedHandler';
 import answerMessage from './answerMessage';
 import firstDataHandler from './firstDataHandler';
+import getResults from './getResults';
 export {
     connectHandler,
     errorHandler,
     quizDataHandler,
     getQuizDataHandler,
+    getResults,
     playerJoinedHandler,
     quizEndedHandler,
     disconnectHandler,
