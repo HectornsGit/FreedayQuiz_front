@@ -1,4 +1,4 @@
-import ShowTime from '../components/ShowTime'
+import ShowTime from '../components/ShowTime';
 const MasterPrueba = ({ masterProps }) => {
     const {
         signOutHandler,
@@ -26,10 +26,10 @@ const MasterPrueba = ({ masterProps }) => {
         setSessionTimeHandler,
         sessionTimeLeft,
         deleteQuestionHandler,
-    } = masterProps
+    } = masterProps;
 
     const disableButton =
-        showScores || (isQuestionRunning && timeLeft > 0) ? true : false
+        showScores || (isQuestionRunning && timeLeft > 0) ? true : false;
 
     if (!sessionTime) {
         return (
@@ -43,13 +43,18 @@ const MasterPrueba = ({ masterProps }) => {
                     <button>Enviar</button>
                 </form>
             </>
-        )
+        );
     }
 
     return (
         <>
-            {sessionTimeLeft && <ShowTime time={sessionTimeLeft} />}
-            <button onClick={signOutHandler}>Cerrar sesión</button>
+            {sessionTimeLeft && (
+                <ShowTime
+                    time={sessionTimeLeft}
+                    handler={setSessionTimeHandler}
+                />
+            )}
+            <button onClick={signOutHandler}>Cerrar sesión de usuario</button>
 
             {quizData && sessionTime && (
                 <>
@@ -215,6 +220,6 @@ const MasterPrueba = ({ masterProps }) => {
                 </>
             )}
         </>
-    )
-}
-export default MasterPrueba
+    );
+};
+export default MasterPrueba;

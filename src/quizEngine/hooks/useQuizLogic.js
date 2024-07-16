@@ -90,7 +90,7 @@ const useQuizLogic = () => {
             setSessionTime(quizSessionDuration);
         }
     }, [playerId]);
-    console.log('PlayerData', initialPlayerData);
+
     //Aquí van los handlers que necesitan useCallback:
     const {
         handleAnswerSubmitted,
