@@ -1,10 +1,9 @@
-import YellowBgSendPlane from './icons/yellowBgSendPlane'
-import YellowPencil from './icons/YellowPencil'
+import YellowBgSendPlane from './icons/yellowBgSendPlane';
 
 const TextInput = ({ id, text, isInput, value, handleChange }) => {
     const handleChangeInput = (e) => {
-        e.preventDefault()
-    }
+        e.preventDefault();
+    };
     return (
         <div className="flex w-60 my-6 flex-col items-start m-2">
             <label className="text-md my-3 font-medium" htmlFor={id}>
@@ -34,6 +33,6 @@ const TextInput = ({ id, text, isInput, value, handleChange }) => {
                 <p className=" font-medium">{value}</p>
             )}
         </div>
-    )
-}
-export default TextInput
+    );
+};
+export default TextInput;
