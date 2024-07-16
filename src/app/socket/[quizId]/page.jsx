@@ -1,7 +1,7 @@
-'use client'
-import MasterPrueba from '@/components/MasterPrueba'
-import PlayerPrueba from '@/components/PlayerPrueba'
-import useQuizLogic from '@/quizEngine/hooks/useQuizLogic'
+'use client';
+import MasterPrueba from '@/components/MasterPrueba';
+import PlayerPrueba from '@/components/PlayerPrueba';
+import useQuizLogic from '@/quizEngine/hooks/useQuizLogic';
 
 const Page = () => {
     const {
@@ -43,7 +43,8 @@ const Page = () => {
         sessionTimeLeft,
         deleteQuestionHandler,
         clickedResponses,
-    } = useQuizLogic()
+        getQuestionFromList,
+    } = useQuizLogic();
 
     const masterProps = {
         signOutHandler,
@@ -72,7 +73,8 @@ const Page = () => {
         setSessionTimeHandler,
         sessionTimeLeft,
         deleteQuestionHandler,
-    }
+        getQuestionFromList,
+    };
     const playerProps = {
         signOutHandler,
         handleInitialPlayerData,
@@ -95,7 +97,7 @@ const Page = () => {
         isNameSetted,
         recoverySession,
         clickedResponses,
-    }
+    };
 
     if (error) {
         return <div>{error}</div>;

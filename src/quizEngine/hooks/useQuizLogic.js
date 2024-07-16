@@ -8,6 +8,8 @@ import {
     findValue,
     startNewPlayer,
     signOutHandler,
+    setItemWithExpiry,
+    getItemWithExpiry,
 } from '../utils';
 import useSocketConfig from './useSocketConfig';
 import { useQuizHandlers } from './useQuizHandlers';
@@ -24,6 +26,7 @@ import {
     recoverySession,
     setSessionTimeHandler,
     deleteQuestionHandler,
+    getQuestionFromList,
 } from '../handlers/index';
 
 const useQuizLogic = () => {
@@ -68,23 +71,19 @@ const useQuizLogic = () => {
     let quizSessionDuration;
 
     //Si el quizId es diferente, se desecha el anterior playerId. Si es igual, se recupera:
-    if (typeof window !== 'undefined') {
-        sameQuiz = window.localStorage.getItem('quizId');
-        playerId =
-            sameQuiz === quizId && window.localStorage.getItem('idNewPlayer');
-        playerName = window.localStorage.getItem('playerName');
-        //Solo para el master:
-        quizSessionDuration = window.localStorage.getItem(
-            'QuizSessionDuration'
-        );
-    }
+    sameQuiz = getItemWithExpiry('quizId');
+    playerId = sameQuiz === quizId && getItemWithExpiry('idNewPlayer');
+    playerName = getItemWithExpiry('playerName');
+
+    //Solo para el master:
+    quizSessionDuration = getItemWithExpiry('QuizSessionDuration');
 
     //Solo se ejecutará una vez al montar el componente, para evitar el bucle infinito de renderizaciones:
     useEffect(() => {
         if (!playerId) {
             playerId = uuidv4();
-            window.localStorage.setItem('idNewPlayer', playerId);
-            window.localStorage.setItem('quizId', quizId);
+            setItemWithExpiry('idNewPlayer', playerId, 12);
+            setItemWithExpiry('quizId', quizId, 12);
             setSessionRecovery(false);
         }
         if (playerName) {
@@ -241,6 +240,7 @@ const useQuizLogic = () => {
         sessionRecovery,
         isNameSetted,
         sessionTime,
+        getQuestionFromList: getQuestionFromList(quizId, socket),
         sessionTimeLeft,
         clickedResponses,
     };
