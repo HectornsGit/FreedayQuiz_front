@@ -1,8 +1,8 @@
-'use client'
-import MatchComponentAsManager from '@/components/MatchComponents/Manager/MatchComponentAsManager'
-import PlayerPrueba from '@/components/PlayerPrueba'
-import useQuizLogic from '@/quizEngine/hooks/useQuizLogic'
-import { signOut } from 'next-auth/react'
+'use client';
+import MatchComponentAsManager from '@/components/MatchComponents/Manager/MatchComponentAsManager';
+import PlayerPrueba from '@/components/PlayerPrueba';
+import useQuizLogic from '@/quizEngine/hooks/useQuizLogic';
+import { signOut } from 'next-auth/react';
 
 const Page = () => {
     const {
@@ -13,6 +13,7 @@ const Page = () => {
         updateQuestionDataInBackend,
         updateQuizDataInBackend,
         nextQuestionHandler,
+        previousQuestionHandler,
         handleAnswerSubmit,
         handleStartQuiz,
         handleInitialPlayerData,
@@ -33,10 +34,20 @@ const Page = () => {
         initialPlayerData,
         socket,
         connectedClients,
-    } = useQuizLogic()
+        sessionRecovery,
+        startNewPlayer,
+        isNameSetted,
+        signOutHandler,
+        recoverySession,
+        sessionTime,
+        setSessionTimeHandler,
+        sessionTimeLeft,
+        deleteQuestionHandler,
+        clickedResponses,
+    } = useQuizLogic();
 
     const masterProps = {
-        signOut,
+        signOutHandler,
         endQuiz,
         findValue,
         handleQuestionChange,
@@ -44,6 +55,7 @@ const Page = () => {
         updateQuestionDataInBackend,
         updateQuizDataInBackend,
         nextQuestionHandler,
+        previousQuestionHandler,
         handleAnswerSubmit,
         handleStartQuiz,
         question,
@@ -55,9 +67,16 @@ const Page = () => {
         timeLeft,
         showScoresHandler,
         connectedClients,
-    }
+        isQuestionRunning,
+        showScores,
+        sessionTime,
+        setSessionTimeHandler,
+        sessionTimeLeft,
+        deleteQuestionHandler,
+    };
+
     const playerProps = {
-        signOut,
+        signOutHandler,
         handleInitialPlayerData,
         quizData,
         question,
@@ -73,10 +92,15 @@ const Page = () => {
         initialPlayerData,
         socket,
         connectedClients,
-    }
+        sessionRecovery,
+        startNewPlayer,
+        isNameSetted,
+        recoverySession,
+        clickedResponses,
+    };
 
     if (error) {
-        return <div>{error}</div>
+        return <div>{error}</div>;
     }
 
     return (
@@ -87,7 +111,7 @@ const Page = () => {
                 <PlayerPrueba playerProps={playerProps} />
             )}
         </section>
-    )
-}
+    );
+};
 
-export default Page
+export default Page;
