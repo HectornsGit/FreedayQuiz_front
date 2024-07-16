@@ -1,13 +1,14 @@
-'use client'
-import TextInput from '@/components/TextInput'
-import NumberInput from '@/components/NumberInput'
-import ListAnswerInputs from './ListAnswerInputs'
-import YellowPencil from '@/components/icons/YellowPencil'
-import { useState } from 'react'
+'use client';
+import TextInput from '@/components/TextInput';
+import NumberInput from '@/components/NumberInput';
+import Clock from '@/components/Clock';
+import ListAnswerInputs from './ListAnswerInputs';
+import YellowBgPencil from '@/components/icons/YellowBgPencil';
+import { useEffect, useState } from 'react';
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const {
-        signOut,
+        signOutHandler,
         endQuiz,
         findValue,
         handleQuestionChange,
@@ -15,6 +16,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
         updateQuestionDataInBackend,
         updateQuizDataInBackend,
         nextQuestionHandler,
+        previousQuestionHandler,
         handleStartQuiz,
         question,
         quizData,
@@ -25,7 +27,13 @@ const MatchComponentAsManager = ({ managerProps }) => {
         timeLeft,
         showScoresHandler,
         connectedClients,
-    } = managerProps
+        isQuestionRunning,
+        showScores,
+        sessionTime,
+        setSessionTimeHandler,
+        sessionTimeLeft,
+        deleteQuestionHandler,
+    } = managerProps;
 
     const answersInputsProps = [
         {
@@ -56,17 +64,54 @@ const MatchComponentAsManager = ({ managerProps }) => {
             value: findValue('correctAnswer', shuffledQuestionResponses),
             handleChange: handleQuestionChange,
         },
-    ]
-    const [isInput, setIsInput] = useState(false)
+    ];
+    const disableButton =
+        showScores || (isQuestionRunning && timeLeft > 0) ? true : false;
+
+    const [isInput, setIsInput] = useState(false);
+
+    if (!sessionTime) {
+        return (
+            <>
+                <form onSubmit={setSessionTimeHandler}>
+                    <label htmlFor="session">
+                        Establezca la duración máxima de la sesión (en minutos)
+                    </label>
+                    <input type="text" id="session" name="session" required />
+
+                    <button>Enviar</button>
+                </form>
+            </>
+        );
+    }
+
     return (
         <section>
+            <header>
+                <ul className="flex justify-between">
+                    <li>
+                        {sessionTimeLeft && <Clock time={sessionTimeLeft} />}
+                    </li>
+                    <li>
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setIsInput(!isInput);
+                            }}
+                        >
+                            <YellowBgPencil
+                                className={'rounded-sm p-1 w-10 h-10'}
+                            ></YellowBgPencil>
+                        </button>
+                    </li>
+                </ul>
+            </header>
             {quizData && (
-                <section>
+                <section className="border-red-500 border">
                     <article>
                         <h1 className="text-3xl font-bold">
                             {quizData?.title}
                         </h1>
-                        <img src="https://cloudfront-eu-central-1.images.arcpublishing.com/prisaradiolos40/C4OWUGLJ2JIBDDLJOU7QRABT7Y.jpg" />
                     </article>
                 </section>
             )}
@@ -86,22 +131,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     </ul>
                 </section>
             )}
-            {question && (
-                <>
-                    <p>Tiempo restante: {timeLeft}</p>
-                    <p>Pregunta: {question?.question}</p>
-                    <ul>
-                        <h2>Respuestas:</h2>
-                        <p>Respuesta correcta:{question.correctAnswer}</p>
-                        <p>opción A:{question.optionA}</p>
-                        <p>opción B:{question.optionB}</p>
-                        <p>opción C:{question.optionC}</p>
-                    </ul>
-                </>
-            )}
             {loggedUserId && loggedUserId == quizData?.owner_id && (
                 <section className="flex flex-col justify-center">
-                    <form className="md:flex-row  justify-center items-center gap-2 flex flex-col">
+                    {/* <form className="md:flex-row  justify-center items-center gap-2 flex flex-col">
                         <TextInput
                             text={'Título'}
                             id={'title'}
@@ -124,16 +156,19 @@ const MatchComponentAsManager = ({ managerProps }) => {
                         >
                             Envíar
                         </button>
-                    </form>
-                    <form className="grid place-items-center  grid-cols-2 grid-rows-2">
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault()
-                                setIsInput(!isInput)
-                            }}
-                        >
-                            <YellowPencil className={'w-4'}></YellowPencil>
-                        </button>
+                    </form> */}
+                    <form className="flex items-start flex-col">
+                        <NumberInput
+                            text={'Límite de tiempo (en segundos)'}
+                            id={'questionTime'}
+                            name={'questionTime'}
+                            isInput={isInput}
+                            value={findValue(
+                                'questionTime',
+                                shuffledQuestionResponses
+                            )}
+                            handleChange={handleQuestionChange}
+                        ></NumberInput>
                         <TextInput
                             text={'Pregunta Siguiente'}
                             id={'question'}
@@ -145,16 +180,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             handleChange={handleQuestionChange}
                             isInput={isInput}
                         ></TextInput>
-                        <NumberInput
-                            text={'Tiempo'}
-                            id={'questionTime'}
-                            name={'questionTime'}
-                            value={findValue(
-                                'questionTime',
-                                shuffledQuestionResponses
-                            )}
-                            handleChange={handleQuestionChange}
-                        ></NumberInput>
+
                         <ListAnswerInputs
                             answerPropsList={answersInputsProps}
                         ></ListAnswerInputs>
@@ -200,8 +226,8 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     </button>
                 </section>
             )}
-            <button onClick={signOut}>Cerrar sesión</button>
+            <button onClick={signOutHandler}>Cerrar sesión</button>
         </section>
-    )
-}
-export default MatchComponentAsManager
+    );
+};
+export default MatchComponentAsManager;
