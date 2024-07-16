@@ -68,12 +68,16 @@ const useQuizLogic = () => {
     let quizSessionDuration;
 
     //Si el quizId es diferente, se desecha el anterior playerId. Si es igual, se recupera:
-    sameQuiz = window.localStorage.getItem('quizId');
-    playerId =
-        sameQuiz === quizId && window.localStorage.getItem('idNewPlayer');
-    playerName = window.localStorage.getItem('playerName');
-    //Solo para el master:
-    quizSessionDuration = window.localStorage.getItem('QuizSessionDuration');
+    if (typeof window !== 'undefined') {
+        sameQuiz = window.localStorage.getItem('quizId');
+        playerId =
+            sameQuiz === quizId && window.localStorage.getItem('idNewPlayer');
+        playerName = window.localStorage.getItem('playerName');
+        //Solo para el master:
+        quizSessionDuration = window.localStorage.getItem(
+            'QuizSessionDuration'
+        );
+    }
 
     //Solo se ejecutará una vez al montar el componente, para evitar el bucle infinito de renderizaciones:
     useEffect(() => {
