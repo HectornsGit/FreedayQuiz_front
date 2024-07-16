@@ -11,6 +11,7 @@ const setSessionTimeHandler =
             alert('El tiempo de sesión no puede superar 24 horas');
             return;
         }
+
         setItemWithExpiry('QuizSessionDuration', duration, 12);
         setSessionTime(duration);
         socket.emit('startSession', duration, quizId, number_of_questions);
