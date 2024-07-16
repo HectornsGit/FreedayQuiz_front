@@ -261,7 +261,8 @@ const useSocketConfig = (argumentsData) => {
             setIsQuestionRunning,
             setShowScores,
             setClickedResponses,
-            setInitialPlayerData
+            setInitialPlayerData,
+            sessionRecovery
         );
         return () => {
             if (socket) {
@@ -274,6 +275,7 @@ const useSocketConfig = (argumentsData) => {
         setShowScores,
         setClickedResponses,
         setInitialPlayerData,
+        sessionRecovery,
     ]);
 
     //Cada vez que se conecta o desconecta un cliente, se envía el nuevo estado a todos los clientes de la sala:

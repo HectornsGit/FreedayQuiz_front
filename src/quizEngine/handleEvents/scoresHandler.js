@@ -7,7 +7,8 @@ const scoresHandler = (
     setIsQuestionRunning,
     setShowScores,
     setClickedResponses,
-    setInitialPlayerData
+    setInitialPlayerData,
+    sessionRecovery
 ) => {
     if (socket) {
         socket.on('scores', () => {
@@ -24,7 +25,8 @@ const scoresHandler = (
             setIsQuestionRunning(false);
             setShowScores(true);
             setClickedResponses({});
-            if (!isMaster) {
+
+            if (!isMaster && !sessionRecovery) {
                 setInitialPlayerData((prevData) => {
                     prevData[0].lastAnswerText = '';
                     prevData[0].lastQuestionNumber = 0;
