@@ -35,7 +35,7 @@ const MasterPrueba = ({ masterProps }) => {
     if (!sessionTime) {
         return (
             <>
-                <form>
+                <form onSubmit={setSessionTimeHandler}>
                     <label htmlFor="session">
                         Establezca la duración máxima de la sesión (en minutos)
                     </label>
