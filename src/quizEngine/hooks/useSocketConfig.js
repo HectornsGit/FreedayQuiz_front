@@ -55,6 +55,7 @@ const useSocketConfig = (argumentsData) => {
         setClickedResponses,
         isNameSetted,
         setIsMasterOnline,
+        questionsToDelete,
     } = argumentsData;
 
     useEffect(() => {
@@ -167,14 +168,29 @@ const useSocketConfig = (argumentsData) => {
         //Aquí el usuario ingresa su nombre de jugador, se setea su estado players y se envía al back para que este notifique a todos los usuarios de la sala, incluyendo el master:
         playerJoinedHandler(socket, setPlayerData, quizId);
 
-        quizEndedHandler(socket, router, loggedUserId, quizData);
+        quizEndedHandler(
+            socket,
+            router,
+            loggedUserId,
+            quizData,
+            quizId,
+            questionsToDelete
+        );
         return () => {
             if (socket) {
                 socket.off('playerJoined');
                 socket.off('quizEnded');
             }
         };
-    }, [router, socket, setPlayerData, quizId, loggedUserId, quizData]);
+    }, [
+        router,
+        socket,
+        setPlayerData,
+        quizId,
+        loggedUserId,
+        quizData,
+        questionsToDelete,
+    ]);
 
     //Recepción de las preguntas:
     //El back hace su lógica y emite el estado question, enviándo la primera pregunta. Aquí se escucha y se guarda en el estado question:

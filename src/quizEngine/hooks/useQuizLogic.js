@@ -163,6 +163,7 @@ const useQuizLogic = () => {
         setSessionTimeLeft,
         setClickedResponses,
         setIsMasterOnline,
+        questionsToDelete,
     });
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:
