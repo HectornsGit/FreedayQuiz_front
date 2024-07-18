@@ -44,6 +44,7 @@ const Page = () => {
         sessionTimeLeft,
         deleteQuestionHandler,
         clickedResponses,
+        getQuestionFromList,
     } = useQuizLogic();
 
     const masterProps = {
@@ -73,6 +74,7 @@ const Page = () => {
         setSessionTimeHandler,
         sessionTimeLeft,
         deleteQuestionHandler,
+        getQuestionFromList,
     };
 
     const playerProps = {
