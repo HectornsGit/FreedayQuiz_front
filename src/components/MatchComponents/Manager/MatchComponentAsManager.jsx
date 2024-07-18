@@ -1,10 +1,11 @@
 'use client';
 import TextInput from '@/components/TextInput';
+import Accordion from '@/components/Accordion';
 import NumberInput from '@/components/NumberInput';
 import Clock from '@/components/Clock';
-import ListAnswerInputs from './ListAnswerInputs';
 import YellowBgPencil from '@/components/icons/YellowBgPencil';
 import { useEffect, useState } from 'react';
+import AnswerInputComponent from './AnswerInputComponent';
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const {
@@ -35,38 +36,8 @@ const MatchComponentAsManager = ({ managerProps }) => {
         deleteQuestionHandler,
         getQuestionFromList,
     } = managerProps;
-
-    const answersInputsProps = [
-        {
-            text: 'Opción A',
-            id: 'optionA',
-            name: 'optionA',
-            value: findValue('optionA', shuffledQuestionResponses),
-            handleChange: handleQuestionChange,
-        },
-        {
-            text: 'Opción B',
-            id: 'optionB',
-            name: 'optionB',
-            value: findValue('optionB', shuffledQuestionResponses),
-            handleChange: handleQuestionChange,
-        },
-        {
-            text: 'Opción C',
-            id: 'optionC',
-            name: 'optionC',
-            value: findValue('optionC', shuffledQuestionResponses),
-            handleChange: handleQuestionChange,
-        },
-        {
-            text: 'Respuesta Correcta',
-            id: 'correctAnswer',
-            name: 'correctAnswer',
-            value: findValue('correctAnswer', shuffledQuestionResponses),
-            handleChange: handleQuestionChange,
-        },
-    ];
-
+    // Iconos para las respuestas.
+    const answerNames = ['🌞', '🌜', '🌟', '⚡'];
     const disableButton =
         showScores || (isQuestionRunning && timeLeft > 0) ? true : false;
 
@@ -122,22 +93,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     </article>
                 </section>
             )}
-            {playerData && (
-                <section>
-                    <h2>Jugadores: {connectedClients}</h2>
-                    <ul>
-                        {playerData.map((player) => (
-                            <li key={player.id}>
-                                Nickname: {player.name} Puntos:{' '}
-                                {player.totalScore} Streak: {player.streak}
-                                Puntos ultima pregunta:
-                                {player.lastCorrectAnswer}
-                                State: {player.state}
-                            </li>
-                        ))}
-                    </ul>
-                </section>
-            )}
             {loggedUserId && loggedUserId == quizData?.owner_id && (
                 <section className="flex flex-col justify-center">
                     {/* <form className="md:flex-row  justify-center items-center gap-2 flex flex-col">
@@ -164,45 +119,101 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             Envíar
                         </button>
                     </form> */}
-                    <form className="flex items-start flex-col">
-                        <NumberInput
-                            text={'Límite de tiempo (en segundos)'}
-                            id={'questionTime'}
-                            name={'questionTime'}
-                            isInput={isInput}
-                            value={findValue(
-                                'questionTime',
-                                shuffledQuestionResponses
-                            )}
-                            handleChange={handleQuestionChange}
-                        ></NumberInput>
-                        <TextInput
-                            text={'Texto pregunta'}
-                            id={'question'}
-                            name={'question'}
-                            value={findValue(
-                                'question',
-                                shuffledQuestionResponses
-                            )}
-                            handleChange={handleQuestionChange}
-                            isInput={isInput}
-                        ></TextInput>
-
-                        <ListAnswerInputs
-                            answerPropsList={answersInputsProps}
-                        ></ListAnswerInputs>
-
-                        {isInput && (
-                            <button
-                                className="text-black font-extrabold text-lg bg-white px-11 py-2 
+                    {question && (
+                        <form className="flex items-start flex-col">
+                            <NumberInput
+                                text={'Límite de tiempo (en segundos)'}
+                                id={'questionTime'}
+                                name={'questionTime'}
+                                isInput={isInput}
+                                value={findValue(
+                                    'questionTime',
+                                    shuffledQuestionResponses
+                                )}
+                                handleChange={handleQuestionChange}
+                            ></NumberInput>
+                            <TextInput
+                                text={'Texto pregunta'}
+                                id={'question'}
+                                name={'question'}
+                                value={question?.question}
+                                handleChange={handleQuestionChange}
+                                isInput={isInput}
+                            ></TextInput>
+                            <ul className="flex flex-col w-full items-center lg:gap-8 gap-6">
+                                <li
+                                    key={'correctAnswer'}
+                                    className={
+                                        'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                    }
+                                >
+                                    <AnswerInputComponent
+                                        logo={answerNames[0]}
+                                        defaultValue={question?.correctAnswer}
+                                        handleQuestionChange={
+                                            handleQuestionChange
+                                        }
+                                        id={'correctAnswer'}
+                                    ></AnswerInputComponent>
+                                </li>
+                                <li
+                                    key={'optionA'}
+                                    className={
+                                        'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                    }
+                                >
+                                    <AnswerInputComponent
+                                        logo={answerNames[1]}
+                                        defaultValue={question?.optionA}
+                                        handleQuestionChange={
+                                            handleQuestionChange
+                                        }
+                                        id={'optionA'}
+                                    ></AnswerInputComponent>
+                                </li>
+                                <li
+                                    key={'optionB'}
+                                    className={
+                                        'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                    }
+                                >
+                                    <AnswerInputComponent
+                                        logo={answerNames[2]}
+                                        defaultValue={question?.optionB}
+                                        handleQuestionChange={
+                                            handleQuestionChange
+                                        }
+                                        id={'optionB'}
+                                    ></AnswerInputComponent>
+                                </li>
+                                <li
+                                    key={'optionC'}
+                                    className={
+                                        'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                    }
+                                >
+                                    <AnswerInputComponent
+                                        logo={answerNames[3]}
+                                        defaultValue={question?.optionC}
+                                        handleQuestionChange={
+                                            handleQuestionChange
+                                        }
+                                        id={'optionC'}
+                                    ></AnswerInputComponent>
+                                </li>
+                            </ul>
+                            {isInput && (
+                                <button
+                                    className="text-black font-extrabold text-lg bg-white px-11 py-2 
     hover:bg-black hover:text-white hover:box-shadow-white mt-5 col-span-2"
-                                type="button"
-                                onClick={updateQuestionDataInBackend}
-                            >
-                                Actualiza la pregunta
-                            </button>
-                        )}
-                    </form>
+                                    type="button"
+                                    onClick={updateQuestionDataInBackend}
+                                >
+                                    Actualiza la pregunta
+                                </button>
+                            )}
+                        </form>
+                    )}
                     <button
                         className="text-black font-extrabold text-lg bg-white px-11 py-2 
     hover:bg-black hover:text-white hover:box-shadow-white mt-5"
@@ -235,7 +246,38 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     </button>
                 </section>
             )}
-            <button onClick={signOutHandler}>Cerrar sesión</button>
+            <button onClick={signOutHandler}>Cerrar sesión</button>{' '}
+            {playerData && (
+                <section>
+                    <h2>Jugadores: {connectedClients}</h2>
+                    <Accordion title={'mostrar jugadores'}>
+                        <header>conectados</header>
+                        <ul>
+                            {playerData
+                                .filter((player) => {
+                                    return player.state == 'online';
+                                })
+                                .map((player) => (
+                                    <li key={player.id}>
+                                        {player.name}:{player.totalScore}
+                                    </li>
+                                ))}
+                        </ul>{' '}
+                        <header>desconectados</header>
+                        <ul>
+                            {playerData
+                                .filter((player) => {
+                                    return player.state == 'offline';
+                                })
+                                .map((player) => (
+                                    <li key={player.id}>
+                                        {player.name}:{player.totalScore}
+                                    </li>
+                                ))}
+                        </ul>
+                    </Accordion>
+                </section>
+            )}
         </section>
     );
 };
