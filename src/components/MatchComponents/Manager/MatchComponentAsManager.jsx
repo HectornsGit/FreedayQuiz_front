@@ -33,6 +33,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
         setSessionTimeHandler,
         sessionTimeLeft,
         deleteQuestionHandler,
+        getQuestionFromList,
     } = managerProps;
 
     const answersInputsProps = [
@@ -65,6 +66,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
             handleChange: handleQuestionChange,
         },
     ];
+
     const disableButton =
         showScores || (isQuestionRunning && timeLeft > 0) ? true : false;
 
@@ -78,7 +80,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
                         Establezca la duración máxima de la sesión (en minutos)
                     </label>
                     <input type="text" id="session" name="session" required />
-
                     <button>Enviar</button>
                 </form>
             </>
@@ -86,11 +87,17 @@ const MatchComponentAsManager = ({ managerProps }) => {
     }
 
     return (
-        <section>
+        <section className="mx-6">
             <header>
-                <ul className="flex justify-between">
+                <ul className="flex grow  h-12 items-center justify-between">
                     <li>
-                        {sessionTimeLeft && <Clock time={sessionTimeLeft} />}
+                        {sessionTimeLeft > 0 && (
+                            <Clock
+                                time={sessionTimeLeft}
+                                setSessionTimeHandler={setSessionTimeHandler}
+                                isInput={isInput}
+                            />
+                        )}
                     </li>
                     <li>
                         <button
@@ -100,7 +107,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             }}
                         >
                             <YellowBgPencil
-                                className={'rounded-sm p-1 w-10 h-10'}
+                                className={'rounded-sm p-1 w-8'}
                             ></YellowBgPencil>
                         </button>
                     </li>
@@ -170,7 +177,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             handleChange={handleQuestionChange}
                         ></NumberInput>
                         <TextInput
-                            text={'Pregunta Siguiente'}
+                            text={'Texto pregunta'}
                             id={'question'}
                             name={'question'}
                             value={findValue(
@@ -185,14 +192,16 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             answerPropsList={answersInputsProps}
                         ></ListAnswerInputs>
 
-                        <button
-                            className="text-black font-extrabold text-lg bg-white px-11 py-2 
+                        {isInput && (
+                            <button
+                                className="text-black font-extrabold text-lg bg-white px-11 py-2 
     hover:bg-black hover:text-white hover:box-shadow-white mt-5 col-span-2"
-                            type="button"
-                            onClick={updateQuestionDataInBackend}
-                        >
-                            Actualiza la pregunta
-                        </button>
+                                type="button"
+                                onClick={updateQuestionDataInBackend}
+                            >
+                                Actualiza la pregunta
+                            </button>
+                        )}
                     </form>
                     <button
                         className="text-black font-extrabold text-lg bg-white px-11 py-2 
