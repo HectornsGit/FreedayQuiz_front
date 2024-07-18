@@ -26,6 +26,7 @@ const MasterPrueba = ({ masterProps }) => {
         setSessionTimeHandler,
         sessionTimeLeft,
         deleteQuestionHandler,
+        getQuestionFromList,
     } = masterProps;
 
     const disableButton =
@@ -80,7 +81,19 @@ const MasterPrueba = ({ masterProps }) => {
             )}
             {question && (
                 <>
-                    <p>Tiempo restante: {timeLeft}</p>
+                    <h2>Lista desplegable de preguntas</h2>
+                    <select onChange={getQuestionFromList}>
+                        {quizData &&
+                            quizData.list_of_questions.map(
+                                (question, index) => (
+                                    <option key={index} value={question.number}>
+                                        {`Pregunta número: ${question.number}: ${question.title}`}
+                                    </option>
+                                )
+                            )}
+                    </select>
+
+                    <p>{timeLeft ? `Tiempo restante: ${timeLeft}` : null}</p>
                     <p>Pregunta: {question?.question}</p>
                     <p>Pregunta número: {question?.questionNumber}</p>
                     <ul>

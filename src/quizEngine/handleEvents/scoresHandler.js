@@ -1,4 +1,5 @@
 'use client';
+import { getItemWithExpiry } from '../utils';
 import { toast } from 'react-toastify';
 
 const scoresHandler = (
@@ -10,8 +11,8 @@ const scoresHandler = (
 ) => {
     if (socket) {
         socket.on('scores', () => {
-            const playerName = window.localStorage.getItem('playerName');
-            const isMaster = window.localStorage.getItem('isMaster');
+            const playerName = getItemWithExpiry('playerName');
+            const isMaster = getItemWithExpiry('isMaster');
 
             if (!playerName && !isMaster) {
                 toast.warning(

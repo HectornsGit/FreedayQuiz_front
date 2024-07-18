@@ -1,3 +1,4 @@
+import { setItemWithExpiry } from '../utils';
 const quizDataHandler = (
     socket,
     setQuizData,
@@ -10,7 +11,7 @@ const quizDataHandler = (
         socket.on('quizData', (data, playersData, currentQuestion) => {
             setIsMasterOnline(true);
             if (loggedUserId && data.owner_id == loggedUserId) {
-                window.localStorage.setItem('isMaster', true);
+                setItemWithExpiry('isMaster', true, 12);
                 setQuizData(data);
                 if (playersData.length > 0) setPlayerData(playersData);
                 if (currentQuestion) setQuestion(currentQuestion);

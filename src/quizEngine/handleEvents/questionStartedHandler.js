@@ -1,5 +1,6 @@
 'use client';
 import { toast } from 'react-toastify';
+import { getItemWithExpiry } from '../utils';
 
 const questionStartedHandler = (
     socket,
@@ -9,8 +10,8 @@ const questionStartedHandler = (
 ) => {
     if (socket) {
         socket.on('questionStarted', () => {
-            const playerName = window.localStorage.getItem('playerName');
-            const isMaster = window.localStorage.getItem('isMaster');
+            const playerName = getItemWithExpiry('playerName');
+            const isMaster = getItemWithExpiry('isMaster');
 
             if (!playerName && !isMaster) {
                 toast.warning(
