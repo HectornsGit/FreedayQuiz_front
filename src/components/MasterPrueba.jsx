@@ -27,6 +27,7 @@ const MasterPrueba = ({ masterProps }) => {
         sessionTimeLeft,
         deleteQuestionHandler,
         getQuestionFromList,
+        startRandomQuestion,
     } = masterProps;
 
     const disableControlButtons =
@@ -82,13 +83,19 @@ const MasterPrueba = ({ masterProps }) => {
             )}
             {question && (
                 <>
+                    <button
+                        disabled={disableQuestionsButton}
+                        onClick={startRandomQuestion}
+                    >
+                        Iniciar pregunta aleatoria
+                    </button>
                     <h2>Lista desplegable de preguntas</h2>
                     <select
                         onChange={getQuestionFromList}
                         disabled={disableQuestionsButton}
                     >
                         {quizData &&
-                            quizData.list_of_questions.map(
+                            quizData.list_of_questions?.map(
                                 (question, index) => (
                                     <option key={index} value={question.number}>
                                         {`Pregunta número: ${question.number}: ${question.title}`}

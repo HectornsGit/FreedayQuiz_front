@@ -23,10 +23,8 @@ const sendUpdatedQuizData = (
                 quizId,
                 backClickedResponses
             ) => {
-                //Lógica para recuperar la sesión después de refrescar la página:
                 if (sessionRecovery) {
                     const storedId = getItemWithExpiry('idNewPlayer');
-
                     setClickedResponses({});
                     let recoveryPlayer;
                     if (storedId) {
