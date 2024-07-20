@@ -63,7 +63,13 @@ const useSocketConfig = (argumentsData) => {
 
     useEffect(() => {
         //Crear conexión y guardarla en un estado:
-        const socketInstance = io(process.env.NEXT_PUBLIC_API_HOST);
+        const socketInstance = io(process.env.NEXT_PUBLIC_API_HOST, {
+            reconnection: true,
+            reconnectionAttempts: Infinity,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
+            randomizationFactor: 0.5,
+        });
         setSocket(socketInstance);
 
         //Se escucha el estado connect, que es el momento en el que el front se conecta con el back. En ese instante se setea el estado joinedQuiz a true para que no se instancien más conexiones si la página se renderiza nuevamente:

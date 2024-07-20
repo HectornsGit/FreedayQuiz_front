@@ -11,6 +11,10 @@ const setSessionTimeHandler =
             alert('El tiempo de sesión no puede superar 24 horas');
             return;
         }
+        if (duration <= 0) {
+            alert('Debes introducir un número mayor que 0');
+            return;
+        }
 
         setItemWithExpiry('QuizSessionDuration', duration, 12);
         setSessionTime(duration);

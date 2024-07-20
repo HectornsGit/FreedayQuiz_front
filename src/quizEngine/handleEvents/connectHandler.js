@@ -12,9 +12,10 @@ const connectHandler = (
         //Se envía el quizId al back para unir a los jugadores a una sala:
         socketInstance.emit('joinRoom', quizId);
         const isMaster = getItemWithExpiry('isMaster');
+        const sessionTime = getItemWithExpiry('QuizSessionDuration');
 
         //Si el tiempo de la sesión de cerró por fallo del servidor, el master envía petición de restablecer:
-        if (isMaster) {
+        if (isMaster && sessionTime) {
             if (socketInstance) {
                 socketInstance.emit('restartSessionTime', quizId);
             }
@@ -25,7 +26,6 @@ const connectHandler = (
             console.log('Reconnected to server');
             toast.success('Reconnected to server');
             setJoinedQuiz(true);
-            socketInstance.emit('requestRecoveryData', quizId);
         } else {
             console.log('Connected to server');
             toast.success('Connected to server');
