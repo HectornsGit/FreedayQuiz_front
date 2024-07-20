@@ -21,6 +21,7 @@ import questionDeletedHandler from './questionDeletedHandler';
 import answerMessage from './answerMessage';
 import firstDataHandler from './firstDataHandler';
 import getResults from './getResults';
+import restartTimeSession from './restartTimeSession';
 export {
     connectHandler,
     errorHandler,
@@ -42,6 +43,7 @@ export {
     timeUpHandler,
     scoresHandler,
     sessionTimeLeftHandler,
+    restartTimeSession,
     questionDeletedHandler,
     answerMessage,
     firstDataHandler,

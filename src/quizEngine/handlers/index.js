@@ -12,6 +12,7 @@ import setSessionTimeHandler from './setSessionTimeHandler';
 import deleteQuestionHandler from './deleteQuestionHandler';
 import questionDeletedHandler from '../handleEvents/questionDeletedHandler';
 import getQuestionFromList from './getQuestionFromList';
+import startRandomQuestion from './startRandomQuestion';
 
 export {
     nextQuestionHandler,
@@ -28,4 +29,5 @@ export {
     recoverySession,
     setSessionTimeHandler,
     getQuestionFromList,
+    startRandomQuestion,
 };

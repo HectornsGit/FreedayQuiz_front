@@ -27,10 +27,12 @@ const MasterPrueba = ({ masterProps }) => {
         sessionTimeLeft,
         deleteQuestionHandler,
         getQuestionFromList,
+        startRandomQuestion,
     } = masterProps;
 
-    const disableButton =
+    const disableControlButtons =
         showScores || (isQuestionRunning && timeLeft > 0) ? true : false;
+    const disableQuestionsButton = isQuestionRunning ? true : false;
 
     if (!sessionTime) {
         return (
@@ -81,10 +83,19 @@ const MasterPrueba = ({ masterProps }) => {
             )}
             {question && (
                 <>
+                    <button
+                        disabled={disableQuestionsButton}
+                        onClick={startRandomQuestion}
+                    >
+                        Iniciar pregunta aleatoria
+                    </button>
                     <h2>Lista desplegable de preguntas</h2>
-                    <select onChange={getQuestionFromList}>
+                    <select
+                        onChange={getQuestionFromList}
+                        disabled={disableQuestionsButton}
+                    >
                         {quizData &&
-                            quizData.list_of_questions.map(
+                            quizData.list_of_questions?.map(
                                 (question, index) => (
                                     <option key={index} value={question.number}>
                                         {`Pregunta número: ${question.number}: ${question.title}`}
@@ -203,7 +214,11 @@ const MasterPrueba = ({ masterProps }) => {
 
                         <button type="submit">Actualiza la pregunta</button>
                     </form>
-                    <button type="button" onClick={deleteQuestionHandler}>
+                    <button
+                        disabled={disableQuestionsButton}
+                        type="button"
+                        onClick={deleteQuestionHandler}
+                    >
                         Elimina la pregunta
                     </button>
                 </>
@@ -211,10 +226,14 @@ const MasterPrueba = ({ masterProps }) => {
             {loggedUserId && loggedUserId == quizData?.owner_id && (
                 <>
                     <button onClick={endQuiz}>Finalizar sesión</button>
-                    <button onClick={previousQuestionHandler}>
+                    <button
+                        disabled={disableQuestionsButton}
+                        onClick={previousQuestionHandler}
+                    >
                         Pregunta anterior
                     </button>
                     <button
+                        disabled={disableQuestionsButton}
                         onClick={
                             question ? nextQuestionHandler : handleStartQuiz
                         }
@@ -226,7 +245,7 @@ const MasterPrueba = ({ masterProps }) => {
                     </button>
                     <button
                         onClick={showScoresHandler}
-                        disabled={disableButton}
+                        disabled={disableControlButtons}
                     >
                         Mostrar puntaciones
                     </button>

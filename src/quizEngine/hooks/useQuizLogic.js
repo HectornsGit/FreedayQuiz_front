@@ -27,6 +27,7 @@ import {
     setSessionTimeHandler,
     deleteQuestionHandler,
     getQuestionFromList,
+    startRandomQuestion,
 } from '../handlers/index';
 
 const useQuizLogic = () => {
@@ -61,6 +62,7 @@ const useQuizLogic = () => {
     const [sessionTimeLeft, setSessionTimeLeft] = useState(0);
     const [connectedClients, setConnectedClients] = useState(0);
     const [, setIsMasterOnline] = useState(false);
+    const [questionsExecuted, setQuestionsExecuted] = useState([]);
 
     //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
     const loggedUserId = session?.user.data.id;
@@ -77,10 +79,11 @@ const useQuizLogic = () => {
 
     //Solo para el master:
     quizSessionDuration = getItemWithExpiry('QuizSessionDuration');
+    let isMaster = getItemWithExpiry('isMaster');
 
     //Solo se ejecutará una vez al montar el componente, para evitar el bucle infinito de renderizaciones:
     useEffect(() => {
-        if (!playerId) {
+        if (!playerId && !isMaster) {
             playerId = uuidv4();
             setItemWithExpiry('idNewPlayer', playerId, 12);
             setItemWithExpiry('quizId', quizId, 12);
@@ -161,8 +164,11 @@ const useQuizLogic = () => {
         setInitialPlayerData,
         playerId,
         setSessionTimeLeft,
+        sessionTime,
         setClickedResponses,
         setIsMasterOnline,
+        questionsToDelete,
+        setQuestionsExecuted,
     });
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:
@@ -191,7 +197,14 @@ const useQuizLogic = () => {
         previousQuestionHandler: () =>
             previousQuestionHandler(question, quizData, socket, quizId),
         handleAnswerSubmit,
-        initQuestion: () => initQuestion(socket, quizId, question),
+        initQuestion: () =>
+            initQuestion(
+                socket,
+                quizId,
+                question,
+                setQuestionsExecuted,
+                questionsExecuted
+            ),
         handleStartQuiz,
         showScoresHandler: () => showScoresHandler(socket, quizId, playerData),
         handleInitialPlayerData,
@@ -243,6 +256,15 @@ const useQuizLogic = () => {
         getQuestionFromList: getQuestionFromList(quizId, socket),
         sessionTimeLeft,
         clickedResponses,
+        startRandomQuestion: () =>
+            startRandomQuestion(
+                socket,
+                setQuestionsExecuted,
+                questionsExecuted,
+                quizData?.number_of_questions,
+                quizId,
+                quizData.list_of_questions
+            ),
     };
 };
 export default useQuizLogic;

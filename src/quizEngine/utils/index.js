@@ -5,6 +5,7 @@ import signOutHandler from './signOutHandler';
 import calculateResults from './calculateResults';
 import setItemWithExpiry from './setItemWithExpity';
 import getItemWithExpiry from './getItemWithExpiry';
+import selectRandomQuestion from './selectRandomQuestion';
 export {
     findValue,
     shuffleArray,
@@ -13,4 +14,5 @@ export {
     calculateResults,
     setItemWithExpiry,
     getItemWithExpiry,
+    selectRandomQuestion,
 };
