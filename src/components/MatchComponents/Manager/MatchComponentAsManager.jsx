@@ -96,30 +96,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
             )}
             {loggedUserId && loggedUserId == quizData?.owner_id && (
                 <section className="flex-col justify-center">
-                    {/* <form className="md:flex-row  justify-center items-center gap-2 flex flex-col">
-                        <TextInput
-                            text={'Título'}
-                            id={'title'}
-                            value={quizData?.title}
-                            handleChange={handleQuizChange}
-                            isInput={isInput}
-                        ></TextInput>
-                        <TextInput
-                            text={'Descripción'}
-                            id={'description'}
-                            value={quizData?.description}
-                            handleChange={handleQuizChange}
-                            isInput={isInput}
-                        ></TextInput>
-
-                        <button
-                            className="text-black font-extrabold text-lg bg-white px-11 py-2 
-    hover:bg-black hover:text-white hover:box-shadow-white mt-5"
-                            onClick={updateQuizDataInBackend}
-                        >
-                            Envíar
-                        </button>
-                    </form> */}
                     {question && (
                         <form className="flex items-start flex-col">
                             <NumberInput
