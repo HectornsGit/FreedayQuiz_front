@@ -6,6 +6,7 @@ import Clock from '@/components/Clock';
 import YellowBgPencil from '@/components/icons/YellowBgPencil';
 import { useEffect, useState } from 'react';
 import AnswerInputComponent from './AnswerInputComponent';
+import ManagerButton from './ManagerButton';
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const {
@@ -94,7 +95,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                 </section>
             )}
             {loggedUserId && loggedUserId == quizData?.owner_id && (
-                <section className="flex flex-col justify-center">
+                <section className="flex-col justify-center">
                     {/* <form className="md:flex-row  justify-center items-center gap-2 flex flex-col">
                         <TextInput
                             text={'Título'}
@@ -136,7 +137,10 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 text={'Texto pregunta'}
                                 id={'question'}
                                 name={'question'}
-                                value={question?.question}
+                                value={findValue(
+                                    'question',
+                                    shuffledQuestionResponses
+                                )}
                                 handleChange={handleQuestionChange}
                                 isInput={isInput}
                             ></TextInput>
@@ -214,22 +218,28 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             )}
                         </form>
                     )}
-                    <button
-                        className="text-black font-extrabold text-lg bg-white px-11 py-2 
-    hover:bg-black hover:text-white hover:box-shadow-white mt-5"
-                        onClick={
-                            question ? nextQuestionHandler : handleStartQuiz
-                        }
-                    >
-                        Nueva pregunta
-                    </button>
-                    <button
-                        className="text-black font-extrabold text-lg bg-white px-11 py-2 
-    hover:bg-black hover:text-white hover:box-shadow-white mt-5"
-                        onClick={initQuestion}
-                    >
-                        Iniciar pregunta para los jugadores
-                    </button>
+                    <ul className="flex gap-4">
+                        <li>
+                            <ManagerButton
+                                text="Nueva pregunta"
+                                isPrimary={false}
+                                disabled={false}
+                                handleClick={
+                                    question
+                                        ? nextQuestionHandler
+                                        : handleStartQuiz
+                                }
+                            />
+                        </li>
+                        <li>
+                            <ManagerButton
+                                text="Iniciar pregunta"
+                                isPrimary={true}
+                                disabled={false}
+                                handleClick={initQuestion}
+                            />
+                        </li>
+                    </ul>
                     <button
                         className="text-black font-extrabold text-lg bg-white px-11 py-2 
     hover:bg-black hover:text-white hover:box-shadow-white mt-5"
