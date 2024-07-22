@@ -24,6 +24,7 @@ import {
     answerMessage,
     firstDataHandler,
     getResults,
+    restartTimeSession,
 } from '../handleEvents';
 
 const useSocketConfig = (argumentsData) => {
@@ -55,15 +56,30 @@ const useSocketConfig = (argumentsData) => {
         setClickedResponses,
         isNameSetted,
         setIsMasterOnline,
+        questionsToDelete,
+        setQuestionsExecuted,
+        sessionTime,
     } = argumentsData;
 
     useEffect(() => {
         //Crear conexión y guardarla en un estado:
-        const socketInstance = io(process.env.NEXT_PUBLIC_API_HOST);
+        const socketInstance = io(process.env.NEXT_PUBLIC_API_HOST, {
+            reconnection: true,
+            reconnectionAttempts: Infinity,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
+            randomizationFactor: 0.5,
+        });
         setSocket(socketInstance);
 
         //Se escucha el estado connect, que es el momento en el que el front se conecta con el back. En ese instante se setea el estado joinedQuiz a true para que no se instancien más conexiones si la página se renderiza nuevamente:
-        connectHandler(socketInstance, setJoinedQuiz, quizId, playerId);
+        connectHandler(
+            socketInstance,
+            setJoinedQuiz,
+            quizId,
+            playerId,
+            loggedUserId
+        );
 
         //Aquí recibo los errores del back y los guardo en un estado:
         errorHandler(socketInstance, setError);
@@ -78,17 +94,17 @@ const useSocketConfig = (argumentsData) => {
                 socketInstance.disconnect();
             }
         };
-    }, [setSocket, setError, setJoinedQuiz, quizId, playerId]);
+    }, [setSocket, setError, setJoinedQuiz, quizId, playerId, loggedUserId]);
 
     //Si se conecta el master, se envía la petición de datos del quiz:
     useEffect(() => {
-        getQuizDataHandler(socket, quizId, loggedUserId, setQuizData);
+        getQuizDataHandler(socket, quizId, loggedUserId);
         return () => {
             if (socket) {
                 socket.off('getQuizData');
             }
         };
-    }, [socket, quizId, loggedUserId, setQuizData]);
+    }, [socket, quizId, loggedUserId]);
 
     // Traigo los datos principales del quiz y los guardo en el estado quizData para que estén disponibles inmediatamente:
     useEffect(() => {
@@ -98,7 +114,8 @@ const useSocketConfig = (argumentsData) => {
             setPlayerData,
             setQuestion,
             loggedUserId,
-            setIsMasterOnline
+            setIsMasterOnline,
+            setQuestionsExecuted
         );
         return () => {
             if (socket) {
@@ -112,6 +129,7 @@ const useSocketConfig = (argumentsData) => {
         setQuestion,
         loggedUserId,
         setIsMasterOnline,
+        setQuestionsExecuted,
     ]);
 
     //Recuperar los datos de los jugadores, el quiz y la pregunta actual cuando se reconecta:
@@ -127,7 +145,8 @@ const useSocketConfig = (argumentsData) => {
             sessionRecovery,
             setSessionRecovery,
             setInitialPlayerData,
-            setClickedResponses
+            setClickedResponses,
+            setQuestionsExecuted
         );
         return () => {
             if (socket) {
@@ -146,6 +165,7 @@ const useSocketConfig = (argumentsData) => {
         setSessionRecovery,
         setInitialPlayerData,
         setClickedResponses,
+        setQuestionsExecuted,
     ]);
 
     //Aquí controla el master cuando iniciar cada pregunta:
@@ -167,14 +187,29 @@ const useSocketConfig = (argumentsData) => {
         //Aquí el usuario ingresa su nombre de jugador, se setea su estado players y se envía al back para que este notifique a todos los usuarios de la sala, incluyendo el master:
         playerJoinedHandler(socket, setPlayerData, quizId);
 
-        quizEndedHandler(socket, router, loggedUserId, quizData);
+        quizEndedHandler(
+            socket,
+            router,
+            loggedUserId,
+            quizData,
+            quizId,
+            questionsToDelete
+        );
         return () => {
             if (socket) {
                 socket.off('playerJoined');
                 socket.off('quizEnded');
             }
         };
-    }, [router, socket, setPlayerData, quizId, loggedUserId, quizData]);
+    }, [
+        router,
+        socket,
+        setPlayerData,
+        quizId,
+        loggedUserId,
+        quizData,
+        questionsToDelete,
+    ]);
 
     //Recepción de las preguntas:
     //El back hace su lógica y emite el estado question, enviándo la primera pregunta. Aquí se escucha y se guarda en el estado question:
@@ -205,14 +240,15 @@ const useSocketConfig = (argumentsData) => {
     //Actualizar los datos del quiz que se editan en tiempo real y sincronizarlos en todos los clientes de la sala:
     useEffect(() => {
         editedQuizData(socket, setQuizData, loggedUserId);
-        firstDataHandler(socket, setQuizData);
+        firstDataHandler(socket, setQuizData, quizId);
         return () => {
             if (socket) {
                 socket.off('quizUpdatedMessage');
                 socket.off('firstData');
+                socket.off('startSession');
             }
         };
-    }, [setQuizData, socket, loggedUserId]);
+    }, [setQuizData, socket, loggedUserId, quizId]);
 
     //Actualizar las preguntas que se editan en tiempo real y sincronizarlos en todos los clientes de la sala:
     useEffect(() => {
@@ -244,6 +280,16 @@ const useSocketConfig = (argumentsData) => {
         };
     }, [socket, setSessionTimeLeft]);
 
+    //Cuando el servidor se cae, al regresar se envía de nuevo el tiempo de la sesión:
+    useEffect(() => {
+        restartTimeSession(socket, quizId);
+        return () => {
+            if (socket) {
+                socket.off('needToRestartSession');
+            }
+        };
+    }, [socket, quizId]);
+
     //Actualización del estado contador:
     useEffect(() => {
         timeUpHandler(socket, setIsDisabled, playerData, quizId);
@@ -261,7 +307,8 @@ const useSocketConfig = (argumentsData) => {
             setIsQuestionRunning,
             setShowScores,
             setClickedResponses,
-            setInitialPlayerData
+            setInitialPlayerData,
+            sessionRecovery
         );
         return () => {
             if (socket) {
@@ -274,6 +321,7 @@ const useSocketConfig = (argumentsData) => {
         setShowScores,
         setClickedResponses,
         setInitialPlayerData,
+        sessionRecovery,
     ]);
 
     //Cada vez que se conecta o desconecta un cliente, se envía el nuevo estado a todos los clientes de la sala:
