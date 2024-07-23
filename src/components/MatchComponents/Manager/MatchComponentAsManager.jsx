@@ -36,11 +36,15 @@ const MatchComponentAsManager = ({ managerProps }) => {
         sessionTimeLeft,
         deleteQuestionHandler,
         getQuestionFromList,
+        startRandomQuestion,
     } = managerProps;
+
     // Iconos para las respuestas.
     const answerNames = ['🌞', '🌜', '🌟', '⚡'];
+
     const disableButton =
         showScores || (isQuestionRunning && timeLeft > 0) ? true : false;
+    const disableQuestionsButton = isQuestionRunning ? true : false;
 
     const [isInput, setIsInput] = useState(false);
 
@@ -51,7 +55,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     <label htmlFor="session">
                         Establezca la duración máxima de la sesión (en minutos)
                     </label>
-                    <input type="text" id="session" name="session" required />
+                    <input type="number" id="session" name="session" required />
                     <button>Enviar</button>
                 </form>
             </>
@@ -59,8 +63,8 @@ const MatchComponentAsManager = ({ managerProps }) => {
     }
 
     return (
-        <section className="mx-6">
-            <header>
+        <section className="w-11/12 mx-2">
+            <header className="flex flex-col">
                 <ul className="flex grow  h-12 items-center justify-between">
                     <li>
                         {sessionTimeLeft > 0 && (
@@ -84,43 +88,60 @@ const MatchComponentAsManager = ({ managerProps }) => {
                         </button>
                     </li>
                 </ul>
+                {quizData && (
+                    <h1 className="text-3xl font-bold">{quizData?.title}</h1>
+                )}
             </header>
-            {quizData && (
-                <section className="border-red-500 border">
-                    <article>
-                        <h1 className="text-3xl font-bold">
-                            {quizData?.title}
-                        </h1>
-                    </article>
-                </section>
-            )}
             {loggedUserId && loggedUserId == quizData?.owner_id && (
                 <section className="flex-col justify-center">
                     {question && (
-                        <form className="flex items-start flex-col">
+                        <form
+                            id={'questionForm'}
+                            onSubmit={updateQuestionDataInBackend}
+                            className="flex sm:items-center items-start gap-4 flex-col"
+                        >
                             <NumberInput
                                 text={'Límite de tiempo (en segundos)'}
                                 id={'questionTime'}
                                 name={'questionTime'}
                                 isInput={isInput}
-                                value={findValue(
-                                    'questionTime',
-                                    shuffledQuestionResponses
-                                )}
+                                defaultValue={question.questionTime}
                                 handleChange={handleQuestionChange}
                             ></NumberInput>
-                            <TextInput
-                                text={'Texto pregunta'}
-                                id={'question'}
-                                name={'question'}
-                                value={findValue(
-                                    'question',
-                                    shuffledQuestionResponses
-                                )}
-                                handleChange={handleQuestionChange}
-                                isInput={isInput}
-                            ></TextInput>
-                            <ul className="flex flex-col w-full items-center lg:gap-8 gap-6">
+                            {isInput ? (
+                                <TextInput
+                                    text={'Texto pregunta'}
+                                    id={'question'}
+                                    name={'question'}
+                                    value={findValue(
+                                        'question',
+                                        shuffledQuestionResponses
+                                    )}
+                                    handleChange={handleQuestionChange}
+                                    isInput={isInput}
+                                ></TextInput>
+                            ) : (
+                                <p>Texto pregunta</p>
+                            )}
+                            <select
+                                className=" sm:w-96 w-full font-bold mb-4  p-2  text-black text-md py-2"
+                                onChange={getQuestionFromList}
+                                disabled={disableQuestionsButton}
+                            >
+                                {quizData &&
+                                    quizData.list_of_questions?.map(
+                                        (question, index) => (
+                                            <option
+                                                className="font-semibold py-2 selection:bg-slate-400"
+                                                key={index}
+                                                value={question.number}
+                                            >
+                                                {`${question.number}. ${question.title}`}
+                                            </option>
+                                        )
+                                    )}
+                            </select>
+                            <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6">
                                 <li
                                     key={'correctAnswer'}
                                     className={
@@ -133,7 +154,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                         handleQuestionChange={
                                             handleQuestionChange
                                         }
+                                        isInput={isInput}
                                         id={'correctAnswer'}
+                                        updateForm={updateQuestionDataInBackend}
                                     ></AnswerInputComponent>
                                 </li>
                                 <li
@@ -148,6 +171,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                         handleQuestionChange={
                                             handleQuestionChange
                                         }
+                                        isInput={isInput}
                                         id={'optionA'}
                                     ></AnswerInputComponent>
                                 </li>
@@ -163,6 +187,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                         handleQuestionChange={
                                             handleQuestionChange
                                         }
+                                        isInput={isInput}
                                         id={'optionB'}
                                     ></AnswerInputComponent>
                                 </li>
@@ -178,6 +203,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                         handleQuestionChange={
                                             handleQuestionChange
                                         }
+                                        isInput={isInput}
                                         id={'optionC'}
                                     ></AnswerInputComponent>
                                 </li>
@@ -186,8 +212,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 <button
                                     className="text-black font-extrabold text-lg bg-white px-11 py-2 
     hover:bg-black hover:text-white hover:box-shadow-white mt-5 col-span-2"
-                                    type="button"
-                                    onClick={updateQuestionDataInBackend}
+                                    type="submit"
                                 >
                                     Actualiza la pregunta
                                 </button>
@@ -216,13 +241,12 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             />
                         </li>
                     </ul>
-                    <button
-                        className="text-black font-extrabold text-lg bg-white px-11 py-2 
-    hover:bg-black hover:text-white hover:box-shadow-white mt-5"
-                        onClick={showScoresHandler}
-                    >
-                        Mostrar puntaciones
-                    </button>
+                    <ManagerButton
+                        isPrimary={true}
+                        handleClick={showScoresHandler}
+                        disabled={true}
+                        text="Puntaciones"
+                    ></ManagerButton>
                     <button
                         className="text-black font-extrabold text-lg bg-white px-11 py-2 
     hover:bg-black hover:text-white hover:box-shadow-white mt-5"

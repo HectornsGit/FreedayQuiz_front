@@ -1,9 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
-
-const AnswerInputComponent = ({ defaultValue, logo, id }) => {
+const AnswerInputComponent = ({ isInput, defaultValue, logo, id }) => {
     const [value, setValue] = useState(defaultValue);
-    const [isInput, setIsInput] = useState(false);
+
     useEffect(() => {
         setValue(defaultValue);
     }, [defaultValue]);
@@ -24,20 +23,10 @@ const AnswerInputComponent = ({ defaultValue, logo, id }) => {
                     e.preventDefault();
                     setValue(e.target.value);
                 }}
-                onBlur={(e) => {
-                    e.preventDefault();
-                    setIsInput(false);
-                }}
             />
         </div>
     ) : (
-        <button
-            onClick={(e) => {
-                e.preventDefault();
-                setIsInput(!isInput);
-            }}
-            className=" flex items-center  h-full gap-6 text-start text-2xl p-4 sm:w-96  w-[95vw]  hover:bg-inherit bg-black "
-        >
+        <div className=" flex items-center  h-full gap-6 text-start text-2xl p-4 sm:w-96  w-[95vw]  hover:bg-inherit bg-black ">
             <span className="font-bold">{logo}</span>
             <span
                 className={
@@ -45,11 +34,10 @@ const AnswerInputComponent = ({ defaultValue, logo, id }) => {
                         ? ' lg:text-xl md:text-md text-sm'
                         : 'lg:text-2xl md:text-xl text-base') + ' font-semibold'
                 }
-                isInput={isInput}
             >
                 {value}
             </span>
-        </button>
+        </div>
     );
 };
 export default AnswerInputComponent;
