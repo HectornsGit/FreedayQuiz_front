@@ -2,7 +2,6 @@
 import MatchComponentAsManager from '@/components/MatchComponents/Manager/MatchComponentAsManager';
 import PlayerPrueba from '@/components/PlayerPrueba';
 import useQuizLogic from '@/quizEngine/hooks/useQuizLogic';
-import { signOut } from 'next-auth/react';
 
 const Page = () => {
     const {
@@ -45,9 +44,10 @@ const Page = () => {
         deleteQuestionHandler,
         clickedResponses,
         getQuestionFromList,
+        startRandomQuestion,
     } = useQuizLogic();
 
-    const masterProps = {
+    const managerProps = {
         signOutHandler,
         endQuiz,
         findValue,
@@ -75,8 +75,8 @@ const Page = () => {
         sessionTimeLeft,
         deleteQuestionHandler,
         getQuestionFromList,
+        startRandomQuestion,
     };
-
     const playerProps = {
         signOutHandler,
         handleInitialPlayerData,
@@ -106,9 +106,9 @@ const Page = () => {
     }
 
     return (
-        <section className="h-fit flex flex-col w-full  items-center content-center gap-8 text-center mb-14">
+        <section className="h-fit flex flex-col items-center content-center gap-8 text-center mb-14">
             {loggedUserId && loggedUserId == quizData?.owner_id ? (
-                <MatchComponentAsManager managerProps={masterProps} />
+                <MatchComponentAsManager managerProps={managerProps} />
             ) : (
                 <PlayerPrueba playerProps={playerProps} />
             )}
