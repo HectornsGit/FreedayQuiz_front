@@ -1,11 +1,14 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const AnswerInputComponent = ({ defaultValue, logo, id }) => {
     const [value, setValue] = useState(defaultValue);
     const [isInput, setIsInput] = useState(false);
+    useEffect(() => {
+        setValue(defaultValue);
+    }, [defaultValue]);
     return isInput ? (
-        <div className=" flex items-center h-full gap-6 text-start text-2xl p-4  bg-black w-96">
+        <div className=" flex items-center h-full gap-6 text-start text-2xl p-4  bg-black sm:w-96 w-[95vw] ">
             <span className="font-bold">{logo}</span>
             <input
                 className={
@@ -18,9 +21,11 @@ const AnswerInputComponent = ({ defaultValue, logo, id }) => {
                 id={id}
                 name={id}
                 onChange={(e) => {
+                    e.preventDefault();
                     setValue(e.target.value);
                 }}
                 onBlur={(e) => {
+                    e.preventDefault();
                     setIsInput(false);
                 }}
             />
@@ -31,7 +36,7 @@ const AnswerInputComponent = ({ defaultValue, logo, id }) => {
                 e.preventDefault();
                 setIsInput(!isInput);
             }}
-            className=" flex items-center  h-full gap-6 text-start text-2xl p-4 w-96   hover:bg-inherit bg-black "
+            className=" flex items-center  h-full gap-6 text-start text-2xl p-4 sm:w-96  w-[95vw]  hover:bg-inherit bg-black "
         >
             <span className="font-bold">{logo}</span>
             <span
