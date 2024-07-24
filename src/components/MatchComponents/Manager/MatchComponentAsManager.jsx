@@ -1,6 +1,5 @@
 'use client';
 import QuestionTitleInput from './QuestionTitleInput';
-import Accordion from '@/components/Accordion';
 import NumberInput from '@/components/NumberInput';
 import Clock from '@/components/Clock';
 import YellowBgPencil from '@/components/icons/YellowBgPencil';
