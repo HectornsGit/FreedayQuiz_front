@@ -107,7 +107,6 @@ const Page = () => {
 
     return (
         <>
-            {' '}
             {loggedUserId && loggedUserId == quizData?.owner_id ? (
                 <MasterPrueba masterProps={masterProps} />
             ) : (
