@@ -5,7 +5,7 @@ const startRandomQuestion = (
     questionsExecuted,
     numberOfQuestions,
     quizId,
-    list_of_questions
+    list_of_questions,
 ) => {
     const states = {
         isQuestionRunning: true,
@@ -15,7 +15,7 @@ const startRandomQuestion = (
     const randomQuestionNumber = selectRandomQuestion(
         numberOfQuestions,
         questionsExecuted,
-        list_of_questions
+        list_of_questions,
     );
     if (!randomQuestionNumber) return;
 

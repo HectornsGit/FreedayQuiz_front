@@ -1,7 +1,7 @@
 const selectRandomQuestion = (
     numberOfQuestions,
     questionsExecuted,
-    list_of_questions
+    list_of_questions,
 ) => {
     //Creo un array de números válidos, excluyendo los que ya están en el estado de ejecutados:
     const validNumbers = list_of_questions
@@ -16,7 +16,11 @@ const selectRandomQuestion = (
             );
         }
 
-        if (!confirm) return;
+        if (!confirm) {
+            console.log('Final');
+        //socket.emit('showFinalScores');
+            return
+            } 
         const validNumbers = list_of_questions.map(
             (question) => question.number
         );

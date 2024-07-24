@@ -1,4 +1,6 @@
 import ShowTime from '../components/ShowTime';
+import { useState } from 'react'; //ya lo tiene importado Hector
+
 const MasterPrueba = ({ masterProps }) => {
     const {
         signOutHandler,
@@ -28,26 +30,13 @@ const MasterPrueba = ({ masterProps }) => {
         deleteQuestionHandler,
         getQuestionFromList,
         startRandomQuestion,
+
     } = masterProps;
 
     const disableControlButtons =
         showScores || (isQuestionRunning && timeLeft > 0) ? true : false;
     const disableQuestionsButton = isQuestionRunning ? true : false;
 
-    if (!sessionTime) {
-        return (
-            <>
-                <form onSubmit={setSessionTimeHandler}>
-                    <label htmlFor="session">
-                        Establezca la duración máxima de la sesión (en minutos)
-                    </label>
-                    <input type="text" id="session" name="session" required />
-
-                    <button>Enviar</button>
-                </form>
-            </>
-        );
-    }
 
     return (
         <>
@@ -249,6 +238,7 @@ const MasterPrueba = ({ masterProps }) => {
                     >
                         Mostrar puntaciones
                     </button>
+
                 </>
             )}
         </>
