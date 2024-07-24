@@ -1,5 +1,5 @@
 'use client';
-import TextInput from '@/components/TextInput';
+import QuestionTitleInput from './QuestionTitleInput';
 import Accordion from '@/components/Accordion';
 import NumberInput from '@/components/NumberInput';
 import Clock from '@/components/Clock';
@@ -47,7 +47,14 @@ const MatchComponentAsManager = ({ managerProps }) => {
     const disableQuestionsButton = isQuestionRunning ? true : false;
 
     const [isInput, setIsInput] = useState(false);
-
+    const [title, setTitle] = useState();
+    useEffect(() => {
+        if (!question) {
+            handleStartQuiz();
+        } else {
+            setTitle(question.question);
+        }
+    }, [sessionTime, question, handleStartQuiz]);
     if (!sessionTime) {
         return (
             <>
@@ -63,8 +70,8 @@ const MatchComponentAsManager = ({ managerProps }) => {
     }
 
     return (
-        <section className="w-11/12 mx-2">
-            <header className="flex flex-col">
+        <section className="w-11/12 mx-2 flex flex-col  items-center">
+            <header className="flex flex-col xl:w-2/6 md:w-1/2  sm:w-1/2 w-full">
                 <ul className="flex grow  h-12 items-center justify-between">
                     <li>
                         {sessionTimeLeft > 0 && (
@@ -109,38 +116,41 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 handleChange={handleQuestionChange}
                             ></NumberInput>
                             {isInput ? (
-                                <TextInput
+                                <QuestionTitleInput
                                     text={'Texto pregunta'}
                                     id={'question'}
                                     name={'question'}
-                                    value={findValue(
-                                        'question',
-                                        shuffledQuestionResponses
-                                    )}
+                                    defaultValuevalue={question.question}
                                     handleChange={handleQuestionChange}
                                     isInput={isInput}
-                                ></TextInput>
+                                />
                             ) : (
                                 <p>Texto pregunta</p>
                             )}
-                            <select
-                                className=" sm:w-96 w-full font-bold mb-4  p-2  text-black text-md py-2"
-                                onChange={getQuestionFromList}
-                                disabled={disableQuestionsButton}
-                            >
-                                {quizData &&
-                                    quizData.list_of_questions?.map(
-                                        (question, index) => (
-                                            <option
-                                                className="font-semibold py-2 selection:bg-slate-400"
-                                                key={index}
-                                                value={question.number}
-                                            >
-                                                {`${question.number}. ${question.title}`}
-                                            </option>
-                                        )
-                                    )}
-                            </select>
+                            {isInput === false && (
+                                <select
+                                    className=" sm:w-96 w-full font-bold mb-4  p-2  text-black text-md py-2"
+                                    onChange={getQuestionFromList}
+                                    disabled={disableQuestionsButton}
+                                >
+                                    {quizData &&
+                                        quizData.list_of_questions?.map(
+                                            (question, index) => (
+                                                <option
+                                                    className="font-semibold py-2 selection:bg-slate-400"
+                                                    key={index}
+                                                    value={question.number}
+                                                    selected={
+                                                        title ===
+                                                        question.question
+                                                    }
+                                                >
+                                                    {`${question.number}. ${question.title}`}
+                                                </option>
+                                            )
+                                        )}
+                                </select>
+                            )}
                             <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6">
                                 <li
                                     key={'correctAnswer'}
@@ -210,7 +220,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             </ul>
                             {isInput && (
                                 <button
-                                    className="text-black font-extrabold text-lg bg-white px-11 py-2 
+                                    className="text-black self-center font-extrabold text-lg bg-white px-11 py-2 
     hover:bg-black hover:text-white hover:box-shadow-white mt-5 col-span-2"
                                     type="submit"
                                 >
@@ -219,73 +229,33 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             )}
                         </form>
                     )}
-                    <ul className="flex gap-4">
-                        <li>
-                            <ManagerButton
-                                text="Nueva pregunta"
-                                isPrimary={false}
-                                disabled={false}
-                                handleClick={
-                                    question
-                                        ? nextQuestionHandler
-                                        : handleStartQuiz
-                                }
-                            />
-                        </li>
-                        <li>
-                            <ManagerButton
-                                text="Iniciar pregunta"
-                                isPrimary={true}
-                                disabled={false}
-                                handleClick={initQuestion}
-                            />
-                        </li>
-                    </ul>
-                    <ManagerButton
-                        isPrimary={true}
-                        handleClick={showScoresHandler}
-                        disabled={true}
-                        text="Puntaciones"
-                    ></ManagerButton>
+                    {isInput == false && (
+                        <ul className="flex justify-center items-center mt-4 gap-4">
+                            <li>
+                                <ManagerButton
+                                    isPrimary={true}
+                                    handleClick={showScoresHandler}
+                                    disabled={!isQuestionRunning}
+                                    text="Puntaciones"
+                                />
+                            </li>
+                            <li>
+                                <ManagerButton
+                                    text="Iniciar pregunta"
+                                    isPrimary={true}
+                                    disabled={isQuestionRunning}
+                                    handleClick={initQuestion}
+                                />
+                            </li>
+                        </ul>
+                    )}
+
                     <button
-                        className="text-black font-extrabold text-lg bg-white px-11 py-2 
-    hover:bg-black hover:text-white hover:box-shadow-white mt-5"
+                        className="text-white font-light text-lg mt-20 px-11 py-2"
                         onClick={endQuiz}
                     >
                         Finalizar quiz
                     </button>
-                </section>
-            )}
-            <button onClick={signOutHandler}>Cerrar sesión</button>{' '}
-            {playerData && (
-                <section>
-                    <h2>Jugadores: {connectedClients}</h2>
-                    <Accordion title={'mostrar jugadores'}>
-                        <header>conectados</header>
-                        <ul>
-                            {playerData
-                                .filter((player) => {
-                                    return player.state == 'online';
-                                })
-                                .map((player) => (
-                                    <li key={player.id}>
-                                        {player.name}:{player.totalScore}
-                                    </li>
-                                ))}
-                        </ul>{' '}
-                        <header>desconectados</header>
-                        <ul>
-                            {playerData
-                                .filter((player) => {
-                                    return player.state == 'offline';
-                                })
-                                .map((player) => (
-                                    <li key={player.id}>
-                                        {player.name}:{player.totalScore}
-                                    </li>
-                                ))}
-                        </ul>
-                    </Accordion>
                 </section>
             )}
         </section>
