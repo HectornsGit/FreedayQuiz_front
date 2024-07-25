@@ -1,6 +1,6 @@
 'use client';
 import MatchComponentAsManager from '@/components/MatchComponents/Manager/MatchComponentAsManager';
-import PlayerPrueba from '@/components/PlayerPrueba';
+import MatchComponentAsPlayer from '@/components/MatchComponents/Player/MatchComponentAsPlayer';
 import useQuizLogic from '@/quizEngine/hooks/useQuizLogic';
 
 const Page = () => {
@@ -114,7 +114,7 @@ const Page = () => {
             {loggedUserId && loggedUserId == quizData?.owner_id ? (
                 <MatchComponentAsManager managerProps={managerProps} />
             ) : (
-                <PlayerPrueba playerProps={playerProps} />
+                <MatchComponentAsPlayer playerProps={playerProps} />
             )}
         </section>
     );
