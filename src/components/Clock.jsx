@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ClockLogo from './icons/ClockLogo';
-import YellowBgSendPlane from './icons/YellowBgSendPlane';
 import YellowPencil from './icons/YellowPencil';
+import UpdateArrows from './icons/updateArrows';
 
 const Clock = ({
     time,
@@ -20,15 +20,15 @@ const Clock = ({
             className="flex w-60 flex-col items-start mb-2 "
             onSubmit={setSessionTimeHandler}
         >
-            <label className="ml-6 text-[10px]" htmlFor="session">
+            <label className="ml-8 text-xs" htmlFor="session">
                 Tiempo sesión
             </label>
             <div className=" flex items-center justify-center">
                 <ClockLogo
-                    className={'pb-1 self-center mr-2 h-8 fill-[--yellow]'}
+                    className={'mb-1 h-8  self-center mr-4 fill-[--yellow]'}
                 ></ClockLogo>
                 <input
-                    className="font-semibold p-1 w-16 h-5  text-black text-md"
+                    className="font-semibold p-3 w-20 h-5  text-black text-xl"
                     type="text"
                     id="session"
                     name="session"
@@ -39,30 +39,30 @@ const Clock = ({
                     }}
                 />
                 <button>
-                    <YellowBgSendPlane
-                        className={'w-5 p-1'}
-                    ></YellowBgSendPlane>
+                    <UpdateArrows
+                        className={'w-6 p-1 bg-[--yellow]'}
+                    ></UpdateArrows>
                 </button>
             </div>
         </form>
     ) : (
         <ul className="flex items-center">
             <li className="flex-col items-start">
-                <p className="text-xs align-top">Tiempo sesión</p>
+                <p className="text-xs ml-4 align-top">Tiempo sesión</p>
                 <ul className=" medium w-32  flex justify-between items-center gap-2">
                     <li>
                         <ClockLogo
-                            className={'pb-1 h-6 fill-[--yellow]'}
+                            className={'mb-1 h-8 fill-[--yellow]'}
                         ></ClockLogo>
                     </li>
-                    <li className="text-[--yellow] text-left justify-self-start grow text-lg font-semibold">
+                    <li className="text-[--yellow]  justify-self-start grow text-2xl font-semibold">
                         {hours > 0 && `${hours}:`}
                         {minutes < 10 ? `0${minutes}` : minutes}:
                         {seconds < 10 ? `0${seconds}` : seconds}
                     </li>
                 </ul>
             </li>
-            <li className="justify-self-end">
+            <li className="self-end">
                 <button
                     onClick={(e) => {
                         e.preventDefault();
