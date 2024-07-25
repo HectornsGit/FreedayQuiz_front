@@ -1,7 +1,7 @@
 const selectRandomQuestion = (
     numberOfQuestions,
     questionsExecuted,
-    list_of_questions,
+    list_of_questions
 ) => {
     //Creo un array de números válidos, excluyendo los que ya están en el estado de ejecutados:
     const validNumbers = list_of_questions
@@ -12,15 +12,14 @@ const selectRandomQuestion = (
         let confirm;
         if (typeof window !== 'undefined') {
             confirm = window.confirm(
-                'Todas las preguntas han sido ejecutadas, ¿quiere ejecutar una aleatoria igualmente?'
+                'Ya has ejecutado todas las preguntas, ¿deseas mostrar la puntuación final?'
             );
         }
 
-        if (!confirm) {
-            console.log('Final');
-        //socket.emit('showFinalScores');
-            return
-            } 
+        if (confirm) {
+            console.log('Se acabó el juego');
+        };
+
         const validNumbers = list_of_questions.map(
             (question) => question.number
         );

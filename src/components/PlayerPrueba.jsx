@@ -1,4 +1,4 @@
-import ShowWinner from './ShowWinner';
+import ShowScores from './ShowScores';
 
 const PlayerPrueba = ({ playerProps }) => {
     const {
@@ -38,11 +38,25 @@ const PlayerPrueba = ({ playerProps }) => {
     }
     return (
         <>
-            {/* <h2>Jugadores conectados: {connectedClients}</h2>{' '}
-            <button onClick={signOutHandler}>Cerrar sesión</button> */}
+            <h2>Jugadores conectados: {connectedClients}</h2>{' '}
+            <button onClick={signOutHandler}>Cerrar sesión</button>
             {showScores && !isQuestionRunning ? (
                 <>
-                <ShowWinner playerData={playerData}/>
+                <ShowScores playerData={playerData}/>
+                    {/*}
+                    <div>
+                        <ul>
+                            {playerData.map((player) => (
+                                <li key={player.id}>
+                                    Nickname: {player.name} Puntos:{' '}
+                                    {player.totalScore} Streak: {player.streak}
+                                    Puntos ultima pregunta:
+                                    {player.lastCorrectAnswer}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    */}
                 </>
             ) : (
                 <>
