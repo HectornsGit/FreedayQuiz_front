@@ -6,7 +6,7 @@ import YellowBgPencil from '@/components/icons/YellowBgPencil';
 import { useEffect, useState } from 'react';
 import AnswerInputComponent from './AnswerInputComponent';
 import ManagerButton from './ManagerButton';
-
+import QuestionImage from '../QuestionImage';
 const MatchComponentAsManager = ({ managerProps }) => {
     const {
         signOutHandler,
@@ -73,7 +73,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
 
     return (
         <section className="w-11/12 mx-2 flex flex-col  items-center">
-            <header className="flex flex-col xl:w-2/6 md:w-1/2  sm:w-1/2 w-full">
+            <header className="flex flex-col xl:w-2/6 md:w-1/2 mb-6  sm:w-1/2 w-full">
                 <ul className="flex grow mb-4 h-12 items-center justify-between">
                     <li>
                         {sessionTimeLeft > 0 && (
@@ -105,132 +105,141 @@ const MatchComponentAsManager = ({ managerProps }) => {
             {loggedUserId && loggedUserId == quizData?.owner_id && (
                 <section className="flex-col justify-center">
                     {question && (
-                        <form
-                            id={'questionForm'}
-                            onSubmit={updateQuestionDataInBackend}
-                            className="flex sm:items-center items-start gap-4 flex-col"
-                        >
-                            <NumberInput
-                                text={'Límite de tiempo (en segundos)'}
-                                id={'questionTime'}
-                                name={'questionTime'}
-                                isInput={isInput}
-                                defaultValue={question.questionTime}
-                                handleChange={handleQuestionChange}
-                            ></NumberInput>
-                            {isInput ? (
-                                <QuestionTitleInput
-                                    text={'Texto pregunta'}
-                                    id={'question'}
-                                    name={'question'}
-                                    defaultValue={question.question}
-                                    handleChange={handleQuestionChange}
+                        <section className="flex flex-col justify-center">
+                            <QuestionImage
+                                image={question.image}
+                            ></QuestionImage>
+                            <form
+                                id={'questionForm'}
+                                onSubmit={updateQuestionDataInBackend}
+                                className="flex sm:items-center items-start gap-4 flex-col"
+                            >
+                                <NumberInput
+                                    text={'Límite de tiempo (en segundos)'}
+                                    id={'questionTime'}
+                                    name={'questionTime'}
                                     isInput={isInput}
-                                />
-                            ) : (
-                                <p>Texto pregunta</p>
-                            )}
-                            {isInput === false && (
-                                <select
-                                    className=" sm:w-96 w-full font-bold mb-4  p-2  text-black text-md py-2"
-                                    onChange={getQuestionFromList}
-                                    disabled={disableQuestionsButton}
-                                >
-                                    {quizData &&
-                                        quizData.list_of_questions?.map(
-                                            (question, index) => (
-                                                <option
-                                                    className="font-semibold py-2 selection:bg-slate-400"
-                                                    key={index}
-                                                    value={question.number}
-                                                    selected={
-                                                        title ===
-                                                        question.question
-                                                    }
-                                                >
-                                                    {`${question.number}. ${question.title}`}
-                                                </option>
-                                            )
-                                        )}
-                                </select>
-                            )}
-                            <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6">
-                                <li
-                                    key={'correctAnswer'}
-                                    className={
-                                        'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
-                                    }
-                                >
-                                    <AnswerInputComponent
-                                        logo={answerNames[0]}
-                                        defaultValue={question?.correctAnswer}
-                                        handleQuestionChange={
-                                            handleQuestionChange
-                                        }
+                                    defaultValue={question.questionTime}
+                                    handleChange={handleQuestionChange}
+                                ></NumberInput>
+                                {isInput ? (
+                                    <QuestionTitleInput
+                                        text={'Texto pregunta'}
+                                        id={'question'}
+                                        name={'question'}
+                                        defaultValue={question.question}
+                                        handleChange={handleQuestionChange}
                                         isInput={isInput}
-                                        id={'correctAnswer'}
-                                        updateForm={updateQuestionDataInBackend}
-                                    ></AnswerInputComponent>
-                                </li>
-                                <li
-                                    key={'optionA'}
-                                    className={
-                                        'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
-                                    }
-                                >
-                                    <AnswerInputComponent
-                                        logo={answerNames[1]}
-                                        defaultValue={question?.optionA}
-                                        handleQuestionChange={
-                                            handleQuestionChange
+                                    />
+                                ) : (
+                                    <p>Texto pregunta</p>
+                                )}
+                                {isInput === false && (
+                                    <select
+                                        className=" sm:w-96 w-full font-bold mb-4  p-2  text-black text-md py-2"
+                                        onChange={getQuestionFromList}
+                                        disabled={disableQuestionsButton}
+                                    >
+                                        {quizData &&
+                                            quizData.list_of_questions?.map(
+                                                (question, index) => (
+                                                    <option
+                                                        className="font-semibold py-2 selection:bg-slate-400"
+                                                        key={index}
+                                                        value={question.number}
+                                                        selected={
+                                                            title ===
+                                                            question.question
+                                                        }
+                                                    >
+                                                        {`${question.number}. ${question.title}`}
+                                                    </option>
+                                                )
+                                            )}
+                                    </select>
+                                )}
+                                <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6">
+                                    <li
+                                        key={'correctAnswer'}
+                                        className={
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
                                         }
-                                        isInput={isInput}
-                                        id={'optionA'}
-                                    ></AnswerInputComponent>
-                                </li>
-                                <li
-                                    key={'optionB'}
-                                    className={
-                                        'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
-                                    }
-                                >
-                                    <AnswerInputComponent
-                                        logo={answerNames[2]}
-                                        defaultValue={question?.optionB}
-                                        handleQuestionChange={
-                                            handleQuestionChange
+                                    >
+                                        <AnswerInputComponent
+                                            logo={answerNames[0]}
+                                            defaultValue={
+                                                question?.correctAnswer
+                                            }
+                                            handleQuestionChange={
+                                                handleQuestionChange
+                                            }
+                                            isInput={isInput}
+                                            id={'correctAnswer'}
+                                            updateForm={
+                                                updateQuestionDataInBackend
+                                            }
+                                        ></AnswerInputComponent>
+                                    </li>
+                                    <li
+                                        key={'optionA'}
+                                        className={
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
                                         }
-                                        isInput={isInput}
-                                        id={'optionB'}
-                                    ></AnswerInputComponent>
-                                </li>
-                                <li
-                                    key={'optionC'}
-                                    className={
-                                        'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
-                                    }
-                                >
-                                    <AnswerInputComponent
-                                        logo={answerNames[3]}
-                                        defaultValue={question?.optionC}
-                                        handleQuestionChange={
-                                            handleQuestionChange
+                                    >
+                                        <AnswerInputComponent
+                                            logo={answerNames[1]}
+                                            defaultValue={question?.optionA}
+                                            handleQuestionChange={
+                                                handleQuestionChange
+                                            }
+                                            isInput={isInput}
+                                            id={'optionA'}
+                                        ></AnswerInputComponent>
+                                    </li>
+                                    <li
+                                        key={'optionB'}
+                                        className={
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
                                         }
-                                        isInput={isInput}
-                                        id={'optionC'}
-                                    ></AnswerInputComponent>
-                                </li>
-                            </ul>
-                            {isInput && (
-                                <button
-                                    className="text-black self-center font-extrabold text-lg bg-white px-11 py-2 
+                                    >
+                                        <AnswerInputComponent
+                                            logo={answerNames[2]}
+                                            defaultValue={question?.optionB}
+                                            handleQuestionChange={
+                                                handleQuestionChange
+                                            }
+                                            isInput={isInput}
+                                            id={'optionB'}
+                                        ></AnswerInputComponent>
+                                    </li>
+                                    <li
+                                        key={'optionC'}
+                                        className={
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                        }
+                                    >
+                                        <AnswerInputComponent
+                                            logo={answerNames[3]}
+                                            defaultValue={question?.optionC}
+                                            handleQuestionChange={
+                                                handleQuestionChange
+                                            }
+                                            isInput={isInput}
+                                            id={'optionC'}
+                                        ></AnswerInputComponent>
+                                    </li>
+                                </ul>
+                                {isInput && (
+                                    <button
+                                        className="text-black self-center font-extrabold text-lg bg-white px-11 py-2 
     hover:bg-black hover:text-white hover:box-shadow-white mt-5 col-span-2"
-                                    type="submit"
-                                >
-                                    Actualiza la pregunta
-                                </button>
-                            )}
-                        </form>
+                                        type="submit"
+                                    >
+                                        Actualiza la pregunta
+                                    </button>
+                                )}
+                            </form>
+                        </section>
                     )}
                     {isInput == false && (
                         <ul className="flex justify-center items-center mt-4 gap-4">
