@@ -122,18 +122,34 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     defaultValue={question.questionTime}
                                     handleChange={handleQuestionChange}
                                 ></NumberInput>
-                                {isInput ? (
-                                    <QuestionTitleInput
-                                        text={'Texto pregunta'}
-                                        id={'question'}
-                                        name={'question'}
-                                        defaultValue={question.question}
-                                        handleChange={handleQuestionChange}
-                                        isInput={isInput}
-                                    />
-                                ) : (
-                                    <p>Texto pregunta</p>
-                                )}
+                                <ul className="flex justify-between sm:w-96 w-full">
+                                    <li>
+                                        {isInput ? (
+                                            <QuestionTitleInput
+                                                text={'Texto pregunta'}
+                                                id={'question'}
+                                                name={'question'}
+                                                defaultValue={question.question}
+                                                handleChange={
+                                                    handleQuestionChange
+                                                }
+                                                isInput={isInput}
+                                            />
+                                        ) : (
+                                            <p>Texto pregunta</p>
+                                        )}
+                                    </li>
+                                    <li>
+                                        <button
+                                            disabled={disableQuestionsButton}
+                                            type="button"
+                                            className="text-[--yellow] text-sm"
+                                            onClick={deleteQuestionHandler}
+                                        >
+                                            Elimina la pregunta
+                                        </button>
+                                    </li>
+                                </ul>{' '}
                                 {isInput === false && (
                                     <select
                                         className=" sm:w-96 w-full font-bold mb-4  p-2  text-black text-md py-2"
