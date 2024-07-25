@@ -119,7 +119,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     text={'Texto pregunta'}
                                     id={'question'}
                                     name={'question'}
-                                    defaultValuevalue={question.question}
+                                    defaultValue={question.question}
                                     handleChange={handleQuestionChange}
                                     isInput={isInput}
                                 />
