@@ -1,5 +1,5 @@
 
-import ShowTime from '../components/ShowTime';
+import ShowTime from './MatchComponents/Player/ShowTime';
 const MasterPrueba = ({ masterProps }) => {
     const {
         signOutHandler,

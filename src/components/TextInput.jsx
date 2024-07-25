@@ -2,12 +2,12 @@
 
 import { useState } from 'react'
 
-const TextInput = ({ id, text, isArea=false }) => {
+const TextInput = ({ id, text, isArea=false, hidden }) => {
     const [data, setData] = useState()
     return (
         <div className="flex w-60 my-6  flex-col items-start">
             <label
-                className="mx-8  bg-black px-2 text-md "
+                className="mx-8 bg-black text-md "
                 htmlFor={id}
             >
                 {text}
@@ -26,6 +26,7 @@ const TextInput = ({ id, text, isArea=false }) => {
                     type="text"
                     id={id}
                     value={data}
+                    hidden={hidden}
                     onChange={(e) => setData(e.target.value)}
                 />
             )}

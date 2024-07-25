@@ -1,5 +1,3 @@
-import ShowScores from './ShowScores';
-
 const PlayerPrueba = ({ playerProps }) => {
     const {
         signOutHandler,
@@ -42,8 +40,6 @@ const PlayerPrueba = ({ playerProps }) => {
             <button onClick={signOutHandler}>Cerrar sesión</button>
             {showScores && !isQuestionRunning ? (
                 <>
-                <ShowScores playerData={playerData}/>
-                    {/*}
                     <div>
                         <ul>
                             {playerData.map((player) => (
@@ -56,7 +52,6 @@ const PlayerPrueba = ({ playerProps }) => {
                             ))}
                         </ul>
                     </div>
-                    */}
                 </>
             ) : (
                 <>

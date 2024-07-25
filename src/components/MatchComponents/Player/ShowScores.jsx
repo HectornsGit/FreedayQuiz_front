@@ -1,6 +1,6 @@
-import ShowWinner from './ShowWinner';
-import Points from './icons/Points';
-import Trophy from './icons/Trophy';
+import ShowWinner from '../../ShowWinner';
+import Points from '../../icons/Points';
+import Trophy from '../../icons/Trophy';
 
 const ShowScores = ({ playerData }) => {
 //para ordenar por puntuaciones copio el array playerData
