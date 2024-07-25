@@ -1,6 +1,7 @@
 import { setItemWithExpiry } from '../utils';
 const setSessionTimeHandler =
-    (socket, setSessionTime, quizId, number_of_questions) => (e) => {
+    (socket, setSessionTime, quizId, number_of_questions, setIsClockInput) =>
+    (e) => {
         e.preventDefault();
         const duration = e.target.elements.session.value;
         if (duration != Number(duration)) {
@@ -18,6 +19,7 @@ const setSessionTimeHandler =
 
         setItemWithExpiry('QuizSessionDuration', duration, 12);
         setSessionTime(duration);
+        setIsClockInput(false);
         socket.emit('startSession', duration, quizId, number_of_questions);
     };
 export default setSessionTimeHandler;

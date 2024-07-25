@@ -36,6 +36,8 @@ const MatchComponentAsManager = ({ managerProps }) => {
         deleteQuestionHandler,
         getQuestionFromList,
         startRandomQuestion,
+        setIsClockInput,
+        isClockInput,
     } = managerProps;
 
     // Iconos para las respuestas.
@@ -47,6 +49,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
 
     const [isInput, setIsInput] = useState(false);
     const [title, setTitle] = useState();
+
     useEffect(() => {
         if (!question) {
             handleStartQuiz();
@@ -71,13 +74,14 @@ const MatchComponentAsManager = ({ managerProps }) => {
     return (
         <section className="w-11/12 mx-2 flex flex-col  items-center">
             <header className="flex flex-col xl:w-2/6 md:w-1/2  sm:w-1/2 w-full">
-                <ul className="flex grow  h-12 items-center justify-between">
+                <ul className="flex grow mb-4 h-12 items-center justify-between">
                     <li>
                         {sessionTimeLeft > 0 && (
                             <Clock
                                 time={sessionTimeLeft}
                                 setSessionTimeHandler={setSessionTimeHandler}
-                                isInput={isInput}
+                                isClockInput={isClockInput}
+                                setIsClockInput={setIsClockInput}
                             />
                         )}
                     </li>
