@@ -1,4 +1,5 @@
-import ShowTime from '../components/ShowTime';
+
+import ShowTime from './MatchComponents/Player/ShowTime';
 const MasterPrueba = ({ masterProps }) => {
     const {
         signOutHandler,
@@ -27,7 +28,7 @@ const MasterPrueba = ({ masterProps }) => {
         sessionTimeLeft,
         deleteQuestionHandler,
         getQuestionFromList,
-        startRandomQuestion,
+        startRandomQuestion
     } = masterProps;
 
     const disableControlButtons =
@@ -103,7 +104,6 @@ const MasterPrueba = ({ masterProps }) => {
                                 )
                             )}
                     </select>
-
                     <p>{timeLeft ? `Tiempo restante: ${timeLeft}` : null}</p>
                     <p>Pregunta: {question?.question}</p>
                     <p>Pregunta número: {question?.questionNumber}</p>

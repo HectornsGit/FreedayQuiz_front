@@ -12,11 +12,14 @@ const selectRandomQuestion = (
         let confirm;
         if (typeof window !== 'undefined') {
             confirm = window.confirm(
-                'Todas las preguntas han sido ejecutadas, ¿quiere ejecutar una aleatoria igualmente?'
+                'Ya has ejecutado todas las preguntas, ¿deseas mostrar la puntuación final?'
             );
         }
 
-        if (!confirm) return;
+        if (confirm) {
+            console.log('Se acabó el juego');
+        };
+
         const validNumbers = list_of_questions.map(
             (question) => question.number
         );
