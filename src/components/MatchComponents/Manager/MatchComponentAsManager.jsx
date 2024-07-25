@@ -59,15 +59,29 @@ const MatchComponentAsManager = ({ managerProps }) => {
     }, [sessionTime, question, handleStartQuiz]);
     if (!sessionTime) {
         return (
-            <>
-                <form onSubmit={setSessionTimeHandler}>
-                    <label htmlFor="session">
-                        Establezca la duración máxima de la sesión (en minutos)
+            <section>
+                {quizData && (
+                    <h1 className="text-3xl font-bold my-8">
+                        {quizData?.title}
+                    </h1>
+                )}
+                <form
+                    className="flex flex-col items-center"
+                    onSubmit={setSessionTimeHandler}
+                >
+                    <label className="text-xl mb-4" htmlFor="session">
+                        Duración máxima de la sesión (en minutos)
                     </label>
-                    <input type="number" id="session" name="session" required />
-                    <button>Enviar</button>
+                    <input
+                        className='font-semibold w-full mb-10  p-2  text-black text-md py-2"'
+                        type="number"
+                        id="session"
+                        name="session"
+                        required
+                    />
+                    <ManagerButton text={'Aceptar'} />
                 </form>
-            </>
+            </section>
         );
     }
 
