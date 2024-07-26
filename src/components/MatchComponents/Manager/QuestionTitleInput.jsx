@@ -11,7 +11,7 @@ const QuestionTitleInput = ({ id, text, isInput, defaultValue }) => {
             </label>
             {isInput ? (
                 <input
-                    className="font-semibold sm:self-center  p-2  text-black text-md sm:w-96 w-[92vw] py-2"
+                    className="font-semibold  p-2  text-black text-md sm:w-96 w-[92vw] py-2"
                     type="text"
                     id={id}
                     name={id}
