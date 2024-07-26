@@ -9,7 +9,7 @@ const startNewPlayer = (
     window.localStorage.removeItem('idNewPlayer');
     window.localStorage.removeItem('playerName');
     window.localStorage.removeItem('quizId');
-    router.push(process.env.NEXT_PUBLIC_FRONT + `/socket/${quizId}`);
+    router.push(`/match/${quizId}`);
     setIsNameSetted(false);
     setSessionRecovery(false);
 };
