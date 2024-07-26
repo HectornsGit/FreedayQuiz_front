@@ -1,6 +1,5 @@
-
 import { useEffect, useState } from 'react';
-const TextInput = ({ id, text, isInput, defaultValue }) => {
+const QuestionTitleInput = ({ id, text, isInput, defaultValue }) => {
     const [value, setValue] = useState(defaultValue);
     useEffect(() => {
         setValue(defaultValue);
@@ -12,9 +11,15 @@ const TextInput = ({ id, text, isInput, defaultValue }) => {
             </label>
             {isInput ? (
                 <input
-                    className="font-semibold  p-2  text-black text-md py-2"
+                    className="font-semibold  p-2  text-black text-md sm:w-96 w-[92vw] py-2"
                     type="text"
                     id={id}
+                    name={id}
+                    value={value}
+                    onChange={(e) => {
+                        e.preventDefault();
+                        setValue(e.target.value);
+                    }}
                 />
             ) : (
                 <p className=" font-medium">{defaultValue}</p>
@@ -22,4 +27,4 @@ const TextInput = ({ id, text, isInput, defaultValue }) => {
         </div>
     );
 };
-export default TextInput;
+export default QuestionTitleInput;

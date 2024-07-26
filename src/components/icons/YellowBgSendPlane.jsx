@@ -1,3 +1,4 @@
+
 export default function YellowBgSendPlane({ className }) {
     return (
         <svg
@@ -9,3 +10,4 @@ export default function YellowBgSendPlane({ className }) {
         </svg>
     )
 }
+

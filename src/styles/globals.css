@@ -3,24 +3,24 @@
 @tailwind utilities;
 
 :root {
-  /*colores personalizados*/
-  --cyan: #01ffff;
-  --yellow: #fcff00;
-  --red: #ff0000;
-  --green: #39ff14;
-  --color-gradient: linear-gradient(135deg,var(--cyan),var(--yellow));
+    /*colores personalizados*/
+    --cyan: #01ffff;
+    --yellow: #fcff00;
+    --red: #ff0000;
+    --green: #39ff14;
+    --color-gradient: linear-gradient(135deg, var(--cyan), var(--yellow));
 
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+    :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0;
+        --background-end-rgb: 0, 0, 0;
+    }
 }
 
 body {
@@ -33,53 +33,55 @@ body {
     min-width: 224px;
     min-height: 40px;
     padding: 0.5rem;
-    border: 1px solid #CBD6E2;
+    border: 1px solid #cbd6e2;
     box-sizing: border-box;
     color: black;
 }
 
 .select-default {
-  min-width: 224px;
+    min-width: 224px;
     min-height: 40px;
-    border: 1px solid #CBD6E2;
+    border: 1px solid #cbd6e2;
     box-sizing: border-box;
     color: black;
     font-size: 100%;
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+    .text-balance {
+        text-wrap: balance;
+    }
 }
 
 /*degradado personalizado*/
 @layer utilities {
-  .bg-gradient{
-  background-image: var(--color-gradient);
-  }
+    .bg-gradient {
+        background-image: var(--color-gradient);
+    }
 
-  .bg-gradient:hover{
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  }
+    .bg-gradient:hover {
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 }
 
 /*sombras para los botones*/
 @layer utilities {
-  .box-shadow-yellow{
-    box-shadow: 4px 4px 0 0 var(--yellow);
+    .box-shadow-yellow {
+        box-shadow: 4px 4px 0 0 var(--yellow);
     }
-  
-  .box-shadow-white{
-    box-shadow: 4px 4px 0 0 #fff;
-    }
-  }
 
-  /*ocultar barra de scroll para los sliders*/
-  @layer utilities {
+    .box-shadow-white {
+        box-shadow: 4px 4px 0 0 #fff;
+    }
+    .box-shadow-gray {
+        box-shadow: 4px 4px 0 0 #4b5563;
+    }
+}
+
+/*ocultar barra de scroll para los sliders*/
+@layer utilities {
     ::-webkit-scrollbar {
-      display: none;
-  }
-
-  }
+        display: none;
+    }
+}
