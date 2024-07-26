@@ -9,25 +9,16 @@ import ManagerButton from './ManagerButton';
 import QuestionImage from '../QuestionImage';
 const MatchComponentAsManager = ({ managerProps }) => {
     const {
-        signOutHandler,
         endQuiz,
-        findValue,
         handleQuestionChange,
-        handleQuizChange,
         updateQuestionDataInBackend,
-        updateQuizDataInBackend,
-        nextQuestionHandler,
-        previousQuestionHandler,
         handleStartQuiz,
         question,
         quizData,
         loggedUserId,
-        playerData,
-        shuffledQuestionResponses,
         initQuestion,
         timeLeft,
         showScoresHandler,
-        connectedClients,
         isQuestionRunning,
         showScores,
         sessionTime,
@@ -35,19 +26,17 @@ const MatchComponentAsManager = ({ managerProps }) => {
         sessionTimeLeft,
         deleteQuestionHandler,
         getQuestionFromList,
-        startRandomQuestion,
         setIsClockInput,
         isClockInput,
+        isInput,
+        setIsInput,
     } = managerProps;
 
     // Iconos para las respuestas.
     const answerNames = ['🌞', '🌜', '🌟', '⚡'];
 
-    const disableButton =
-        showScores || (isQuestionRunning && timeLeft > 0) ? true : false;
     const disableQuestionsButton = isQuestionRunning ? true : false;
 
-    const [isInput, setIsInput] = useState(false);
     const [title, setTitle] = useState();
 
     useEffect(() => {

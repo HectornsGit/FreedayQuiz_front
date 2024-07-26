@@ -63,7 +63,10 @@ const useQuizLogic = () => {
     const [connectedClients, setConnectedClients] = useState(0);
     const [, setIsMasterOnline] = useState(false);
     const [questionsExecuted, setQuestionsExecuted] = useState([]);
+
+    //Estados que controlan si son inputs los componentes de la pantalla del Master.
     const [isClockInput, setIsClockInput] = useState(false);
+    const [isInput, setIsInput] = useState(false);
 
     //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
     const loggedUserId = session?.user.data.id;
@@ -186,7 +189,8 @@ const useQuizLogic = () => {
             setQuestion,
             socket,
             quizId,
-            question
+            question,
+            setIsInput
         ),
         updateQuizDataInBackend: updateQuizDataInBackend(
             quizData,
@@ -257,6 +261,8 @@ const useQuizLogic = () => {
         sessionTime,
         isClockInput,
         setIsClockInput,
+        isInput,
+        setIsInput,
         getQuestionFromList: getQuestionFromList(quizId, socket),
         sessionTimeLeft,
         clickedResponses,

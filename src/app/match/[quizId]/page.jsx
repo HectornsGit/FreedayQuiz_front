@@ -47,6 +47,8 @@ const Page = () => {
         startRandomQuestion,
         setIsClockInput,
         isClockInput,
+        isInput,
+        setIsInput,
     } = useQuizLogic();
 
     const managerProps = {
@@ -80,6 +82,8 @@ const Page = () => {
         startRandomQuestion,
         setIsClockInput,
         isClockInput,
+        isInput,
+        setIsInput,
     };
     const playerProps = {
         signOutHandler,
