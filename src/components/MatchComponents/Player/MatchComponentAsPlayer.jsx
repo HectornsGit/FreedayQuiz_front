@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
 import QuestionComponent from '../QuestionComponent';
 import ManagerButton from '../Manager/ManagerButton';
 import YellowBgSendPlane from '@/components/icons/YellowBgSendPlane';
+import ShowScores from './ShowScores';
 
 const MatchComponentAsPlayer = ({ playerProps }) => {
     const {
-        signOutHandler,
         handleInitialPlayerData,
         quizData,
         question,
@@ -57,18 +56,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
         <section className="flex flex-col items-center">
             {showScores && !isQuestionRunning ? (
                 <>
-                    <div>
-                        <ul>
-                            {playerData.map((player) => (
-                                <li key={player.id}>
-                                    Nickname: {player.name} Puntos:{' '}
-                                    {player.totalScore} Streak: {player.streak}
-                                    Puntos ultima pregunta:
-                                    {player.lastCorrectAnswer}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    <ShowScores playerData={playerData}></ShowScores>
                 </>
             ) : (
                 <section className="flex flex-col w-[70vw] lg:w-5/6 sm:w-4/6  items-center">
