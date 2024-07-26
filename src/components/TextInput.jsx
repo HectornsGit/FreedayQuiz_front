@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 const TextInput = ({ id, text, isInput, defaultValue }) => {
     const [value, setValue] = useState(defaultValue);
@@ -14,12 +15,6 @@ const TextInput = ({ id, text, isInput, defaultValue }) => {
                     className="font-semibold  p-2  text-black text-md py-2"
                     type="text"
                     id={id}
-                    name={id}
-                    value={value}
-                    onChange={(e) => {
-                        e.preventDefault();
-                        setValue(e.target.value);
-                    }}
                 />
             ) : (
                 <p className=" font-medium">{defaultValue}</p>

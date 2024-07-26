@@ -23,6 +23,7 @@ const initQuestion = (
         );
         if (!confirm) return;
     }
+
     if (question) {
         setQuestionsExecuted((prev) => [...prev, question.questionNumber]);
     }
