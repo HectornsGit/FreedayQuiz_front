@@ -74,9 +74,9 @@ body {
     .box-shadow-white {
         box-shadow: 4px 4px 0 0 #fff;
     }
-}
-.box-shadow-gray {
-    box-shadow: 4px 4px 0 0 #4b5563;
+    .box-shadow-gray {
+        box-shadow: 4px 4px 0 0 #4b5563;
+    }
 }
 
 /*ocultar barra de scroll para los sliders*/
