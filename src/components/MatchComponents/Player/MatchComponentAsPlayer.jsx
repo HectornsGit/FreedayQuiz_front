@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import QuestionComponent from '../QuestionComponent';
+import ManagerButton from '../Manager/ManagerButton';
 
 const MatchComponentAsPlayer = ({ playerProps }) => {
     const {
@@ -29,14 +30,26 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
 
     if (sessionRecovery && isNameSetted) {
         return (
-            <>
-                <button onClick={recoverySession}>
-                    Recupera tu sesión en el quiz
-                </button>
-                <button onClick={startNewPlayer}>
-                    Inicia como nuevo jugador
-                </button>
-            </>
+            <section className="flex h-[40vh] flex-col justify-center items-center">
+                {quizData && (
+                    <h1 className="text-xl font-bold mb-12">
+                        {quizData?.title}
+                    </h1>
+                )}
+                <ManagerButton
+                    text={'Recuperar sesión'}
+                    isPrimary={true}
+                    handleClick={recoverySession}
+                ></ManagerButton>
+                <div className=" w-8 h-8 relative top-4 mt-2 bg-[rgb(18,18,18)] rounded-full text-xl">
+                    o
+                </div>
+                <div className="w-[90vw] sm:w-96  border-b mb-6"></div>
+                <ManagerButton
+                    text={'Nuevo jugador'}
+                    handleClick={startNewPlayer}
+                ></ManagerButton>
+            </section>
         );
     }
     return (
