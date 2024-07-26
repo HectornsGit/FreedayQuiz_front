@@ -63,6 +63,7 @@ const useQuizLogic = () => {
     const [connectedClients, setConnectedClients] = useState(0);
     const [, setIsMasterOnline] = useState(false);
     const [questionsExecuted, setQuestionsExecuted] = useState([]);
+    const [isClockInput, setIsClockInput] = useState(false);
 
     //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
     const loggedUserId = session?.user.data.id;
@@ -234,7 +235,8 @@ const useQuizLogic = () => {
             socket,
             setSessionTime,
             quizId,
-            quizData?.number_of_questions
+            quizData?.number_of_questions,
+            setIsClockInput
         ),
         timeLeft,
         showScores,
@@ -253,6 +255,8 @@ const useQuizLogic = () => {
         sessionRecovery,
         isNameSetted,
         sessionTime,
+        isClockInput,
+        setIsClockInput,
         getQuestionFromList: getQuestionFromList(quizId, socket),
         sessionTimeLeft,
         clickedResponses,

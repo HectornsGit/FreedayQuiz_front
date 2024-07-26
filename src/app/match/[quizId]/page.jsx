@@ -1,6 +1,6 @@
 'use client';
-import MasterPrueba from '@/components/MasterPrueba';
-import PlayerPrueba from '@/components/PlayerPrueba';
+import MatchComponentAsManager from '@/components/MatchComponents/Manager/MatchComponentAsManager';
+import MatchComponentAsPlayer from '@/components/MatchComponents/Player/MatchComponentAsPlayer';
 import useQuizLogic from '@/quizEngine/hooks/useQuizLogic';
 
 const Page = () => {
@@ -45,9 +45,11 @@ const Page = () => {
         clickedResponses,
         getQuestionFromList,
         startRandomQuestion,
+        setIsClockInput,
+        isClockInput,
     } = useQuizLogic();
 
-    const masterProps = {
+    const managerProps = {
         signOutHandler,
         endQuiz,
         findValue,
@@ -76,6 +78,8 @@ const Page = () => {
         deleteQuestionHandler,
         getQuestionFromList,
         startRandomQuestion,
+        setIsClockInput,
+        isClockInput,
     };
     const playerProps = {
         signOutHandler,
@@ -106,13 +110,13 @@ const Page = () => {
     }
 
     return (
-        <>
+        <section className="h-fit flex flex-col items-center content-center gap-8 text-center mb-14">
             {loggedUserId && loggedUserId == quizData?.owner_id ? (
-                <MasterPrueba masterProps={masterProps} />
+                <MatchComponentAsManager managerProps={managerProps} />
             ) : (
-                <PlayerPrueba playerProps={playerProps} />
+                <MatchComponentAsPlayer playerProps={playerProps} />
             )}
-        </>
+        </section>
     );
 };
 
