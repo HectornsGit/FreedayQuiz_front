@@ -349,13 +349,13 @@ const useSocketConfig = (argumentsData) => {
     }, [socket, setClickedResponses]);
 
     useEffect(() => {
-        questionDeletedHandler(question, quizData, socket, quizId);
+        questionDeletedHandler(question, quizData, socket, quizId, setQuizData);
         return () => {
             if (socket) {
                 socket.off('questionDeleted');
             }
         };
-    }, [question, quizData, socket, quizId]);
+    }, [question, quizData, socket, quizId, setQuizData]);
 
     useEffect(() => {
         answerMessage(socket);
