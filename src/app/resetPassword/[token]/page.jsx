@@ -1,38 +1,42 @@
 'use client';
 import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { toast } from 'react-toastify';
+import useApiRequest from '@/hooks/useApiRequest';
 
 function ResetPassword() {
+    const { fetchData } = useApiRequest();
     const params = useParams();
     const [newPassword, setNewPassword] = useState('');
     const router = useRouter();
     const token = params.token;
 
-    const handleSubmit = async (e) => {
-        console.log(
-            'DAtos',
-            token,
-            newPassword,
-            process.env.NEXT_PUBLIC_API_HOST + '/reset-password'
-        );
-        e.preventDefault();
-        const res = await fetch(
-            process.env.NEXT_PUBLIC_API_HOST + '/reset-password',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ token, newPassword }),
-            }
-        );
+    const onSuccessResetPass = (data) => {
+        toast.success(data.message);
+        router.push('/login');
+    };
 
-        if (res.ok) {
-            alert('Contraseña reseteada');
-            router.push('/login');
-        } else {
-            alert('Error en el proceso de cambiar contraseña');
-        }
+    const onErrorResetPass = (error) => {
+        toast.error(error.error);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const urlResetPass =
+            process.env.NEXT_PUBLIC_API_HOST + '/reset-password';
+        const urlDataResetPass = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token, newPassword }),
+        };
+
+        fetchData(
+            urlResetPass,
+            urlDataResetPass,
+            onSuccessResetPass,
+            onErrorResetPass
+        );
     };
 
     return (
