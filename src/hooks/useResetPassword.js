@@ -21,7 +21,8 @@ const useResetPassword = () => {
     const handleEmail = async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        const urlResetPass = process.env.NEXT_PUBLIC_API_HOST + '/resetPass';
+        const urlResetPass =
+            process.env.NEXT_PUBLIC_API_HOST + '/request-password-reset';
         const urlDataResetPass = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
