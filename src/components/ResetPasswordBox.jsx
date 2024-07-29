@@ -1,7 +1,7 @@
-import useResetPassword from '../hooks/useResetPassword';
+import useRequestResetPassword from '../hooks/useRequestResetPassword';
 
 const ResetPasswordBox = () => {
-    const { email, setEmail, handleEmail } = useResetPassword();
+    const { email, setEmail, handleEmail } = useRequestResetPassword();
 
     return (
         <div>

@@ -1,44 +1,7 @@
 'use client';
-import { useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { toast } from 'react-toastify';
-import useApiRequest from '@/hooks/useApiRequest';
-
+import useResetPassword from '@/hooks/useResetPassword';
 function ResetPassword() {
-    const { fetchData } = useApiRequest();
-    const params = useParams();
-    const [newPassword, setNewPassword] = useState('');
-    const router = useRouter();
-    const token = params.token;
-
-    const onSuccessResetPass = (data) => {
-        toast.success(data.message);
-        router.push('/login');
-    };
-
-    const onErrorResetPass = (error) => {
-        toast.error(error.error);
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const urlResetPass =
-            process.env.NEXT_PUBLIC_API_HOST + '/reset-password';
-        const urlDataResetPass = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token, newPassword }),
-        };
-
-        fetchData(
-            urlResetPass,
-            urlDataResetPass,
-            onSuccessResetPass,
-            onErrorResetPass
-        );
-    };
-
+    const { handleSubmit, setNewPassword, newPassword } = useResetPassword();
     return (
         <form onSubmit={handleSubmit}>
             <input
