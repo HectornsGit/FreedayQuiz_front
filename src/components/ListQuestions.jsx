@@ -37,7 +37,7 @@ export default function ListQuestions() {
     };
 
     const handleAddQuestion = () => {
-        router.push(`/create-questions/`); //lleva a la ruta para crear nueva pregunta TODO !! esto es una ruta de ejemplo
+        router.push('/create-questions/'); //lleva a la ruta para crear nueva pregunta TODO !! esto es una ruta de ejemplo
     };
 
     return (

@@ -1,4 +1,3 @@
-
 import ShowTime from './MatchComponents/Player/ShowTime';
 const MasterPrueba = ({ masterProps }) => {
     const {
@@ -28,7 +27,7 @@ const MasterPrueba = ({ masterProps }) => {
         sessionTimeLeft,
         deleteQuestionHandler,
         getQuestionFromList,
-        startRandomQuestion
+        startRandomQuestion,
     } = masterProps;
 
     const disableControlButtons =
@@ -94,6 +93,7 @@ const MasterPrueba = ({ masterProps }) => {
                     <select
                         onChange={getQuestionFromList}
                         disabled={disableQuestionsButton}
+                        value={question.questionNumber}
                     >
                         {quizData &&
                             quizData.list_of_questions?.map(

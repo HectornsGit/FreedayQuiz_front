@@ -1,6 +1,7 @@
-'use client'
-import { signOut } from 'next-auth/react'
-import { toast } from 'react-toastify'
+'use client';
+import { signOut } from 'next-auth/react';
+import { toast } from 'react-toastify';
+import ResetPasswordBox from '@/components/ResetPasswordBox';
 
 const Page = () => {
     return (
@@ -9,13 +10,14 @@ const Page = () => {
             <button
                 style={{ color: 'white' }}
                 onClick={async () => {
-                    toast.success('Sesión cerrada')
-                    await signOut({ redirect: false })
+                    toast.success('Sesión cerrada');
+                    await signOut({ redirect: false });
                 }}
             >
                 Cerrar sesion
             </button>
+            <ResetPasswordBox />
         </>
-    )
-}
-export default Page
+    );
+};
+export default Page;
