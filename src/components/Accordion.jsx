@@ -8,16 +8,15 @@ const Accordion = ({ title, children }) => {
     };
 
     return (
-        <div className="overflow-hidden shadow-lg">
+        <div className="w-screen px-6 sm:w-96 md:w-full">
             <button
                 onClick={toggleAccordion}
-                className="w-full p-4  text-left text-lg font-semibold text-black bg-[--yellow] focus:outline-none"
+                className="w-full text-xl font-semibold p-2 text-left flex gap-2 items-center text-[--yellow] border-b border-[--yellow] focus:outline-none"
             >
-                {title}
+                <span className="font-bold ">+ </span>
+                <span>{title}</span>
             </button>
-            {isOpen && (
-                <div className="p-4 bg-white text-gray-700">{children}</div>
-            )}
+            {isOpen && <div className="py-2 text-white">{children}</div>}
         </div>
     );
 };
