@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import AnswerInputComponent from './AnswerInputComponent';
 import ManagerButton from './ManagerButton';
 import QuestionImage from '../QuestionImage';
+import Accordion from '@/components/Accordion';
+import ListPlayerStats from '../listPlayerStats';
 const MatchComponentAsManager = ({ managerProps }) => {
     const {
         endQuiz,
@@ -30,13 +32,13 @@ const MatchComponentAsManager = ({ managerProps }) => {
         isClockInput,
         isInput,
         setIsInput,
+        playerData,
     } = managerProps;
 
     // Iconos para las respuestas.
     const answerNames = ['🌞', '🌜', '🌟', '⚡'];
 
     const disableQuestionsButton = isQuestionRunning ? true : false;
-
     const [title, setTitle] = useState();
 
     useEffect(() => {
@@ -100,7 +102,16 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             ></YellowBgPencil>
                         </button>
                     </li>
-                </ul>
+                </ul>{' '}
+                {playerData && (
+                    <div className="flex flex-col items-center  mb-4">
+                        <Accordion title={'Jugadores'}>
+                            <ListPlayerStats
+                                players={playerData}
+                            ></ListPlayerStats>
+                        </Accordion>
+                    </div>
+                )}
                 {quizData && (
                     <h1 className="text-3xl font-bold">{quizData?.title}</h1>
                 )}
