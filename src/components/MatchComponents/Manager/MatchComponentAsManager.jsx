@@ -137,7 +137,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     handleChange={handleQuestionChange}
                                 ></NumberInput>
                                 <ul className="flex justify-between sm:w-96 w-full">
-                                    <li>
+                                    <li className="z-10">
                                         {isInput ? (
                                             <QuestionTitleInput
                                                 text={'Texto pregunta'}
@@ -166,7 +166,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 </ul>{' '}
                                 {isInput === false && (
                                     <select
-                                        className=" sm:w-96 w-full font-bold mb-4  p-2  text-black text-md py-2"
+                                        className=" sm:w-96 w-full font-bold mb-4  p-2  z-10 text-black text-md py-2"
                                         onChange={getQuestionFromList}
                                         disabled={disableQuestionsButton}
                                     >
