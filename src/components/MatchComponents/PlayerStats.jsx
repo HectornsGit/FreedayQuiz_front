@@ -6,9 +6,9 @@ import PersonSlashedLogo from '../icons/PersonSlashedLogo';
 const PlayerStats = ({ player }) => {
     const { name, state, totalScore, streak } = player;
     return (
-        <ul className="flex w-full pt-2 items-center gap-10">
+        <ul className="flex w-full pt-2 items-center gap-8">
             <li className="grow">
-                <span className="flex gap-2">
+                <span className="flex w-28 gap-2">
                     {state === 'online' ? (
                         <PersonLogo className={'  pb-1 w-5 fill-[#39FF14] '} />
                     ) : (
