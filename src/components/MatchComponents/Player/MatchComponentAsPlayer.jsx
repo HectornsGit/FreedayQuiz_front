@@ -119,7 +119,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                             hidden={socket?.Mydata?.name ? true : false}
                         >
                             <YellowBgSendPlane
-                                className={'w-8'}
+                                className={'w-8 p-1'}
                             ></YellowBgSendPlane>
                         </button>
                     </form>
