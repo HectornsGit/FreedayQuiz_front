@@ -192,7 +192,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'correctAnswer'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-green-300  from-9% via-green-400 via-50% to-lime-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -213,7 +213,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionA'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -229,7 +229,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionB'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -245,7 +245,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionC'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
