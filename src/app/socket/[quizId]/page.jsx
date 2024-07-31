@@ -45,6 +45,9 @@ const Page = () => {
         clickedResponses,
         getQuestionFromList,
         startRandomQuestion,
+        isThereAWinner,
+        setIsThereAWinner,
+        requestSetWinnerOn,
     } = useQuizLogic();
 
     const masterProps = {
@@ -76,6 +79,9 @@ const Page = () => {
         deleteQuestionHandler,
         getQuestionFromList,
         startRandomQuestion,
+        isThereAWinner,
+        setIsThereAWinner,
+        requestSetWinnerOn,
     };
     const playerProps = {
         signOutHandler,
@@ -99,6 +105,7 @@ const Page = () => {
         isNameSetted,
         recoverySession,
         clickedResponses,
+        isThereAWinner,
     };
 
     if (error) {

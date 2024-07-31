@@ -25,6 +25,7 @@ import {
     firstDataHandler,
     getResults,
     restartTimeSession,
+    setWinnerOn,
 } from '../handleEvents';
 
 const useSocketConfig = (argumentsData) => {
@@ -59,6 +60,7 @@ const useSocketConfig = (argumentsData) => {
         questionsToDelete,
         setQuestionsExecuted,
         sessionTime,
+        setIsThereAWinner,
     } = argumentsData;
 
     useEffect(() => {
@@ -353,6 +355,15 @@ const useSocketConfig = (argumentsData) => {
             }
         };
     }, [socket, setClickedResponses]);
+
+    useEffect(() => {
+        setWinnerOn(socket, setIsThereAWinner);
+        return () => {
+            if (socket) {
+                socket.off('setWinnerOn');
+            }
+        };
+    }, [socket, setIsThereAWinner]);
 
     useEffect(() => {
         questionDeletedHandler(question, quizData, socket, quizId, setQuizData);

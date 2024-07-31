@@ -28,6 +28,7 @@ import {
     deleteQuestionHandler,
     getQuestionFromList,
     startRandomQuestion,
+    requestSetWinnerOn,
 } from '../handlers/index';
 
 const useQuizLogic = () => {
@@ -63,6 +64,7 @@ const useQuizLogic = () => {
     const [connectedClients, setConnectedClients] = useState(0);
     const [, setIsMasterOnline] = useState(false);
     const [questionsExecuted, setQuestionsExecuted] = useState([]);
+    const [isThereAWinner, setIsThereAWinner] = useState(false);
 
     //Estados que controlan si son inputs los componentes de la pantalla del Master.
     const [isClockInput, setIsClockInput] = useState(false);
@@ -173,6 +175,7 @@ const useQuizLogic = () => {
         setIsMasterOnline,
         questionsToDelete,
         setQuestionsExecuted,
+        setIsThereAWinner,
     });
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:
@@ -265,6 +268,9 @@ const useQuizLogic = () => {
         setIsInput,
         getQuestionFromList: getQuestionFromList(quizId, socket),
         sessionTimeLeft,
+        isThereAWinner,
+        requestSetWinnerOn: requestSetWinnerOn(socket, quizId),
+        setIsThereAWinner,
         clickedResponses,
         startRandomQuestion: () =>
             startRandomQuestion(
