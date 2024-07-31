@@ -137,7 +137,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     handleChange={handleQuestionChange}
                                 ></NumberInput>
                                 <ul className="flex justify-between sm:w-96 w-full">
-                                    <li>
+                                    <li className="z-10">
                                         {isInput ? (
                                             <QuestionTitleInput
                                                 text={'Texto pregunta'}
@@ -166,7 +166,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 </ul>{' '}
                                 {isInput === false && (
                                     <select
-                                        className=" sm:w-96 w-full font-bold mb-4  p-2  text-black text-md py-2"
+                                        className=" sm:w-96 w-full font-bold mb-4  p-2  z-10 text-black text-md py-2"
                                         onChange={getQuestionFromList}
                                         disabled={disableQuestionsButton}
                                     >
@@ -192,7 +192,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'correctAnswer'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-green-300  from-9% via-green-400 via-50% to-lime-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -213,7 +213,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionA'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -229,7 +229,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionB'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -245,7 +245,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionC'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent

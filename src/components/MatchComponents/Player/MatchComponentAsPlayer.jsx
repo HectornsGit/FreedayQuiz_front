@@ -2,6 +2,7 @@ import QuestionComponent from '../QuestionComponent';
 import ManagerButton from '../Manager/ManagerButton';
 import YellowBgSendPlane from '@/components/icons/YellowBgSendPlane';
 import ShowScores from './ShowScores';
+import ListAnswersComponents from './ListAnswerComponents';
 
 const MatchComponentAsPlayer = ({ playerProps }) => {
     const {
@@ -25,8 +26,6 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
         recoverySession,
         clickedResponses,
     } = playerProps;
-
-    const answerNames = ['🌞', '🌜', '🌟', '⚡'];
 
     if (sessionRecovery && isNameSetted) {
         return (
@@ -119,7 +118,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                             hidden={socket?.Mydata?.name ? true : false}
                         >
                             <YellowBgSendPlane
-                                className={'w-8'}
+                                className={'w-8 p-1'}
                             ></YellowBgSendPlane>
                         </button>
                     </form>
@@ -136,70 +135,18 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                             ></QuestionComponent>
                             {shuffledQuestionResponses && (
                                 <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6">
-                                    {shuffledQuestionResponses &&
-                                        shuffledQuestionResponses.map(
-                                            (response, index) => {
-                                                return (
-                                                    <li
-                                                        key={index}
-                                                        className={
-                                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
-                                                        }
-                                                    >
-                                                        <button
-                                                            disabled={
-                                                                isDisabled
-                                                            }
-                                                            onClick={() =>
-                                                                handleAnswerSubmit(
-                                                                    Object.values(
-                                                                        response
-                                                                    )[0]
-                                                                )
-                                                            }
-                                                            className="flex items-center  h-full gap-6 text-start text-2xl p-4 sm:w-96  w-[95vw]  hover:bg-inherit bg-black "
-                                                        >
-                                                            <span className="font-bold">
-                                                                {
-                                                                    answerNames[
-                                                                        index
-                                                                    ]
-                                                                }
-                                                            </span>
-                                                            <span
-                                                                className={
-                                                                    (answerNames[
-                                                                        index
-                                                                    ].length >
-                                                                    50
-                                                                        ? ' lg:text-xl md:text-md text-sm'
-                                                                        : 'lg:text-2xl md:text-xl text-lg') +
-                                                                    ' font-semibold'
-                                                                }
-                                                            >
-                                                                {
-                                                                    Object.values(
-                                                                        response
-                                                                    )[0]
-                                                                }
-                                                                {clickedResponses[
-                                                                    Object.values(
-                                                                        response
-                                                                    )[0]
-                                                                ] &&
-                                                                    ` pulsado ${
-                                                                        clickedResponses[
-                                                                            Object.values(
-                                                                                response
-                                                                            )[0]
-                                                                        ]
-                                                                    } veces`}
-                                                            </span>
-                                                        </button>
-                                                    </li>
-                                                );
+                                    {shuffledQuestionResponses && (
+                                        <ListAnswersComponents
+                                            shuffledQuestionResponses={
+                                                shuffledQuestionResponses
                                             }
-                                        )}
+                                            clickedResponses={clickedResponses}
+                                            isDisabled={isDisabled}
+                                            handleAnswerSubmit={
+                                                handleAnswerSubmit
+                                            }
+                                        ></ListAnswersComponents>
+                                    )}
                                 </ul>
                             )}
                         </section>
