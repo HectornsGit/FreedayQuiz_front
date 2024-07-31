@@ -20,6 +20,7 @@ const PlayerPrueba = ({ playerProps }) => {
         isNameSetted,
         recoverySession,
         clickedResponses,
+        isThereAWinner,
     } = playerProps;
 
     if (sessionRecovery && isNameSetted) {
@@ -36,6 +37,7 @@ const PlayerPrueba = ({ playerProps }) => {
     }
     return (
         <>
+            {isThereAWinner && <p>Habemus ganador</p>}
             <h2>Jugadores conectados: {connectedClients}</h2>{' '}
             <button onClick={signOutHandler}>Cerrar sesión</button>
             {showScores && !isQuestionRunning ? (

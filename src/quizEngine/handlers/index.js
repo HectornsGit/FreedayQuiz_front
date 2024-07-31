@@ -13,6 +13,7 @@ import deleteQuestionHandler from './deleteQuestionHandler';
 import questionDeletedHandler from '../handleEvents/questionDeletedHandler';
 import getQuestionFromList from './getQuestionFromList';
 import startRandomQuestion from './startRandomQuestion';
+import requestSetWinnerOn from './requestSetWinnerOn';
 
 export {
     nextQuestionHandler,
@@ -30,4 +31,5 @@ export {
     setSessionTimeHandler,
     getQuestionFromList,
     startRandomQuestion,
+    requestSetWinnerOn,
 };

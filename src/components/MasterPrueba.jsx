@@ -28,6 +28,8 @@ const MasterPrueba = ({ masterProps }) => {
         deleteQuestionHandler,
         getQuestionFromList,
         startRandomQuestion,
+        requestSetWinnerOn,
+        isThereAWinner,
     } = masterProps;
 
     const disableControlButtons =
@@ -58,6 +60,9 @@ const MasterPrueba = ({ masterProps }) => {
                 />
             )}
             <button onClick={signOutHandler}>Cerrar sesión de usuario</button>
+            <button onClick={requestSetWinnerOn}>Activar ganador</button>
+
+            {isThereAWinner && <p>Habemus ganador</p>}
 
             {quizData && sessionTime && (
                 <>

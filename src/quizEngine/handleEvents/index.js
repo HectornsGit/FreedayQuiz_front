@@ -22,6 +22,7 @@ import answerMessage from './answerMessage';
 import firstDataHandler from './firstDataHandler';
 import getResults from './getResults';
 import restartTimeSession from './restartTimeSession';
+import setWinnerOn from './setWinnerOn';
 export {
     connectHandler,
     errorHandler,
@@ -47,4 +48,5 @@ export {
     questionDeletedHandler,
     answerMessage,
     firstDataHandler,
+    setWinnerOn,
 };
