@@ -252,13 +252,19 @@ const useSocketConfig = (argumentsData) => {
 
     //Actualizar las preguntas que se editan en tiempo real y sincronizarlos en todos los clientes de la sala:
     useEffect(() => {
-        editedQuestionData(socket, setQuestion, loggedUserId, quizData);
+        editedQuestionData(
+            socket,
+            setQuestion,
+            loggedUserId,
+            quizData,
+            setQuizData
+        );
         return () => {
             if (socket) {
                 socket.off('questionUpdatedMessage');
             }
         };
-    }, [setQuestion, socket, loggedUserId, quizData]);
+    }, [setQuestion, socket, loggedUserId, quizData, setQuizData]);
 
     //Tiempo de cada pregunta:
     useEffect(() => {
