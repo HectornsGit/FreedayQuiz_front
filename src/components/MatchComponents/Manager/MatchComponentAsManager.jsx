@@ -169,6 +169,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                         className=" sm:w-96 w-full font-bold mb-4  p-2  z-10 text-black text-md py-2"
                                         onChange={getQuestionFromList}
                                         disabled={disableQuestionsButton}
+                                        value={question.questionNumber}
                                     >
                                         {quizData &&
                                             quizData.list_of_questions?.map(
@@ -177,10 +178,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                         className="font-semibold py-2 selection:bg-slate-400"
                                                         key={index}
                                                         value={question.number}
-                                                        selected={
-                                                            title ===
-                                                            question.question
-                                                        }
                                                     >
                                                         {`${question.number}. ${question.title}`}
                                                     </option>
