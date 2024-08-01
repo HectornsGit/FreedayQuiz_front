@@ -2,18 +2,11 @@ import ShowWinner from '../../ShowWinner';
 import Points from '../../icons/Points';
 import Trophy from '../../icons/Trophy';
 
-const ShowScores = ({ playerData }) => {
-    //para ordenar por puntuaciones copio el array playerData
-    const orderedPlayersbyScore = [...playerData].sort(
-        (a, b) => b.totalScore - a.totalScore
-    );
-    const winner =
-        orderedPlayersbyScore.length > 0 ? orderedPlayersbyScore[0].name : '';
+const ShowScores = ({ orderedPlayersbyScore }) => {
 
     return (
         <>
             <article className="mx-auto">
-                <ShowWinner winner={winner} />
                 <ul className="mx-auto max-w-3xl">
                     <h3 className="text-xl font-bold py-1">Puntuaciones</h3>
                     {orderedPlayersbyScore.map((player) => (

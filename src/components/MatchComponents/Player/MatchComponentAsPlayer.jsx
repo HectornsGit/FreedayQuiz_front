@@ -2,7 +2,9 @@ import QuestionComponent from '../QuestionComponent';
 import ManagerButton from '../Manager/ManagerButton';
 import YellowBgSendPlane from '@/components/icons/YellowBgSendPlane';
 import ShowScores from './ShowScores';
+import ShowWinner from '@/components/ShowWinner';
 import ListAnswersComponents from './ListAnswerComponents';
+
 
 const MatchComponentAsPlayer = ({ playerProps }) => {
     const {
@@ -25,7 +27,16 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
         isNameSetted,
         recoverySession,
         clickedResponses,
+        isThereAWinner
     } = playerProps;
+
+    //Para ordenar puntuacion jugadores (no sé si compensa meter esto en un customhook)
+    const orderedPlayersbyScore = [...playerData].sort(
+        (a, b) => b.totalScore - a.totalScore
+    );
+    const winner =
+        orderedPlayersbyScore.length > 0 ? orderedPlayersbyScore[0].name : '';
+
 
     if (sessionRecovery && isNameSetted) {
         return (
@@ -53,9 +64,11 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
     }
     return (
         <section className="flex flex-col items-center">
+            
             {showScores && !isQuestionRunning ? (
                 <>
-                    <ShowScores playerData={playerData}></ShowScores>
+                    {isThereAWinner && <ShowWinner winner={winner} />}
+                    <ShowScores orderedPlayersbyScore={orderedPlayersbyScore}></ShowScores>
                 </>
             ) : (
                 <section className="flex flex-col w-[70vw] lg:w-5/6 sm:w-4/6  items-center">
@@ -74,13 +87,13 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                             </p>
                             <ul className="flex w-full justify-center my-8 gap-4">
                                 <li>
-                                    <div className=" bg-[--yellow] rounded-full w-8 h-8"></div>
+                                    <div className="bg-[--cyan] rounded-full w-6 h-6 relative left-[28px] top-[10px] animate-ping"></div>
                                 </li>
                                 <li>
-                                    <div className='className=" bg-[--cyan] rounded-full w-8 h-8'></div>
+                                    <div className='bg-gradient rounded-full w-10 h-10 animate-ping'></div>
                                 </li>
                                 <li>
-                                    <div className="bg-[--yellow] rounded-full w-8 h-8"></div>
+                                    <div className="bg-[--yellow] rounded-full w-6 h-6 relative left-[-28px] top-[10px] animate-ping"></div>
                                 </li>
                             </ul>
                         </div>

@@ -49,6 +49,8 @@ const Page = () => {
         isClockInput,
         isInput,
         setIsInput,
+        requestSetWinnerOn,
+        isThereAWinner,
     } = useQuizLogic();
 
     const managerProps = {
@@ -84,6 +86,8 @@ const Page = () => {
         isClockInput,
         isInput,
         setIsInput,
+        requestSetWinnerOn,
+        isThereAWinner,
     };
     const playerProps = {
         signOutHandler,
@@ -107,6 +111,8 @@ const Page = () => {
         isNameSetted,
         recoverySession,
         clickedResponses,
+        requestSetWinnerOn,
+        isThereAWinner,
     };
 
     if (error) {
