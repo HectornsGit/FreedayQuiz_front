@@ -33,6 +33,8 @@ const MatchComponentAsManager = ({ managerProps }) => {
         isInput,
         setIsInput,
         playerData,
+        requestSetWinnerOn,
+        isThereAWinner,
     } = managerProps;
 
     // Iconos para las respuestas.
@@ -40,6 +42,12 @@ const MatchComponentAsManager = ({ managerProps }) => {
 
     const disableQuestionsButton = isQuestionRunning ? true : false;
     const [title, setTitle] = useState();
+
+    //Creo este handle para mostrar al PLayer tanto la puntuacion como el ganador a la vez
+    const handleFinalScore = (e) => {
+        showScoresHandler()
+        requestSetWinnerOn(e)
+    }
 
     useEffect(() => {
         if (!question) {
@@ -295,6 +303,12 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     >
                         Finalizar quiz
                     </button>
+                    <button
+                        className="text-white font-light text-lg mt-20 px-11 py-2"
+                        onClick={handleFinalScore}>
+                        Activar ganador
+                    </button>
+                    {isThereAWinner && <p className='bg-blue'>Habemus ganador</p>}
                 </section>
             )}
         </section>
