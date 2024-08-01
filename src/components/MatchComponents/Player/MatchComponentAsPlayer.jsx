@@ -145,6 +145,9 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                                             handleAnswerSubmit={
                                                 handleAnswerSubmit
                                             }
+                                            initialPlayerData={
+                                                initialPlayerData
+                                            }
                                         ></ListAnswersComponents>
                                     )}
                                 </ul>
