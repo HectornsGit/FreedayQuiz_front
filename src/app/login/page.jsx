@@ -9,7 +9,7 @@ export default function LoginPage() {
     const { data: session } = useSession()
     console.log('session desde login', session?.user.data.id)
     return (
-        <div className="h-fit flex flex-col content-center text-center">
+        <div className="h-fit flex flex-col content-center text-center mb-14">
             <h2 className='text-4xl font-extrabold mb-4'>Iniciar sesión</h2>
             <p className='mb-10 text-lg'> <span className='text-4xl'>🎲</span> Inicia sesión para comenzar a crear partidas</p>
             <LoginForm />

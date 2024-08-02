@@ -45,8 +45,8 @@ const UserProfile = () => {
         getUserInfo(); // Refresca la lista de quizzes después de eliminar uno
     };
 
-    const handleQuizUpdated = () => {
-        getUserInfo(); // Refresca la lista de quizzes después de actualizar uno
+    const handleQuizUpdated = (quizId) => {
+        router.push(`edit-question/${quizId}`);
     };
 
     if (loading) {
@@ -58,49 +58,61 @@ const UserProfile = () => {
     }
 
     return (
-        <div>
+        <div className="flex flex-col items-center">
             {userInfo ? (
-                <div>
+                <div className="text-center">
                     <img
                         src={`${process.env.NEXT_PUBLIC_API_HOST}/uploads/${userInfo.avatar}`}
                         alt="Avatar"
+                        className="w-32 h-32 object-cover rounded-full mx-auto mb-5" // Espacio debajo de la imagen
                     />
-                    <p>Name: {userInfo.name}</p>
-                    <p>Email: {userInfo.email}</p>
-                    <CreateQuizModal onQuizCreated={handleQuizClick} />
-
+                    <ul className="list-none p-0 mb-5">
+                        <li>{userInfo.name}</li>
+                        <li>{userInfo.email}</li>
+                    </ul>
+                    <CreateQuizModal
+                        onQuizCreated={handleQuizClick}
+                    />{' '}
+                    {/* Espacio debajo del modal */}
                     {userInfo.quizzes && userInfo.quizzes.length > 0 && (
-                        <div>
-                            <h2>Quizzes creados</h2>
-                            <ul>
+                        <div className="text-center mb-10">
+                            <h2 className="mt-4">Quizzes creados</h2>{' '}
+                            {/* Espacio debajo del título */}
+                            <ul className="list-none p-0">
                                 {userInfo.quizzes.map((quiz, index) => (
-                                    <li key={index}>
-                                        <h3>{quiz.title}</h3>
-                                        <p>{quiz.description}</p>
-                                        <button
-                                            onClick={() =>
-                                                handleEditClick(quiz.id)
-                                            }
-                                            className="text-yellow-500 hover:underline ml-4"
-                                        >
-                                            Editar Quiz
-                                        </button>
-                                        <button
-                                            onClick={() =>
-                                                handleDeleteClick(quiz.id)
-                                            }
-                                            className="text-red-500 hover:underline ml-4"
-                                        >
-                                            Eliminar Quiz
-                                        </button>
-                                        <button
-                                            onClick={() =>
-                                                handlePlayClick(quiz.id)
-                                            }
-                                            className="text-blue-500 hover:underline ml-4"
-                                        >
-                                            Iniciar Quiz
-                                        </button>
+                                    <li key={index} className="mt-4">
+                                        <h3 className="">{quiz.title}</h3>{' '}
+                                        {/* Espacio debajo del título del quiz */}
+                                        <p className="">
+                                            {quiz.description}
+                                        </p>{' '}
+                                        {/* Espacio debajo de la descripción del quiz */}
+                                        <div className="flex justify-center gap-4">
+                                            <button
+                                                onClick={() =>
+                                                    handleEditClick(quiz.id)
+                                                }
+                                                className="text-[#FCFF00] hover:underline"
+                                            >
+                                                Editar
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    handleDeleteClick(quiz.id)
+                                                }
+                                                className="text-[#FCFF00] hover:underline"
+                                            >
+                                                Eliminar
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    handlePlayClick(quiz.id)
+                                                }
+                                                className="text-[#FCFF00] hover:underline"
+                                            >
+                                                Iniciar
+                                            </button>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
@@ -111,12 +123,14 @@ const UserProfile = () => {
                         onClose={handleModalClose}
                         quizId={selectedQuizId}
                         onQuizUpdated={handleQuizUpdated}
+                        className="mt-4" // Espacio encima del modal de edición
                     />
                     <DeleteQuizModal
                         isOpen={isDeleteModalOpen}
                         onClose={handleModalClose}
                         quizId={selectedQuizId}
                         onQuizDeleted={handleQuizDeleted}
+                        className="mt-4" // Espacio encima del modal de eliminación
                     />
                 </div>
             ) : (

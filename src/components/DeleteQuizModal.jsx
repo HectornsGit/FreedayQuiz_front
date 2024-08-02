@@ -40,21 +40,24 @@ const DeleteQuizModal = ({ isOpen, onClose, quizId, onQuizDeleted }) => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-xl font-bold mb-4">Eliminar Quiz</h2>
-                <p>¿Estás seguro de que deseas eliminar este quiz?</p>
-                <div className="flex justify-end mt-4">
+            <div className="bg-black p-2 rounded-lg shadow-lg w-full max-w-md flex flex-col">
+                <div className="flex justify-end">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="text-gray-500 font-bold text-lg px-4 py-2 mr-2"
+                        className="mb-4 w-6 h-6 bg-white text-black font-bold text-3xl rounded-sm flex items-center justify-center border border-black hover:bg-gray-200 mr-2"
                     >
-                        Cancelar
+                        &times; {/* Este es el símbolo de la X */}
                     </button>
+                </div>
+                <p className="block text-sm font-medium text-white mb-4">
+                    ¿Seguro/a quieres eliminar el quiz?
+                </p>
+                <div className="flex justify-center">
                     <button
                         type="button"
                         onClick={handleDelete}
-                        className="text-white font-bold text-lg bg-red-500 px-4 py-2 rounded-md hover:bg-red-700"
+                        className="mb-4 text-black font-extrabold text-lg bg-gradient px-11 py-2 hover:box-shadow-yellow"
                     >
                         Eliminar
                     </button>

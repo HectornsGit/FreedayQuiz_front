@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import { useSession } from 'next-auth/react';
 
-const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated}) => {
+const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated }) => {
     const { data: session } = useSession();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -52,8 +52,10 @@ const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const payload = { title, description };
+        const payload = {
+            title,
+            description,
+        };
 
         try {
             const headers = {
@@ -63,7 +65,10 @@ const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated}) => {
 
             const onSuccess = () => {
                 toast.success('Quiz actualizado');
-                if (onQuizUpdated) onQuizUpdated();
+                console.log('Quiz actualizado:', data);
+                setTitle('');
+                setDescription('');
+                onQuizUpdated(data.data.id);
                 onClose();
             };
 
@@ -90,11 +95,19 @@ const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated}) => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-xl font-bold mb-4">Editar Quiz</h2>
+            <div className="bg-black p-8 rounded-lg shadow-lg w-full max-w-md">
                 <form className="flex flex-col" onSubmit={handleSubmit}>
+                    <div className="flex justify-end">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="w-6 h-6 bg-white text-black font-bold text-3xl rounded-sm flex items-center justify-center border border-black hover:bg-gray-200 mr-2"
+                        >
+                            &times; {/* Este es el símbolo de la X */}
+                        </button>
+                    </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-white">
                             Título del Quiz:
                         </label>
                         <input
@@ -102,11 +115,11 @@ const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated}) => {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             required
-                            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                            className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-black"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-white">
                             Descripción:
                         </label>
                         <input
@@ -114,29 +127,17 @@ const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated}) => {
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             required
-                            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                            className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-black"
                         />
                     </div>
-                    <button
-                        type="button"
-                        onClick={onAddQuestion}
-                        className="text-green-500 font-bold text-lg px-4 py-2 ml-2"
-                    >
-                        Agregar Pregunta
-                    </button>
-                    <div className="flex justify-end mt-4">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="text-gray-500 font-bold text-lg px-4 py-2 mr-2"
-                        >
-                            Cancelar
-                        </button>
+                    <div className="flex flex-col justify-center mt-4">
+                        
+
                         <button
                             type="submit"
-                            className="text-white font-bold text-lg bg-blue-500 px-4 py-2 rounded-md hover:bg-blue-700"
+                            className="flex-col text-black font-extrabold text-lg bg-gradient px-11 py-2 hover:box-shadow-yellow"
                         >
-                            Actualizar
+                            Guardar Quiz
                         </button>
                     </div>
                 </form>
