@@ -54,20 +54,26 @@ function CreateQuizModal({ onQuizCreated }) {
         <div className="flex flex-col justify-center items-center">
             <button
                 onClick={() => setIsModalOpen(true)}
-                className="text-white font-bold text-lg bg-blue-500 px-4 py-2 rounded-md hover:bg-blue-700"
+                className="text-[#FCFF00] font-bold text-sm w-38 h-32 border-2 border-[#FCFF00] bg-transparent px-5"
             >
-                Crear nuevo Quiz
+                Añadir nuevo Quiz
             </button>
 
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                    <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                        <h2 className="text-xl font-bold mb-4">
-                            Crear Nuevo Quiz
-                        </h2>
+                    <div className="bg-black p-8 rounded-lg shadow-lg w-full max-w-md">
                         <form className="flex flex-col" onSubmit={handleSubmit}>
+                            <div className="flex justify-end">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsModalOpen(false)}
+                                    className="w-6 h-6 bg-white text-black font-bold text-3xl rounded-sm flex items-center justify-center border border-black hover:bg-gray-200"
+                                >
+                                    &times; {/* Este es el símbolo de la X */}
+                                </button>
+                            </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
+                                <label className="block text-sm font-medium text-white">
                                     Título del Quiz:
                                 </label>
                                 <input
@@ -75,12 +81,12 @@ function CreateQuizModal({ onQuizCreated }) {
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     required
-                                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                                    className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-black"
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Descripcion:
+                                <label className="block text-sm font-medium text-white">
+                                    Descripción:
                                 </label>
                                 <input
                                     type="text"
@@ -89,22 +95,15 @@ function CreateQuizModal({ onQuizCreated }) {
                                         setDescription(e.target.value)
                                     }
                                     required
-                                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                                    className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-black"
                                 />
                             </div>
-                            <div className="flex justify-end">
-                                <button
-                                    type="button"
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="text-gray-500 font-bold text-lg px-4 py-2 mr-2"
-                                >
-                                    Cancelar
-                                </button>
+                            <div className="flex justify-center">
                                 <button
                                     type="submit"
-                                    className="text-white font-bold text-lg bg-blue-500 px-4 py-2 rounded-md hover:bg-blue-700"
+                                    className="text-black font-extrabold text-base bg-gradient px-10 py-2 hover:box-shadow-yellow"
                                 >
-                                    Crear Quiz
+                                    Crear Pregunta
                                 </button>
                             </div>
                         </form>

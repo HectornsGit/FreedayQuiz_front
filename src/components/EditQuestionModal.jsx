@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import ListQuestions from './ListQuestions';
 
-const CreateQuestionForm = () => {
+const EditQuestionForm = () => {
     const { data: session } = useSession();
     const { quizId } = useParams();
     const [quizTitle, setQuizTitle] = useState('');
@@ -106,18 +106,18 @@ const CreateQuestionForm = () => {
             };
 
             const onSuccess = (data) => {
-                toast.success('Pregunta creada');
-                console.log('Pregunta creada:', data);
+                toast.success('Pregunta editada');
+                console.log('Pregunta editada:', data);
             };
 
             const onError = (error) => {
                 toast.error(error.message);
-                console.error('Error al crear la pregunta:', error);
+                console.error('Error al editar la pregunta:', error);
             };
 
             await fetchAPI(
-                '/create-questions',
-                'POST',
+                '/update-questions',
+                'PATCH',
                 formDataToSend,
                 onSuccess,
                 onError,
@@ -125,7 +125,7 @@ const CreateQuestionForm = () => {
             );
         } catch (error) {
             toast.error(error.message);
-            console.error('Error al crear la pregunta:', error);
+            console.error('Error al editar la pregunta:', error);
         }
     };
 
@@ -163,9 +163,7 @@ const CreateQuestionForm = () => {
                     {imagePreview && (
                         <div className="mt-4">
                             <img
-                                src={
-                                    imagePreview
-                                }
+                                src={imagePreview}
                                 alt="Vista previa de la imagen"
                                 className="max-w-full h-[200px] object-cover"
                                 style={{
@@ -291,4 +289,4 @@ const CreateQuestionForm = () => {
     );
 };
 
-export default CreateQuestionForm;
+export default EditQuestionForm;
