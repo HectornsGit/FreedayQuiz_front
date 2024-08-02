@@ -61,6 +61,9 @@ export default function Header() {
                     <li>
                         <Link href="/register">Registrarse</Link>
                     </li>
+                    <li>
+                        <Link href="/profile">Perfil</Link>
+                    </li>
                 </ul>
                 <ul className="hidden md:flex gap-x-8">
                     <li>
@@ -72,6 +75,11 @@ export default function Header() {
                         <ButtonPrimary href="/register">
                             Registrarse
                         </ButtonPrimary>
+                    </li>
+                    <li>
+                        <ButtonSecondary href="/profile">
+                            Perfil
+                        </ButtonSecondary>
                     </li>
                 </ul>
             </nav>
