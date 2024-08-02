@@ -8,30 +8,34 @@ export async function fetchAPI(
     onError = () => {},
     additionalHeaders = {}
 ) {
-    method = method ?? 'GET'
+    method = method ?? 'GET';
 
     const requestInit = {
         method: method,
         headers: { ...additionalHeaders },
-    } 
+    };
 
-    //LIDIA: elimino && method !== 'DELETE'de este if ya que para pegarle al endpoint de elminar preguntas necesito enviar body
+    //Javier: Añado manejo de Formdata
     if (method !== 'GET' && payload) {
-        requestInit.headers['Content-Type'] = 'application/json'
-        requestInit.body = JSON.stringify(payload)
+        if (!(payload instanceof FormData)) {
+            requestInit.headers['Content-Type'] = 'application/json';
+            requestInit.body = JSON.stringify(payload);
+        } else {
+            requestInit.body = payload;
+        }
     }
 
     try {
-        const response = await fetch(host + path, requestInit)
+        const response = await fetch(host + path, requestInit);
 
-        const result = await response.json()
+        const result = await response.json();
 
         if (response.ok) {
-            onSuccess(result)
+            onSuccess(result);
         } else {
-            onError(result)
+            onError(result);
         }
     } catch (error) {
-        onError(error)
+        onError(error);
     }
 }

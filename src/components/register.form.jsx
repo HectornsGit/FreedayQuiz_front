@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { fetchAPI } from '@/api/fetch-api';
 import { toast } from 'react-toastify';
 import EyeOpen from './icons/EyeOpen'; //icono ojo aberto
@@ -15,6 +16,7 @@ function RegisterForm() {
         'imagenPredeterminada.png'
     );
     const fileInputRef = useRef(null);
+    const router = useRouter();
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
@@ -39,10 +41,11 @@ function RegisterForm() {
             setEmail('');
             setName('');
             setPassword('');
+            router.push('/register-confirm');
         };
 
         const onError = (error) => {
-            toast.error(error);
+            toast.error('Ha habido un error en el registro');
             console.log('Ha habido un error en el registro', error);
             setPassword('');
         };
