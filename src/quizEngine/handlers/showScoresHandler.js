@@ -7,6 +7,7 @@ const showScoresHandler = (socket, quizId, playerData) => {
 
     if (socket) {
         socket.emit('showScores', quizId, states);
+        socket.emit('closeQuestionInterval', quizId);
     }
 };
 export default showScoresHandler;
