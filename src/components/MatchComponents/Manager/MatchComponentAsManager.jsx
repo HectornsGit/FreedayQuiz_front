@@ -9,6 +9,7 @@ import ManagerButton from './ManagerButton';
 import QuestionImage from '../QuestionImage';
 import Accordion from '@/components/Accordion';
 import ListPlayerStats from '../listPlayerStats';
+import Points from '@/components/icons/Points';
 const MatchComponentAsManager = ({ managerProps }) => {
     const {
         endQuiz,
@@ -277,7 +278,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                         </section>
                     )}
                     {isInput == false && (
-                        <ul className="flex justify-center items-center mt-4 gap-4">
+                        <ul className="flex justify-center items-center mt-4 gap-6">
                             <li>
                                 <ManagerButton
                                     isPrimary={true}
@@ -295,20 +296,26 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 />
                             </li>
                         </ul>
+                        
                     )}
-
+                    <div className='flex flex-col items-center'>
+                    <button
+                        className="text-[--yellow] font-bold text-lg mt-10 p-1"
+                        onClick={handleFinalScore}>
+                            <span className='flex flex-row gap-3 hover:bg-gradient'>
+                            <Points className='w-4'/>
+                            Mostrar puntuacion final
+                            <Points className='w-4'/>
+                            </span>
+                        
+                    </button>
                     <button
                         className="text-white font-light text-lg mt-20 px-11 py-2"
                         onClick={endQuiz}
                     >
                         Finalizar quiz
                     </button>
-                    <button
-                        className="text-white font-light text-lg mt-20 px-11 py-2"
-                        onClick={handleFinalScore}>
-                        Activar ganador
-                    </button>
-                    {isThereAWinner && <p className='bg-blue'>Habemus ganador</p>}
+                    </div>
                 </section>
             )}
         </section>
