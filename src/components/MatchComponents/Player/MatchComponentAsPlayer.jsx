@@ -5,7 +5,6 @@ import ShowScores from './ShowScores';
 import ShowWinner from '@/components/ShowWinner';
 import ListAnswersComponents from './ListAnswerComponents';
 
-
 const MatchComponentAsPlayer = ({ playerProps }) => {
     const {
         handleInitialPlayerData,
@@ -27,7 +26,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
         isNameSetted,
         recoverySession,
         clickedResponses,
-        isThereAWinner
+        isThereAWinner,
     } = playerProps;
 
     //Para ordenar puntuacion jugadores (no sé si compensa meter esto en un customhook)
@@ -36,7 +35,6 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
     );
     const winner =
         orderedPlayersbyScore.length > 0 ? orderedPlayersbyScore[0].name : '';
-
 
     if (sessionRecovery && isNameSetted) {
         return (
@@ -64,11 +62,12 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
     }
     return (
         <section className="flex flex-col items-center">
-            
             {showScores && !isQuestionRunning ? (
                 <>
                     {isThereAWinner && <ShowWinner winner={winner} />}
-                    <ShowScores orderedPlayersbyScore={orderedPlayersbyScore}></ShowScores>
+                    <ShowScores
+                        orderedPlayersbyScore={orderedPlayersbyScore}
+                    ></ShowScores>
                 </>
             ) : (
                 <section className="flex flex-col w-[70vw] lg:w-5/6 sm:w-4/6  items-center">
@@ -90,7 +89,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                                     <div className="bg-[--cyan] rounded-full w-6 h-6 relative left-[28px] top-[10px] animate-ping"></div>
                                 </li>
                                 <li>
-                                    <div className='bg-gradient rounded-full w-10 h-10 animate-ping'></div>
+                                    <div className="bg-gradient rounded-full w-10 h-10 animate-ping"></div>
                                 </li>
                                 <li>
                                     <div className="bg-[--yellow] rounded-full w-6 h-6 relative left-[-28px] top-[10px] animate-ping"></div>
@@ -161,6 +160,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                                             initialPlayerData={
                                                 initialPlayerData
                                             }
+                                            timeLeft={timeLeft}
                                         ></ListAnswersComponents>
                                     )}
                                 </ul>

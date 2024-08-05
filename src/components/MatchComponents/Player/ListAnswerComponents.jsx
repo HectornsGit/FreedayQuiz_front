@@ -6,6 +6,7 @@ const ListAnswersComponents = ({
     isDisabled,
     handleAnswerSubmit,
     initialPlayerData,
+    timeLeft,
 }) => {
     return shuffledQuestionResponses.map((response, index) => {
         return (
@@ -22,6 +23,7 @@ const ListAnswersComponents = ({
                     index={index}
                     handleAnswerSubmit={handleAnswerSubmit}
                     initialPlayerData={initialPlayerData}
+                    timeLeft={timeLeft}
                 ></AnswerComponent>
             </li>
         );
