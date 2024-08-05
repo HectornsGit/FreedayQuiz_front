@@ -1,4 +1,7 @@
+'use client';
+
 import TimesAnsweredComponent from './TimesAnsweredComponent';
+
 const AnswerComponent = ({
     isDisabled,
     index,
@@ -6,9 +9,9 @@ const AnswerComponent = ({
     clickedResponses,
     handleAnswerSubmit,
     initialPlayerData,
+    timeLeft,
 }) => {
     const answerNames = ['🌞', '🌜', '🌟', '⚡'];
-
     const clickedAnswer =
         Object.values(response)[0] == initialPlayerData[0].lastAnswerText
             ? 'disabled:bg-inherit bg-inherit '
@@ -19,13 +22,11 @@ const AnswerComponent = ({
             disabled={isDisabled}
             onClick={() => handleAnswerSubmit(Object.values(response)[0])}
             className={
-                'flex items-center  h-16 gap-6 text-start  pb-0 p-4  sm:w-96  w-[95vw] disabled:bg-black  hover:bg-inherit bg-black ' +
+                'flex items-center  h-16 gap-6 text-start   p-4  sm:w-96  w-[95vw] disabled:bg-black  hover:bg-inherit bg-black ' +
                 clickedAnswer
             }
         >
-            <span className="text-2xl pb-4 font-bold">
-                {answerNames[index]}
-            </span>
+            <span className={'text-2xl font-bold'}>{answerNames[index]}</span>
             <div
                 className={
                     (Object.values(response)[0].length > 32
@@ -33,10 +34,15 @@ const AnswerComponent = ({
                         : ' text-md  ') + ' font-semibold flex justify-start'
                 }
             >
-                <div className=" pt-0 sm:w-56 w-72">
+                <div
+                    className={
+                        (timeLeft > 0 ? '' : 'pt-2 ') + ' pt-0 sm:w-56 w-72'
+                    }
+                >
                     {Object.values(response)[0]}
                 </div>
                 <TimesAnsweredComponent
+                    timeLeft={timeLeft}
                     clickedResponses={clickedResponses}
                     response={response}
                 ></TimesAnsweredComponent>
