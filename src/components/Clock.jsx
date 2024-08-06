@@ -46,7 +46,7 @@ const Clock = ({
             </div>
         </form>
     ) : (
-        <ul className="flex items-center">
+        <ul className="flex items-center gap-3">
             <li className="flex-col items-start">
                 <p className="text-xs ml-4 align-top">Tiempo sesión</p>
                 <ul className=" medium w-32  flex justify-between items-center gap-2">

@@ -46,9 +46,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
 
     //Creo este handle para mostrar al PLayer tanto la puntuacion como el ganador a la vez
     const handleFinalScore = (e) => {
-        showScoresHandler()
-        requestSetWinnerOn(e)
-    }
+        showScoresHandler();
+        requestSetWinnerOn(e);
+    };
 
     useEffect(() => {
         if (!question) {
@@ -87,44 +87,62 @@ const MatchComponentAsManager = ({ managerProps }) => {
 
     return (
         <section className="w-11/12 mx-2 flex flex-col  items-center">
-            <header className="flex flex-col xl:w-2/6 md:w-1/2 mb-6  sm:w-1/2 w-full">
-                <ul className="flex grow mb-4 h-12 items-center justify-between">
-                    <li>
-                        {sessionTimeLeft > 0 && (
-                            <Clock
-                                time={sessionTimeLeft}
-                                setSessionTimeHandler={setSessionTimeHandler}
-                                isClockInput={isClockInput}
-                                setIsClockInput={setIsClockInput}
-                            />
-                        )}
-                    </li>
-                    <li>
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setIsInput(!isInput);
-                            }}
-                        >
-                            <YellowBgPencil
-                                className={'rounded-sm p-1 w-8'}
-                            ></YellowBgPencil>
-                        </button>
-                    </li>
-                </ul>{' '}
-                {playerData && (
-                    <div className="flex flex-col items-center  mb-4">
-                        <Accordion title={'Jugadores'}>
-                            <ListPlayerStats
-                                players={playerData}
-                            ></ListPlayerStats>
-                        </Accordion>
-                    </div>
-                )}
-                {quizData && (
-                    <h1 className="text-3xl font-bold">{quizData?.title}</h1>
-                )}
-            </header>
+            <div className="lg:grid grid-cols-3 w-screen mx-2">
+                <aside className="lg:flex hidden w-1/3">
+                    {playerData && (
+                        <div className="flex flex-col items-center  mb-4">
+                            <Accordion title={'Jugadores'}>
+                                <ListPlayerStats
+                                    players={playerData}
+                                ></ListPlayerStats>
+                            </Accordion>
+                        </div>
+                    )}
+                </aside>
+                <header className="flex flex-col mb-6 w-full">
+                    <ul className="flex grow mb-4 h-12 items-center mx-4 justify-between">
+                        <li>
+                            {sessionTimeLeft > 0 && (
+                                <Clock
+                                    time={sessionTimeLeft}
+                                    setSessionTimeHandler={
+                                        setSessionTimeHandler
+                                    }
+                                    isClockInput={isClockInput}
+                                    setIsClockInput={setIsClockInput}
+                                />
+                            )}
+                        </li>
+                        <li>
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setIsInput(!isInput);
+                                }}
+                            >
+                                <YellowBgPencil
+                                    className={'rounded-sm p-1 w-8'}
+                                ></YellowBgPencil>
+                            </button>
+                        </li>
+                    </ul>
+                    {playerData && (
+                        <div className="flex lg:hidden flex-col items-center  mb-4">
+                            <Accordion title={'Jugadores'}>
+                                <ListPlayerStats
+                                    players={playerData}
+                                ></ListPlayerStats>
+                            </Accordion>
+                        </div>
+                    )}
+                    {quizData && (
+                        <h1 className="text-3xl font-bold">
+                            {quizData?.title}
+                        </h1>
+                    )}
+                </header>
+                <aside></aside>
+            </div>
             {loggedUserId && loggedUserId == quizData?.owner_id && (
                 <section className="flex-col justify-center">
                     {question && (
@@ -172,7 +190,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                             Elimina la pregunta
                                         </button>
                                     </li>
-                                </ul>{' '}
+                                </ul>
                                 {isInput === false && (
                                     <select
                                         className=" sm:w-96 w-full font-bold mb-4  p-2  z-10 text-black text-md py-2"
@@ -296,25 +314,24 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 />
                             </li>
                         </ul>
-                        
                     )}
-                    <div className='flex flex-col items-center'>
-                    <button
-                        className="text-[--yellow] font-bold text-lg mt-10 p-1"
-                        onClick={handleFinalScore}>
-                            <span className='flex flex-row gap-3 hover:bg-gradient'>
-                            <Points className='w-4'/>
-                            Mostrar puntuacion final
-                            <Points className='w-4'/>
+                    <div className="flex flex-col items-center">
+                        <button
+                            className="text-[--yellow] font-bold text-lg mt-10 p-1"
+                            onClick={handleFinalScore}
+                        >
+                            <span className="flex flex-row gap-3 hover:bg-gradient">
+                                <Points className="w-4" />
+                                Mostrar puntuacion final
+                                <Points className="w-4" />
                             </span>
-                        
-                    </button>
-                    <button
-                        className="text-white font-light text-lg mt-20 px-11 py-2"
-                        onClick={endQuiz}
-                    >
-                        Finalizar quiz
-                    </button>
+                        </button>
+                        <button
+                            className="text-white font-light text-lg mt-20 px-11 py-2"
+                            onClick={endQuiz}
+                        >
+                            Finalizar quiz
+                        </button>
                     </div>
                 </section>
             )}
