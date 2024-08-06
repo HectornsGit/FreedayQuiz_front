@@ -86,65 +86,58 @@ const MatchComponentAsManager = ({ managerProps }) => {
     }
 
     return (
-        <section className="w-11/12 mx-2 flex flex-col  items-center">
-            <div className="lg:grid grid-cols-3 w-screen mx-2">
-                <aside className="lg:flex hidden w-1/3">
-                    {playerData && (
-                        <div className="flex flex-col items-center  mb-4">
-                            <Accordion title={'Jugadores'}>
-                                <ListPlayerStats
-                                    players={playerData}
-                                ></ListPlayerStats>
-                            </Accordion>
-                        </div>
-                    )}
-                </aside>
-                <header className="flex flex-col mb-6 w-full">
-                    <ul className="flex grow mb-4 h-12 items-center mx-4 justify-between">
-                        <li>
-                            {sessionTimeLeft > 0 && (
-                                <Clock
-                                    time={sessionTimeLeft}
-                                    setSessionTimeHandler={
-                                        setSessionTimeHandler
-                                    }
-                                    isClockInput={isClockInput}
-                                    setIsClockInput={setIsClockInput}
-                                />
-                            )}
-                        </li>
-                        <li>
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setIsInput(!isInput);
-                                }}
-                            >
-                                <YellowBgPencil
-                                    className={'rounded-sm p-1 w-8'}
-                                ></YellowBgPencil>
-                            </button>
-                        </li>
-                    </ul>
-                    {playerData && (
-                        <div className="flex lg:hidden flex-col items-center  mb-4">
-                            <Accordion title={'Jugadores'}>
-                                <ListPlayerStats
-                                    players={playerData}
-                                ></ListPlayerStats>
-                            </Accordion>
-                        </div>
-                    )}
-                    {quizData && (
-                        <h1 className="text-3xl font-bold">
-                            {quizData?.title}
-                        </h1>
-                    )}
-                </header>
-                <aside></aside>
-            </div>
+        <section className="lg:items-start lg:grid lg:grid-cols-[0.7fr_1.6fr_0.7fr] lg:grid-rows-[0.4fr_1.3fr_1fr] lg:gap-0 w-11/12 mx-2 flex flex-col  items-center">
+            <header className="lg:col-span-3 lg:row-span-1 flex flex-col mb-6 w-full">
+                <ul className="flex grow mb-4 h-12 items-center mx-4 justify-between">
+                    <li>
+                        {sessionTimeLeft > 0 && (
+                            <Clock
+                                time={sessionTimeLeft}
+                                setSessionTimeHandler={setSessionTimeHandler}
+                                isClockInput={isClockInput}
+                                setIsClockInput={setIsClockInput}
+                            />
+                        )}
+                    </li>
+                    <li>
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setIsInput(!isInput);
+                            }}
+                        >
+                            <YellowBgPencil
+                                className={'rounded-sm p-1 w-8'}
+                            ></YellowBgPencil>
+                        </button>
+                    </li>
+                </ul>
+                {playerData && (
+                    <div className="flex lg:hidden flex-col items-center  mb-4">
+                        <Accordion title={'Jugadores'}>
+                            <ListPlayerStats
+                                players={playerData}
+                            ></ListPlayerStats>
+                        </Accordion>
+                    </div>
+                )}
+                {quizData && (
+                    <h1 className="text-3xl font-bold">{quizData?.title}</h1>
+                )}
+            </header>
+            <aside className=" lg:row-span-2 lg:flex hidden w-1/3">
+                {playerData && (
+                    <div className="flex flex-col items-center  mb-4">
+                        <Accordion title={'Jugadores'}>
+                            <ListPlayerStats
+                                players={playerData}
+                            ></ListPlayerStats>
+                        </Accordion>
+                    </div>
+                )}
+            </aside>
             {loggedUserId && loggedUserId == quizData?.owner_id && (
-                <section className="flex-col justify-center">
+                <section className="lg:col-span-1 lg:row-span-2 flex-col justify-center">
                     {question && (
                         <section className="flex flex-col justify-center">
                             <QuestionImage
@@ -335,6 +328,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     </div>
                 </section>
             )}
+            <aside className="lg:row-span-2"></aside>
         </section>
     );
 };
