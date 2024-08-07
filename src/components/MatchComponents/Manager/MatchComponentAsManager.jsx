@@ -86,8 +86,8 @@ const MatchComponentAsManager = ({ managerProps }) => {
     }
 
     return (
-        <section className="lg:items-start lg:grid lg:grid-cols-[0.7fr_1.6fr_0.7fr] lg:grid-rows-[0.2fr_1.3fr_1fr] lg:gap-0 w-11/12 mx-2 flex flex-col  items-center">
-            <header className="lg:col-span-3 lg:row-span-1 flex flex-col mb-6 w-full">
+        <section className="lg:items-start lg:grid lg:grid-cols-[0.44fr_1fr_0.44fr] lg:grid-rows-[0.2fr_1.3fr_1fr] lg:gap-0 w-11/12 mx-2 flex flex-col  items-center">
+            <header className="lg:col-span-3   lg:row-span-1 flex flex-col mb-6 w-full">
                 <ul className="flex grow mb-4 h-12 items-center mx-4 lg:justify-around justify-between">
                     <li>
                         {sessionTimeLeft > 0 && (
@@ -328,7 +328,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     </div>
                 </section>
             )}
-            <aside className="lg:row-span-2"></aside>
+            <aside className="lg:row-span-2 min-w-72   w-1/3"></aside>
         </section>
     );
 };
