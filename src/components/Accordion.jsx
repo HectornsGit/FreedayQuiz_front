@@ -8,7 +8,7 @@ const Accordion = ({ title, children }) => {
     };
 
     return (
-        <div className="w-screen px-6 sm:full lg:w-72">
+        <div className="w-screen px-6 sm:full xl:w-80 lg:w-72">
             <button
                 onClick={toggleAccordion}
                 className="w-full text-xl font-semibold p-2 text-left flex gap-2 items-center text-[--yellow] border-b border-[--yellow] focus:outline-none"
