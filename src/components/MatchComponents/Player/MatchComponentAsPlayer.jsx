@@ -61,7 +61,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
         );
     }
     return (
-        <section className="flex flex-col items-center mt-12 mx-4">
+        <section className="flex flex-col items-center my-12 mx-4">
             {showScores && !isQuestionRunning ? (
                 <>
                     {isThereAWinner && <ShowWinner winner={winner} />}
@@ -151,7 +151,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                                 timeLeft={timeLeft}
                             ></QuestionComponent>
                             {shuffledQuestionResponses && (
-                                <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6">
+                                <ul className="xl:grid xl:grid-cols-2 xl:gap-y-8 xl:gap-x-6 md:grid md:grid-cols-2 md:gap-y-6 md:gap-x-6 md:mx-1 flex flex-col self-center items-center gap-6">
                                     {shuffledQuestionResponses && (
                                         <ListAnswersComponents
                                             shuffledQuestionResponses={
