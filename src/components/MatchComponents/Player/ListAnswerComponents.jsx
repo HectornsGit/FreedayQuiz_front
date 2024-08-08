@@ -13,7 +13,7 @@ const ListAnswersComponents = ({
             <li
                 key={index}
                 className={
-                    'p-[3PX] bg-gradient-to-r  flex items-center    from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
+                    'md:w-[370px] md:h-[65px] lg:w-[385px] lg:h-[70px] flex items-center p-[3PX] bg-gradient-to-r from-indigo-700 from-9% via-sky-500 via-50% to-cyan-400 to-94%'
                 }
             >
                 <AnswerComponent

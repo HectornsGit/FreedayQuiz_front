@@ -22,7 +22,7 @@ const AnswerComponent = ({
             disabled={isDisabled}
             onClick={() => handleAnswerSubmit(Object.values(response)[0])}
             className={
-                'flex items-center  h-16 gap-6 text-start   p-4  sm:w-96  w-[95vw] disabled:bg-black  hover:bg-inherit bg-black ' +
+                'md:w-[400px] md:h-[62px] lg:w-[450px] lg:h-[65px] flex items-center gap-6 text-start p-4  disabled:bg-black hover:bg-inherit bg-black ' +
                 clickedAnswer
             }
         >
