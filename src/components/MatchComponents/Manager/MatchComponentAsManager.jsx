@@ -149,7 +149,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 className="flex sm:items-center items-start gap-4 flex-col"
                             >
                                 <NumberInput
-                                    text={'Límite de tiempo (en segundos)'}
                                     id={'questionTime'}
                                     name={'questionTime'}
                                     isInput={isInput}
