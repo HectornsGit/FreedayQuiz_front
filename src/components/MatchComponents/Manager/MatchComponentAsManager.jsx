@@ -86,7 +86,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
     }
 
     return (
-        <section className="lg:items-start lg:grid lg:grid-cols-[0.44fr_1fr_0.44fr] lg:grid-rows-[0.2fr_1.3fr_1fr] lg:gap-0 w-11/12 mx-2 flex flex-col  items-center">
+        <section className="lg:w-full lg:items-start lg:grid lg:grid-cols-[0.44fr_1.2fr_0.44fr] lg:grid-rows-[0.2fr_1.3fr_1fr] lg:gap-0 w-11/12 mx-2 flex flex-col  items-center">
             <header className="lg:col-span-3   lg:row-span-1 flex flex-col mb-6 w-full">
                 <ul className="flex grow mb-4 h-12 items-center mx-4 lg:justify-around justify-between">
                     <li>
@@ -204,11 +204,11 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                             )}
                                     </select>
                                 )}
-                                <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6">
+                                <ul className="xl:grid xl:grid-cols-2  md:place-items-center   flex flex-col self-center w-full items-center  gap-6">
                                     <li
                                         key={'correctAnswer'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-green-300  from-9% via-green-400 via-50% to-lime-400 to-94%'
+                                            'xl:place-self-end p-[3PX] md:w-80  sm:w-96 w-[95vw] bg-gradient-to-r   flex items-center    from-green-300  from-9% via-green-400 via-50% to-lime-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -229,7 +229,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionA'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
+                                            'xl:place-self-start md:w-80  sm:w-96 w-[95vw] p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -245,7 +245,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionB'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
+                                            'xl:place-self-end md:w-80  sm:w-96 w-[95vw] p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -261,7 +261,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionC'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
+                                            'xl:place-self-start md:w-80  sm:w-96 w-[95vw] p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
