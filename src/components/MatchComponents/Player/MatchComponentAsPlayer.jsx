@@ -61,7 +61,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
         );
     }
     return (
-        <section className="flex flex-col items-center mt-12">
+        <section className="flex flex-col items-center mt-12 mx-4">
             {showScores && !isQuestionRunning ? (
                 <>
                     {isThereAWinner && <ShowWinner winner={winner} />}
@@ -70,7 +70,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                     ></ShowScores>
                 </>
             ) : (
-                <section className="flex flex-col w-[70vw] lg:w-5/6 sm:w-4/6  items-center">
+                <>
                     <header className="self-center">
                         {quizData && (
                             <h1 className="lg:mb-12 lg:text-4xl lg:font-black text-3xl font-black mb-3">
@@ -80,7 +80,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                     </header>
 
                     {!isQuestionRunning && (
-                        <div className="self-center flex flex-col  items-center mb-8">
+                        <div className="mb-8">
                             <p className="lg:text-xl font-semibold text-lg ">
                                 Esperando que el master inicie el quiz...
                             </p>
@@ -99,11 +99,11 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                     )}
 
                     {!isQuestionRunning && !showScores && (
-                        <p className="self-start font-medium mb-10">
+                        <p className="self-baseline font-medium mb-10">
                             Jugadores conectados: {connectedClients}
                         </p>
                     )}
-                    <form className="flex self-start items-end">
+                    <form className="flex self-baseline">
                         <div className="flex flex-col items-start">
                             <label
                                 hidden={socket?.Mydata?.name ? true : false}
@@ -172,7 +172,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                             )}
                         </section>
                     )}
-                </section>
+                </>
             )}
         </section>
     );
