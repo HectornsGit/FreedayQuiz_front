@@ -40,7 +40,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
         return (
             <section className="flex h-[40vh]  pt-20  flex-col justify-center items-center">
                 {quizData && (
-                    <h1 className="text-xl font-bold mb-12">
+                    <h1 className="lg:text-4xl lg:font-black text-xl font-bold mb-12">
                         {quizData?.title}
                     </h1>
                 )}
@@ -61,7 +61,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
         );
     }
     return (
-        <section className="flex flex-col items-center">
+        <section className="flex flex-col items-center mt-12">
             {showScores && !isQuestionRunning ? (
                 <>
                     {isThereAWinner && <ShowWinner winner={winner} />}
@@ -73,7 +73,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                 <section className="flex flex-col w-[70vw] lg:w-5/6 sm:w-4/6  items-center">
                     <header className="self-center">
                         {quizData && (
-                            <h1 className="text-2xl font-bold mb-12">
+                            <h1 className="lg:mb-12 lg:text-4xl lg:font-black text-3xl font-black mb-3">
                                 {quizData?.title}
                             </h1>
                         )}
@@ -81,7 +81,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
 
                     {!isQuestionRunning && (
                         <div className="self-center flex flex-col  items-center mb-8">
-                            <p className="font-semibold text-md">
+                            <p className="lg:text-xl font-semibold text-lg ">
                                 Esperando que el master inicie el quiz...
                             </p>
                             <ul className="flex w-full justify-center my-8 gap-4">
@@ -108,31 +108,36 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                             <label
                                 hidden={socket?.Mydata?.name ? true : false}
                                 htmlFor="player"
+                                className="lg:text-lg text-lg"
                             >
                                 Nombre
                             </label>
-                            <input
-                                id="player"
-                                type="text"
-                                className="font-semibold  p-2  text-black text-md py-1"
-                                value={
-                                    initialPlayerData[0]?.name &&
-                                    initialPlayerData[0]?.name
-                                }
-                                hidden={socket?.Mydata?.name ? true : false}
-                                onChange={(e) => setNickName(e.target.value)}
-                                required
-                            />
+                            <div className="flex">
+                                <input
+                                    id="player"
+                                    type="text"
+                                    className="h-10 font-semibold p-2 text-black text-md py-1 my-2"
+                                    value={
+                                        initialPlayerData[0]?.name &&
+                                        initialPlayerData[0]?.name
+                                    }
+                                    hidden={socket?.Mydata?.name ? true : false}
+                                    onChange={(e) =>
+                                        setNickName(e.target.value)
+                                    }
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    onClick={handleInitialPlayerData}
+                                    hidden={socket?.Mydata?.name ? true : false}
+                                >
+                                    <YellowBgSendPlane
+                                        className={'w-10 relative p-2'}
+                                    ></YellowBgSendPlane>
+                                </button>
+                            </div>
                         </div>
-                        <button
-                            type="button"
-                            onClick={handleInitialPlayerData}
-                            hidden={socket?.Mydata?.name ? true : false}
-                        >
-                            <YellowBgSendPlane
-                                className={'w-8 p-1'}
-                            ></YellowBgSendPlane>
-                        </button>
                     </form>
                     {!isQuestionRunning && initialPlayerData[0]?.name && (
                         <p className="bg-[--yellow] text-lg font-bold w-36 px-4 self-start text-black text-md py-2 ">
