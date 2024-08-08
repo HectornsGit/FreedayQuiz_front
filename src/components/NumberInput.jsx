@@ -8,13 +8,13 @@ const NumberInput = ({ id, text, defaultValue, isInput }) => {
         setValue(defaultValue);
     }, [defaultValue]);
     return (
-        <div className="flex md:font-medium font-light text-left sm:w-96 w-5/6 my-6 flex-col items-start m-2">
-            <label className="text-md " htmlFor={id}>
+        <div className="flex font-black relative -top-20 -left-48 text-black rounded-full bg-[--yellow]  text-left w-16 h-16 flex-col items-center justify-center ">
+            <label className="hidden text-md " htmlFor={id}>
                 {text}
             </label>
             {isInput ? (
                 <input
-                    className="font-semibold w-20  p-2  text-black text-md py-2"
+                    className="w-12 text-center border-2 rounded-md border-black "
                     type="number"
                     id={id}
                     name={id}
@@ -25,8 +25,9 @@ const NumberInput = ({ id, text, defaultValue, isInput }) => {
                     }}
                 />
             ) : (
-                <p className="font-semibold w-20  p-2  text-white text-md py-2">
+                <p className="text-2xl ">
                     {value}
+                    <span className="text-lg p-0 ">s</span>
                 </p>
             )}
         </div>

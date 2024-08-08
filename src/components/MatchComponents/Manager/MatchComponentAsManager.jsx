@@ -46,9 +46,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
 
     //Creo este handle para mostrar al PLayer tanto la puntuacion como el ganador a la vez
     const handleFinalScore = (e) => {
-        showScoresHandler()
-        requestSetWinnerOn(e)
-    }
+        showScoresHandler();
+        requestSetWinnerOn(e);
+    };
 
     useEffect(() => {
         if (!question) {
@@ -86,9 +86,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
     }
 
     return (
-        <section className="w-11/12 mx-2 flex flex-col  items-center">
-            <header className="flex flex-col xl:w-2/6 md:w-1/2 mb-6  sm:w-1/2 w-full">
-                <ul className="flex grow mb-4 h-12 items-center justify-between">
+        <section className="lg:w-full lg:items-start lg:grid lg:grid-cols-[0.44fr_1.2fr_0.44fr] lg:grid-rows-[0.2fr_1.3fr_1fr] lg:gap-0 w-11/12 mx-2 flex flex-col  items-center">
+            <header className="lg:col-span-3   lg:row-span-1 flex flex-col mb-6 w-full">
+                <ul className="flex grow mb-4 h-12 items-center mx-4 lg:justify-around justify-between">
                     <li>
                         {sessionTimeLeft > 0 && (
                             <Clock
@@ -111,9 +111,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             ></YellowBgPencil>
                         </button>
                     </li>
-                </ul>{' '}
+                </ul>
                 {playerData && (
-                    <div className="flex flex-col items-center  mb-4">
+                    <div className="flex lg:hidden flex-col items-center  mb-4">
                         <Accordion title={'Jugadores'}>
                             <ListPlayerStats
                                 players={playerData}
@@ -125,8 +125,19 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     <h1 className="text-3xl font-bold">{quizData?.title}</h1>
                 )}
             </header>
+            <aside className=" lg:row-span-2 lg:flex hidden w-1/3">
+                {playerData && (
+                    <div className="flex flex-col items-center  mb-4">
+                        <Accordion title={'Jugadores'}>
+                            <ListPlayerStats
+                                players={playerData}
+                            ></ListPlayerStats>
+                        </Accordion>
+                    </div>
+                )}
+            </aside>
             {loggedUserId && loggedUserId == quizData?.owner_id && (
-                <section className="flex-col justify-center">
+                <section className="lg:col-span-1 lg:row-span-2 flex-col justify-center">
                     {question && (
                         <section className="flex flex-col justify-center">
                             <QuestionImage
@@ -138,7 +149,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 className="flex sm:items-center items-start gap-4 flex-col"
                             >
                                 <NumberInput
-                                    text={'Límite de tiempo (en segundos)'}
                                     id={'questionTime'}
                                     name={'questionTime'}
                                     isInput={isInput}
@@ -172,7 +182,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                             Elimina la pregunta
                                         </button>
                                     </li>
-                                </ul>{' '}
+                                </ul>
                                 {isInput === false && (
                                     <select
                                         className=" sm:w-96 w-full font-bold mb-4  p-2  z-10 text-black text-md py-2"
@@ -194,11 +204,11 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                             )}
                                     </select>
                                 )}
-                                <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6">
+                                <ul className="xl:grid xl:grid-cols-2  md:place-items-center   flex flex-col self-center w-full items-center  gap-6">
                                     <li
                                         key={'correctAnswer'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-green-300  from-9% via-green-400 via-50% to-lime-400 to-94%'
+                                            'xl:place-self-end p-[3PX] md:w-80  sm:w-96 w-[95vw] bg-gradient-to-r   flex items-center    from-green-300  from-9% via-green-400 via-50% to-lime-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -219,7 +229,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionA'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
+                                            'xl:place-self-start md:w-80  sm:w-96 w-[95vw] p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -235,7 +245,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionB'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
+                                            'xl:place-self-end md:w-80  sm:w-96 w-[95vw] p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -251,7 +261,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     <li
                                         key={'optionC'}
                                         className={
-                                            'p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
+                                            'xl:place-self-start md:w-80  sm:w-96 w-[95vw] p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
                                         }
                                     >
                                         <AnswerInputComponent
@@ -296,28 +306,28 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 />
                             </li>
                         </ul>
-                        
                     )}
-                    <div className='flex flex-col items-center'>
-                    <button
-                        className="text-[--yellow] font-bold text-lg mt-10 p-1"
-                        onClick={handleFinalScore}>
-                            <span className='flex flex-row gap-3 hover:bg-gradient'>
-                            <Points className='w-4'/>
-                            Mostrar puntuacion final
-                            <Points className='w-4'/>
+                    <div className="flex flex-col items-center">
+                        <button
+                            className="text-[--yellow] font-bold text-lg mt-10 p-1"
+                            onClick={handleFinalScore}
+                        >
+                            <span className="flex flex-row gap-3 hover:bg-gradient">
+                                <Points className="w-4" />
+                                Mostrar puntuacion final
+                                <Points className="w-4" />
                             </span>
-                        
-                    </button>
-                    <button
-                        className="text-white font-light text-lg mt-20 px-11 py-2"
-                        onClick={endQuiz}
-                    >
-                        Finalizar quiz
-                    </button>
+                        </button>
+                        <button
+                            className="text-white font-light text-lg mt-20 px-11 py-2"
+                            onClick={endQuiz}
+                        >
+                            Finalizar quiz
+                        </button>
                     </div>
                 </section>
             )}
+            <aside className="lg:row-span-2 min-w-72   w-1/3"></aside>
         </section>
     );
 };

@@ -6,7 +6,7 @@ import PersonSlashedLogo from '../icons/PersonSlashedLogo';
 const PlayerStats = ({ player }) => {
     const { name, state, totalScore, streak } = player;
     return (
-        <ul className="flex w-full pt-2 items-center gap-8">
+        <ul className="flex w-full pt-2 items-center lg:gap-2 gap-8">
             <li className="grow">
                 <span className="flex w-28 gap-2">
                     {state === 'online' ? (

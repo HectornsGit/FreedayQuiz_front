@@ -7,14 +7,14 @@ const AnswerInputComponent = ({ isInput, defaultValue, logo, id }) => {
         setValue(defaultValue);
     }, [defaultValue]);
     return isInput ? (
-        <div className=" flex items-center h-full gap-6 text-start text-2xl p-4  bg-black sm:w-96 w-[95vw] ">
+        <div className=" flex items-center h-full gap-6 text-start text-2xl p-4  bg-black w-full ">
             <span className="font-bold">{logo}</span>
             <input
                 className={
-                    (value > 50
-                        ? ' lg:text-xl md:text-md text-sm'
+                    (value.length > 16
+                        ? '  md:text-md text-sm'
                         : 'lg:text-2xl md:text-xl text-base') +
-                    ' font-semibold px-2 text-black w-72  bg-white'
+                    ' font-semibold px-2 text-black  bg-white w-[80%]'
                 }
                 value={value}
                 id={id}
@@ -30,8 +30,8 @@ const AnswerInputComponent = ({ isInput, defaultValue, logo, id }) => {
             <span className="font-bold">{logo}</span>
             <span
                 className={
-                    (value > 50
-                        ? ' lg:text-xl md:text-md text-sm'
+                    (value.length > 16
+                        ? ' md:text-md text-sm'
                         : 'lg:text-2xl md:text-xl text-base') + ' font-semibold'
                 }
             >
