@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import ListQuestions from './ListQuestions';
+import NoImage from './icons/NoImage';
 
 const CreateQuestionForm = () => {
     const { data: session } = useSession();
@@ -23,7 +24,11 @@ const CreateQuestionForm = () => {
         question_number: '',
     });
 
-    const [imagePreview, setImagePreview] = useState(null);
+    // Icono NoImage por defecto
+    const [imagePreview, setImagePreview] = useState(
+        <NoImage className="w-48 h-48" />
+    );
+
     const fileInputRef = useRef(null);
 
     useEffect(() => {
@@ -81,21 +86,48 @@ const CreateQuestionForm = () => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImagePreview(reader.result);
+                setImagePreview(
+                    <img
+                        src={reader.result}
+                        alt="Vista previa de la imagen"
+                        className="max-w-full h-[200px] object-cover"
+                        style={{
+                            maxWidth: '70vw',
+                            height: '200px',
+                            width: 'calc(200px * 16 / 9)',
+                        }}
+                    />
+                );
             };
             reader.readAsDataURL(file);
         } else {
-            setImagePreview(null);
+            setImagePreview(<NoImage className="w-48 h-48" />);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Verificación de campos obligatorios
+        if (
+            !formData.question ||
+            !formData.question_time ||
+            !formData.optionA ||
+            !formData.optionB ||
+            !formData.optionC ||
+            !formData.correctAnswer ||
+            !formData.question_number
+        ) {
+            toast.error('Por favor, completa los campos obligatorios, solo la imagen es opcional');
+            return;
+        }
+
         const formDataToSend = new FormData();
         formDataToSend.append('quiz_id', quizId);
         Object.keys(formData).forEach((key) => {
-            formDataToSend.append(key, formData[key]);
+            if (formData[key] !== null && formData[key] !== '') {
+                formDataToSend.append(key, formData[key]);
+            }
         });
 
         try {
@@ -160,22 +192,7 @@ const CreateQuestionForm = () => {
                         ref={fileInputRef}
                         className="hidden"
                     />
-                    {imagePreview && (
-                        <div className="mt-4">
-                            <img
-                                src={
-                                    imagePreview
-                                }
-                                alt="Vista previa de la imagen"
-                                className="max-w-full h-[200px] object-cover"
-                                style={{
-                                    maxWidth: '70vw',
-                                    height: '200px',
-                                    width: 'calc(200px * 16 / 9)',
-                                }}
-                            />
-                        </div>
-                    )}
+                    <div className="mt-4">{imagePreview}</div>
                 </div>
                 <ul className="flex flex-col self-center w-full items-center lg:gap-1 space-y-5">
                     <li className="flex flex-col">

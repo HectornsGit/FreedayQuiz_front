@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import CreateQuizModal from './CreateQuizModal';
 import DeleteQuizModal from './DeleteQuizModal';
 import EditQuizModal from './EditQuizModal';
+import YellowPencil from './icons/YellowPencil';
+import Delete from './icons/Delete';
 
 const UserProfile = () => {
     const { getUserInfo, userInfo, error, loading } = useUserInfo();
@@ -46,7 +48,7 @@ const UserProfile = () => {
     };
 
     const handleQuizUpdated = (quizId) => {
-        router.push(`edit-question/${quizId}`);
+        router.push(`edit-question/${quizId}/1`);
     };
 
     if (loading) {
@@ -61,54 +63,61 @@ const UserProfile = () => {
         <div className="flex flex-col items-center">
             {userInfo ? (
                 <div className="text-center">
-                    <img
-                        src={`${process.env.NEXT_PUBLIC_API_HOST}/uploads/${userInfo.avatar}`}
-                        alt="Avatar"
-                        className="w-32 h-32 object-cover rounded-full mx-auto mb-5" // Espacio debajo de la imagen
-                    />
+                    <div className="text-center relative justify-center items-center flex mb-5">
+                        <img
+                            src={`${process.env.NEXT_PUBLIC_API_HOST}/uploads/${userInfo.avatar}`}
+                            alt="Avatar"
+                            className="w-32 h-32 object-cover rounded-full"
+                        />
+                        <YellowPencil className="w-6 h-6 text-yellow-400 absolute bottom-1 right-9" />
+                    </div>
                     <ul className="list-none p-0 mb-5">
-                        <li>{userInfo.name}</li>
-                        <li>{userInfo.email}</li>
+                        <li className="flex items-center justify-center mb-2">
+                            <YellowPencil className="w-3 h-3 mr-1 text-yellow-400" />
+                            {userInfo.name}
+                        </li>
+                        <li className="flex items-center justify-center mb-2">
+                            <YellowPencil className="w-3 h-3 mr-1 text-yellow-400" />
+                            {userInfo.email}
+                        </li>
                     </ul>
-                    <CreateQuizModal
-                        onQuizCreated={handleQuizClick}
-                    />{' '}
-                    {/* Espacio debajo del modal */}
+                    <CreateQuizModal onQuizCreated={handleQuizClick} />
                     {userInfo.quizzes && userInfo.quizzes.length > 0 && (
                         <div className="text-center mb-10">
-                            <h2 className="mt-4">Quizzes creados</h2>{' '}
-                            {/* Espacio debajo del título */}
-                            <ul className="list-none p-0">
+                            <h2 className="mt-4 font-extrabold text-2xl">
+                                Quizzes creados
+                            </h2>
+                            <ul className="list-none p-0 max-w-[80%] mx-auto">
                                 {userInfo.quizzes.map((quiz, index) => (
                                     <li key={index} className="mt-4">
-                                        <h3 className="">{quiz.title}</h3>{' '}
-                                        {/* Espacio debajo del título del quiz */}
-                                        <p className="">
+                                        <h3 className="mx-auto text-lg font-bold break-words">
+                                            {quiz.title}
+                                        </h3>
+                                        <p className="mx-auto text-sm break-words">
                                             {quiz.description}
-                                        </p>{' '}
-                                        {/* Espacio debajo de la descripción del quiz */}
-                                        <div className="flex justify-center gap-4">
+                                        </p>
+                                        <div className="flex justify-between items-center gap-4 mx-auto mt-2">
                                             <button
                                                 onClick={() =>
                                                     handleEditClick(quiz.id)
                                                 }
-                                                className="text-[#FCFF00] hover:underline"
+                                                className="text-[#FCFF00] hover:underline flex-shrink-0"
                                             >
-                                                Editar
+                                                <YellowPencil className="w-3 h-3 mr-1" />
                                             </button>
                                             <button
                                                 onClick={() =>
                                                     handleDeleteClick(quiz.id)
                                                 }
-                                                className="text-[#FCFF00] hover:underline"
+                                                className="text-[#FCFF00] hover:underline flex-shrink-0"
                                             >
-                                                Eliminar
+                                                <Delete className="w-3 h-3 mr-1 fill-[--yellow]" />
                                             </button>
                                             <button
                                                 onClick={() =>
                                                     handlePlayClick(quiz.id)
                                                 }
-                                                className="text-[#FCFF00] hover:underline"
+                                                className="text-[#FCFF00] hover:underline flex-shrink-0"
                                             >
                                                 Iniciar
                                             </button>
@@ -123,14 +132,14 @@ const UserProfile = () => {
                         onClose={handleModalClose}
                         quizId={selectedQuizId}
                         onQuizUpdated={handleQuizUpdated}
-                        className="mt-4" // Espacio encima del modal de edición
+                        className="mt-4"
                     />
                     <DeleteQuizModal
                         isOpen={isDeleteModalOpen}
                         onClose={handleModalClose}
                         quizId={selectedQuizId}
                         onQuizDeleted={handleQuizDeleted}
-                        className="mt-4" // Espacio encima del modal de eliminación
+                        className="mt-4"
                     />
                 </div>
             ) : (
