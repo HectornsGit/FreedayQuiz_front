@@ -38,12 +38,12 @@ export default function ListQuestions({ quizId, closeModal }) {
 
     //funcion para que cargue ruta dinámica, al hacer click en la imagen nos lleva a editar la pregunta que toque (id params, questionNUmber params)
     const handleRouteQuestion = (quizId, questionNumber) => {
-        router.push(`/update-question/${quizId}/${questionNumber}`); //lleva a la ruta con la id de la pregunta TODO !! esto es una ruta de ejemplo
+        router.push(`/edit-question/${quizId}/${questionNumber}`);
     };
 
     const handleAddQuestion = () => {
         console.log('quizId:', quizId);
-        window.location.href = `/new-question/${quizId}`; //lleva a la ruta para crear nueva pregunta TODO !! esto es una ruta de ejemplo
+        window.location.href = `/new-question/${quizId}`;
     };
 
     useEffect(() => {
@@ -111,7 +111,7 @@ export default function ListQuestions({ quizId, closeModal }) {
                                             className="cursor-pointer hover: p-[0.35rem] hover:border-2 hover:border-solid hover:border-[--yellow] hover: rounded "
                                             onClick={() =>
                                                 handleRouteQuestion(
-                                                    question.questionId,
+                                                    quizId,
                                                     question.questionNumber
                                                 )
                                             }

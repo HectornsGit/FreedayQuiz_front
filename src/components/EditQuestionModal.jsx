@@ -1,17 +1,16 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import ListQuestions from './ListQuestions';
+import NoImage from './icons/NoImage';
 
-const EditQuestionForm = () => {
+
+const EditQuestionForm = ({ quizId, questionNumber }) => {
     const { data: session } = useSession();
-    const { quizId } = useParams();
     const [quizTitle, setQuizTitle] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({
         image: null,
         question: '',
@@ -22,51 +21,86 @@ const EditQuestionForm = () => {
         correctAnswer: '',
         question_number: '',
     });
-
-    const [imagePreview, setImagePreview] = useState(null);
+    const [imagePreview, setImagePreview] = useState(
+        <NoImage className="w-48 h-48" />
+    );
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const fileInputRef = useRef(null);
 
     useEffect(() => {
-        // Función para obtener el título del quiz
-        const fetchQuizTitle = async () => {
-            if (quizId && session) {
+        const fetchQuizData = async () => {
+            if (quizId && questionNumber && session) {
                 try {
                     const token = session.accessToken;
-
                     const headers = {
                         Authorization: `Bearer ${token}`,
-                    };
-
-                    const onSuccess = (data) => {
-                        setQuizTitle(data.title);
-                    };
-
-                    const onError = (error) => {
-                        console.error(
-                            'Error al obtener el título del quiz:',
-                            error
-                        );
                     };
 
                     await fetchAPI(
                         `/get-quiz/${quizId}`,
                         'GET',
                         null,
-                        onSuccess,
-                        onError,
+                        (data) => {
+                            setQuizTitle(data.title);
+
+                            const question = data.questions.find(
+                                (q) =>
+                                    q.questionNumber ===
+                                    parseInt(questionNumber)
+                            );
+
+                            if (question) {
+                                setFormData({
+                                    image: question.image || null,
+                                    question: question.question || '',
+                                    question_time: question.questionTime || '',
+                                    optionA: question.optionA || '',
+                                    optionB: question.optionB || '',
+                                    optionC: question.optionC || '',
+                                    correctAnswer: question.correctAnswer || '',
+                                    question_number:
+                                        question.questionNumber || '',
+                                });
+                                if (question.image) {
+                                    const imageUrl = `${process.env.NEXT_PUBLIC_API_HOST}/uploads/${question.image}`;
+                                    setImagePreview(
+                                        <img
+                                            src={imageUrl}
+                                            alt="Vista previa de la imagen"
+                                            className="max-w-full h-[200px] object-cover"
+                                            style={{
+                                                maxWidth: '70vw',
+                                                height: '200px',
+                                                width: 'calc(200px * 16 / 9)',
+                                            }}
+                                        />
+                                    );
+                                } else {
+                                    setImagePreview(
+                                        <NoImage className="w-48 h-48" />
+                                    );
+                                }
+                            }
+                        },
+                        (error) => {
+                            console.error(
+                                'Error al obtener los datos del quiz o preguntas:',
+                                error
+                            );
+                        },
                         headers
                     );
                 } catch (error) {
                     console.error(
-                        'Error al obtener el título del quiz:',
+                        'Error al obtener los datos del quiz o preguntas:',
                         error
                     );
                 }
             }
         };
 
-        fetchQuizTitle();
-    }, [quizId, session]);
+        fetchQuizData();
+    }, [quizId, questionNumber, session]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -77,15 +111,25 @@ const EditQuestionForm = () => {
         const file = e.target.files[0];
         setFormData({ ...formData, image: file });
 
-        // Crear una vista previa de la imagen
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImagePreview(reader.result);
+                setImagePreview(
+                    <img
+                        src={reader.result}
+                        alt="Vista previa de la imagen"
+                        className="max-w-full h-[200px] object-cover"
+                        style={{
+                            maxWidth: '70vw',
+                            height: '200px',
+                            width: 'calc(200px * 16 / 9)',
+                        }}
+                    />
+                );
             };
             reader.readAsDataURL(file);
         } else {
-            setImagePreview(null);
+            setImagePreview(<NoImage className="w-48 h-48" />);
         }
     };
 
@@ -93,34 +137,28 @@ const EditQuestionForm = () => {
         e.preventDefault();
 
         const formDataToSend = new FormData();
-        formDataToSend.append('quiz_id', quizId);
         Object.keys(formData).forEach((key) => {
             formDataToSend.append(key, formData[key]);
         });
 
         try {
             const token = session.accessToken;
-
             const headers = {
                 Authorization: `Bearer ${token}`,
             };
 
-            const onSuccess = (data) => {
-                toast.success('Pregunta editada');
-                console.log('Pregunta editada:', data);
-            };
-
-            const onError = (error) => {
-                toast.error(error.message);
-                console.error('Error al editar la pregunta:', error);
-            };
-
             await fetchAPI(
-                '/update-questions',
+                `/update-question/${quizId}/${formData.question_number}`,
                 'PATCH',
                 formDataToSend,
-                onSuccess,
-                onError,
+                (data) => {
+                    toast.success('Pregunta editada');
+                    console.log('Pregunta editada:', data);
+                },
+                (error) => {
+                    toast.error(error.message);
+                    console.error('Error al editar la pregunta:', error);
+                },
                 headers
             );
         } catch (error) {
@@ -147,7 +185,7 @@ const EditQuestionForm = () => {
             <h1 className="text-4xl font-bold text-center w-80vw truncate mx-4">
                 {quizTitle}
             </h1>
-            <form onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={handleSubmit}>
                 <div
                     className="flex flex-col self-center items-center mb-4 relative cursor-pointer"
                     onClick={handleImageClick}
@@ -160,20 +198,7 @@ const EditQuestionForm = () => {
                         ref={fileInputRef}
                         className="hidden"
                     />
-                    {imagePreview && (
-                        <div className="mt-4">
-                            <img
-                                src={imagePreview}
-                                alt="Vista previa de la imagen"
-                                className="max-w-full h-[200px] object-cover"
-                                style={{
-                                    maxWidth: '70vw',
-                                    height: '200px',
-                                    width: 'calc(200px * 16 / 9)',
-                                }}
-                            />
-                        </div>
-                    )}
+                    <div className="mt-4">{imagePreview}</div>
                 </div>
                 <ul className="flex flex-col self-center w-full items-center lg:gap-1 space-y-5">
                     <li className="flex flex-col">
@@ -201,25 +226,17 @@ const EditQuestionForm = () => {
                     </li>
                 </ul>
                 <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6 mt-5">
-                    <li
-                        className={
-                            'p-[3PX] bg-gradient-to-br  flex items-center from-[#4E39F5] via-[#03F7F9]'
-                        }
-                    >
+                    <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
                         <input
                             type="text"
                             name="optionA"
                             value={formData.optionA}
                             onChange={handleInputChange}
                             placeholder="Respuesta 1"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black sm:w-80 w-[90vw] "
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black sm:w-80 w-[90vw]"
                         />
                     </li>
-                    <li
-                        className={
-                            'p-[3PX] bg-gradient-to-br  flex items-center from-[#4E39F5] via-[#03F7F9]'
-                        }
-                    >
+                    <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
                         <input
                             type="text"
                             name="optionB"
@@ -229,32 +246,24 @@ const EditQuestionForm = () => {
                             className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black sm:w-80 w-[90vw]"
                         />
                     </li>
-                    <li
-                        className={
-                            'p-[3PX] bg-gradient-to-br  flex items-center from-[#4E39F5] via-[#03F7F9]'
-                        }
-                    >
+                    <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
                         <input
                             type="text"
                             name="optionC"
                             value={formData.optionC}
                             onChange={handleInputChange}
                             placeholder="Respuesta 3"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black sm:w-80 w-[90vw] "
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black sm:w-80 w-[90vw]"
                         />
                     </li>
-                    <li
-                        className={
-                            'p-[3PX] bg-gradient-to-br  flex items-center from-[#4E39F5] via-[#03F7F9]'
-                        }
-                    >
+                    <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
                         <input
                             type="text"
                             name="correctAnswer"
                             value={formData.correctAnswer}
                             onChange={handleInputChange}
                             placeholder="Respuesta Correcta"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black sm:w-80 w-[90vw] "
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black sm:w-80 w-[90vw]"
                         />
                     </li>
                 </ul>

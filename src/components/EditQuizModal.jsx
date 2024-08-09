@@ -50,8 +50,7 @@ const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated }) => {
         }
     }, [isOpen, quizId, session]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const saveQuiz = async (shouldUpdate) => {
         const payload = {
             title,
             description,
@@ -63,12 +62,15 @@ const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated }) => {
                 Authorization: `Bearer ${session?.accessToken}`,
             };
 
-            const onSuccess = () => {
+            const onSuccess = (data) => {
                 toast.success('Quiz actualizado');
-                console.log('Quiz actualizado:', data);
                 setTitle('');
                 setDescription('');
-                onQuizUpdated(data.data.id);
+
+                if (shouldUpdate) {
+                    onQuizUpdated(quizId);
+                }
+
                 onClose();
             };
 
@@ -91,12 +93,23 @@ const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated }) => {
         }
     };
 
+    // Funciones para manejar cada botón
+    const handleSaveQuiz = (e) => {
+        e.preventDefault();
+        saveQuiz(false); // No llamar a onQuizUpdated
+    };
+
+    const handleEditQuestions = (e) => {
+        e.preventDefault();
+        saveQuiz(true); // Llamar a onQuizUpdated
+    };
+
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
             <div className="bg-black p-8 rounded-lg shadow-lg w-full max-w-md">
-                <form className="flex flex-col" onSubmit={handleSubmit}>
+                <form className="flex flex-col">
                     <div className="flex justify-end">
                         <button
                             type="button"
@@ -131,13 +144,17 @@ const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated }) => {
                         />
                     </div>
                     <div className="flex flex-col justify-center mt-4">
-                        
-
                         <button
-                            type="submit"
-                            className="flex-col text-black font-extrabold text-lg bg-gradient px-11 py-2 hover:box-shadow-yellow"
+                            onClick={handleSaveQuiz}
+                            className="text-black font-extrabold text-lg bg-gradient px-11 py-2 hover:box-shadow-yellow mb-4"
                         >
                             Guardar Quiz
+                        </button>
+                        <button
+                            onClick={handleEditQuestions}
+                            className="text-black font-extrabold text-lg bg-gradient px-11 py-2 hover:box-shadow-yellow"
+                        >
+                            Editar preguntas
                         </button>
                     </div>
                 </form>
