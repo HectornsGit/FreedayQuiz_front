@@ -6,6 +6,7 @@ import calculateResults from './calculateResults';
 import setItemWithExpiry from './setItemWithExpity';
 import getItemWithExpiry from './getItemWithExpiry';
 import selectRandomQuestion from './selectRandomQuestion';
+import formatDate from './formatDate';
 export {
     findValue,
     shuffleArray,
@@ -15,4 +16,5 @@ export {
     setItemWithExpiry,
     getItemWithExpiry,
     selectRandomQuestion,
+    formatDate,
 };
