@@ -8,11 +8,19 @@ const useApiRequest = () => {
         url,
         urlData = {},
         onSuccess = () => {},
-        onError = () => {}
+        onError = () => {},
+        getBlob
     ) => {
         try {
             const res = await fetch(url, urlData);
-            const body = res.status === 204 ? null : await res.json();
+
+            //Lógica para convertir datos a CSV:
+            let body;
+            if (getBlob) {
+                body = res.status === 201 ? null : await res.blob();
+            } else {
+                body = res.status === 204 ? null : await res.json();
+            }
 
             if (res.ok) {
                 onSuccess(body);
