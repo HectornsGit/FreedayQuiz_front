@@ -12,7 +12,7 @@ const AnswerComponent = ({
     const answerNames = ['🌞', '🌜', '🌟', '⚡'];
     const clickedAnswer =
         Object.values(response)[0] == initialPlayerData[0].lastAnswerText
-            ? 'disabled:bg-inherit bg-inherit '
+            ? ' disabled:bg-transparent '
             : ' ';
 
     return (
