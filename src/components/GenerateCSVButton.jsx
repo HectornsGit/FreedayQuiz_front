@@ -1,4 +1,5 @@
 import useApiRequest from '@/hooks/useApiRequest';
+import { formatDate } from '@/quizEngine/utils/index';
 import { toast } from 'react-toastify';
 
 const GenerateCSVButton = ({ playerData }) => {
@@ -6,11 +7,14 @@ const GenerateCSVButton = ({ playerData }) => {
 
     const onSuccessCSV = async (data) => {
         toast.success('Datos convertidos correctamente a CSV');
+        const date = new Date().toISOString();
+        const formattedDate = formatDate(date);
+
         //Esto es para que se simule un botón en el DOM que se clica automáticamente para iniciar la descarga del archivo en el navegador del cliente:
         const url = window.URL.createObjectURL(data);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'puntuaciones.csv';
+        a.download = `${playerData.title}"-"${formattedDate}.csv`;
         document.body.appendChild(a);
         a.click();
         a.remove();

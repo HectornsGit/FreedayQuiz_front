@@ -37,7 +37,7 @@ const MasterPrueba = ({ masterProps }) => {
     const disableControlButtons =
         showScores || (isQuestionRunning && timeLeft > 0) ? true : false;
     const disableQuestionsButton = isQuestionRunning ? true : false;
-
+    playerData['title'] = quizData.title;
     if (!sessionTime) {
         return (
             <>
