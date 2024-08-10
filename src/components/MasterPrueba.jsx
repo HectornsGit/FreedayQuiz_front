@@ -1,3 +1,4 @@
+import GenerateQRButton from './GenerateQRButton';
 import ShowTime from './MatchComponents/Player/ShowTime';
 const MasterPrueba = ({ masterProps }) => {
     const {
@@ -61,6 +62,7 @@ const MasterPrueba = ({ masterProps }) => {
             )}
             <button onClick={signOutHandler}>Cerrar sesión de usuario</button>
             <button onClick={requestSetWinnerOn}>Activar ganador</button>
+            <GenerateQRButton quizId={quizData.id} />
 
             {isThereAWinner && <p>Habemus ganador</p>}
 
