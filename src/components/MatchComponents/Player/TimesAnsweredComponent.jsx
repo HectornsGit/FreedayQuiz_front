@@ -7,7 +7,7 @@ const TimesAnsweredComponent = ({ clickedResponses, response, timeLeft }) => {
                 timeLeft > 0
                     ? 'hidden'
                     : '' +
-                      ' m-0 relative top-6 sm:left-5 left-40 gap-1 bg-black text-[--yellow] flex items-center  p-2 w-10 h-10 rounded-full'
+                      ' relative top-[5.5rem] left-[16rem] md:left-[19rem] lg:left-[27rem] xl:left-[29rem] flex items-center gap-1 p-2 w-10 h-10 rounded-full bg-black text-[--yellow]'
             }
         >
             <span>

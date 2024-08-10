@@ -8,7 +8,7 @@ const QuestionImage = ({ image }) => {
         setRoute('http://localhost:4000/uploads/' + image);
     }, [image]);
     return (
-        <div className="w-4/6 sm:w-96 self-center">
+        <div className="self-center">
             <img src={route} className="object-cover"></img>
         </div>
     );

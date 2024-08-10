@@ -151,7 +151,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                                 timeLeft={timeLeft}
                             ></QuestionComponent>
                             {shuffledQuestionResponses && (
-                                <ul className="xl:grid xl:grid-cols-2 xl:gap-y-8 xl:gap-x-6 md:grid md:grid-cols-2 md:gap-y-6 md:gap-x-6 md:mx-1 flex flex-col self-center items-center gap-6">
+                                <ul className="xl:grid xl:grid-cols-2 xl:gap-y-2 xl:gap-x-2 md:grid md:grid-cols-2 md:gap-y-4 md:gap-x-2 md:mx-1 flex flex-col self-center items-center gap-6 xl:max-w-[1100px] md:w-screen">
                                     {shuffledQuestionResponses && (
                                         <ListAnswersComponents
                                             shuffledQuestionResponses={
