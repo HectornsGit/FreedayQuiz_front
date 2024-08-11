@@ -171,15 +171,15 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                                     )}
                                 </ul>
                             )}
+                            <ResultAnswers
+                                question={question}
+                                initialPlayerData={initialPlayerData}
+                                timeLeft={timeLeft}
+                            />
                         </section>
                     )}
                 </>
             )}
-            <ResultAnswers
-                question={question}
-                initialPlayerData={initialPlayerData}
-                timeLeft={timeLeft}
-            />
         </section>
     );
 };
