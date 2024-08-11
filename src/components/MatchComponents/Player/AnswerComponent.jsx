@@ -1,7 +1,5 @@
 'use client';
 
-import TimesAnsweredComponent from './TimesAnsweredComponent';
-
 const AnswerComponent = ({
     isDisabled,
     index,
@@ -14,7 +12,7 @@ const AnswerComponent = ({
     const answerNames = ['🌞', '🌜', '🌟', '⚡'];
     const clickedAnswer =
         Object.values(response)[0] == initialPlayerData[0].lastAnswerText
-            ? 'disabled:bg-inherit bg-inherit '
+            ? ' disabled:bg-transparent '
             : ' ';
 
     return (
@@ -22,30 +20,24 @@ const AnswerComponent = ({
             disabled={isDisabled}
             onClick={() => handleAnswerSubmit(Object.values(response)[0])}
             className={
-                'md:w-[400px] md:h-[62px] lg:w-[450px] lg:h-[65px] flex items-center gap-6 text-start p-4  disabled:bg-black hover:bg-inherit bg-black ' +
+                'xl:min-w-[524px] xl:max-w-[80vw] lg:min-w-[486px] lg:max-w-[50vw] md:min-w-[46vw] md:max-w-[48vw] min-w-[95vw] h-[100px] flex items-center bg-black p-4 disabled:bg-black hover:bg-inherit' +
                 clickedAnswer
             }
         >
-            <span className={'text-2xl font-bold'}>{answerNames[index]}</span>
             <div
                 className={
                     (Object.values(response)[0].length > 32
                         ? '  md:pb-4 md:text-md text-sm'
-                        : ' text-md  ') + ' font-semibold flex justify-start'
+                        : ' text-lg text-left ') +
+                    'font-semibold flex items-center'
                 }
             >
-                <div
-                    className={
-                        (timeLeft > 0 ? '' : 'pt-2 ') + ' pt-0 sm:w-56 w-72'
-                    }
-                >
+                <span className={'text-3xl font-bold pr-9'}>
+                    {answerNames[index]}
+                </span>
+                <p className={(timeLeft > 0 ? '' : 'pt-2 ') + ' pt-0'}>
                     {Object.values(response)[0]}
-                </div>
-                <TimesAnsweredComponent
-                    timeLeft={timeLeft}
-                    clickedResponses={clickedResponses}
-                    response={response}
-                ></TimesAnsweredComponent>
+                </p>
             </div>
         </button>
     );
