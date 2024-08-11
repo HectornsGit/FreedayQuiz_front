@@ -4,6 +4,7 @@ import YellowBgSendPlane from '@/components/icons/YellowBgSendPlane';
 import ShowScores from './ShowScores';
 import ShowWinner from '@/components/ShowWinner';
 import ListAnswersComponents from './ListAnswerComponents';
+import ResultAnswers from './ResultAnswers ';
 
 const MatchComponentAsPlayer = ({ playerProps }) => {
     const {
@@ -174,6 +175,11 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
                     )}
                 </>
             )}
+            <ResultAnswers
+                question={question}
+                initialPlayerData={initialPlayerData}
+                timeLeft={timeLeft}
+            />
         </section>
     );
 };
