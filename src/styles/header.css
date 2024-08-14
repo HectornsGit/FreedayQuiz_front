@@ -19,7 +19,7 @@
 
 .burguer-menu{
     position: absolute;
-    top: -70px;
+    top: -30vh;
     right: 0px;
     left: 0px;
     padding: 0.7rem;
@@ -30,12 +30,38 @@
 /*Al hacer click en el icono de las 3 rayas salen las opciones del menu*/
 .activated{
     position: absolute;
-    top: 80px;
+    top: 14vh;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     opacity: 1;
     height: 25vh;
+    margin: 0 0.2rem;
+    border-radius: 5px;
+    background-color: white;
+    color: #111;
+}
+
+.desktop-menu {
+    position: absolute;
+    top: -30vh;
+    right: 0;
+    padding-block: 0.7rem;
+    opacity: 0;
+    transition: all 600ms ease 0s;
+    width: 17vh;
+    height: 15vh;
+    text-align: center;
+    font-weight: bold;
+}
+
+.activated-desktop {
+    position: absolute;
+    top: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    opacity: 1;
     margin: 0 0.2rem;
     border-radius: 5px;
     background-color: white;

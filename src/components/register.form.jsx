@@ -151,7 +151,7 @@ function RegisterForm() {
                         className="text-black font-extrabold text-lg bg-gradient px-11 py-2 mt-10  hover:bg-black hover:box-shadow-yellow"
                         type="submit"
                     >
-                        Registrarse
+                        <p className="gradient-text">Registrarse</p>
                     </button>
                 </form>
             </div>

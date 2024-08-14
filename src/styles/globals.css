@@ -8,6 +8,7 @@
     --yellow: #fcff00;
     --red: #ff0000;
     --green: #39ff14;
+    --bg-hab-black: #111111;
     --color-gradient: linear-gradient(135deg, var(--cyan), var(--yellow));
 
     --foreground-rgb: 0, 0, 0;
@@ -64,13 +65,24 @@ body {
 @layer utilities {
     .bg-gradient {
         background-image: var(--color-gradient);
+        background-clip: padding-box;
     }
 
     .bg-gradient:hover {
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
+        background: black;
     }
 
+    .gradient-text {
+        color: black;
+        transition: color 0.3s ease;
+    }
+
+    .bg-gradient:hover .gradient-text {
+        background: var(--color-gradient);
+        -webkit-background-clip: text; /* Para navegadores WebKit */
+        background-clip: text; /* Para otros navegadores */
+        color: transparent;
+    }
 }
 
 /*sombras para los botones*/

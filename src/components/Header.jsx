@@ -9,7 +9,7 @@ import { useUserInfo } from '@/hooks/useUserInfo';
 
 export default function Header() {
     const [menu, setMenu] = useState(false); // Para el menú de móvil
-    const [avatarMenuOpen, setAvatarMenuOpen] = useState(false); // Para el menú desplegable del avatar
+    const [desktopMenuOpen, setdesktopMenuOpen] = useState(false); // Para el menú desplegable de escritorio
     const { data: session } = useSession();
     const { userInfo, loading } = useUserInfo();
 
@@ -17,16 +17,16 @@ export default function Header() {
         setMenu(!menu);
     };
 
-    const toggleAvatarMenu = () => {
-        setAvatarMenuOpen(!avatarMenuOpen);
+    const toggledesktopMenu = () => {
+        setdesktopMenuOpen(!desktopMenuOpen);
     };
 
     const handleMenuClose = () => {
         setMenu(false);
     };
 
-    const handleAvatarMenuClose = () => {
-        setAvatarMenuOpen(false);
+    const handledesktopMenuClose = () => {
+        setdesktopMenuOpen(false);
     };
 
     return (
@@ -74,11 +74,13 @@ export default function Header() {
                             alt="Avatar"
                             width={40}
                             height={40}
-                            className="rounded-full"
+                            className="rounded-full cursor-pointer w-14 h-14 object-cover"
                         />
                     )}
                 </button>
-                <ul className={`burguer-menu ${menu ? 'activated' : ''}`}>
+                <ul
+                    className={`burguer-menu ${menu ? 'activated' : ''} z-[1000]`}
+                >
                     {!session ? (
                         <>
                             <li className="text-center text-black font-bold text-xl py-2">
@@ -87,7 +89,10 @@ export default function Header() {
                                 </Link>
                             </li>
                             <li className="text-center text-black font-bold text-xl py-2">
-                                <Link href="/register" onClick={handleMenuClose}>
+                                <Link
+                                    href="/register"
+                                    onClick={handleMenuClose}
+                                >
                                     Registrarse
                                 </Link>
                             </li>
@@ -115,7 +120,7 @@ export default function Header() {
                 </ul>
 
                 {/* Menú para escritorio */}
-                <ul className="hidden md:flex gap-x-8 items-center">
+                <ul className="hidden md:flex gap-x-8 items-center relative">
                     {!session ? (
                         <>
                             <li>
@@ -133,45 +138,43 @@ export default function Header() {
                         <>
                             <li className="relative">
                                 <button
-                                    onClick={toggleAvatarMenu}
+                                    onClick={toggledesktopMenu}
                                     className="flex items-center space-x-2"
                                 >
                                     {!loading && userInfo?.avatar ? (
                                         <img
                                             src={`${process.env.NEXT_PUBLIC_API_HOST}/uploads/${userInfo.avatar}`}
                                             alt="Avatar"
-                                            width={40}
-                                            height={40}
-                                            className="rounded-full cursor-pointer"
+                                            className="rounded-full cursor-pointer md:w-20 md:h-20 object-cover"
                                         />
                                     ) : (
                                         <span>Perfil</span>
                                     )}
                                 </button>
-                                {avatarMenuOpen && (
-                                    <ul className="absolute bg-white text-black border border-gray-300 rounded-lg shadow-lg mt-2 right-0">
-                                        <li>
-                                            <Link
-                                                href="/profile"
-                                                className="block px-4 py-2 hover:bg-gray-200"
-                                                onClick={handleAvatarMenuClose}
-                                            >
-                                                Perfil
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <button
-                                                onClick={() => {
-                                                    signOut();
-                                                    handleAvatarMenuClose();
-                                                }}
-                                                className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                                            >
-                                                Cerrar sesión
-                                            </button>
-                                        </li>
-                                    </ul>
-                                )}
+                                <ul
+                                    className={`desktop-menu ${desktopMenuOpen ? 'activated-desktop' : ''}`}
+                                >
+                                    <li>
+                                        <Link
+                                            href="/profile"
+                                            className="block px-4 py-2 hover:bg-gray-200"
+                                            onClick={handledesktopMenuClose}
+                                        >
+                                            Perfil
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <button
+                                            onClick={() => {
+                                                signOut();
+                                                handledesktopMenuClose();
+                                            }}
+                                            className="block w-full px-4 py-2 hover:bg-gray-200"
+                                        >
+                                            Cerrar sesión
+                                        </button>
+                                    </li>
+                                </ul>
                             </li>
                         </>
                     )}
