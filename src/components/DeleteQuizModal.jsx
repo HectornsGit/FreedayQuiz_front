@@ -59,7 +59,7 @@ const DeleteQuizModal = ({ isOpen, onClose, quizId, onQuizDeleted }) => {
                         onClick={handleDelete}
                         className="mb-4 text-black font-extrabold text-lg bg-gradient px-11 py-2 hover:box-shadow-yellow"
                     >
-                        Eliminar
+                        <p className="gradient-text">Eliminar</p>
                     </button>
                 </div>
             </div>

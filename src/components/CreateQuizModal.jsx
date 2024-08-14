@@ -54,7 +54,7 @@ function CreateQuizModal({ onQuizCreated }) {
         <div className="flex flex-col justify-center items-center">
             <button
                 onClick={() => setIsModalOpen(true)}
-                className="text-[#FCFF00] font-bold text-sm w-38 h-32 border-2 border-[#FCFF00] bg-transparent px-5"
+                className="text-[#FCFF00] font-bold text-sm w-38 h-32 border-2 border-[#FCFF00] bg-[var(--bg-hab-black)] px-5"
             >
                 Añadir nuevo Quiz
             </button>
@@ -103,7 +103,9 @@ function CreateQuizModal({ onQuizCreated }) {
                                     type="submit"
                                     className="text-black font-extrabold text-base bg-gradient px-10 py-2 hover:box-shadow-yellow"
                                 >
-                                    Crear Pregunta
+                                    <p className="gradient-text">
+                                        Crear Pregunta
+                                    </p>
                                 </button>
                             </div>
                         </form>

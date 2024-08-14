@@ -148,13 +148,13 @@ const EditQuizModal = ({ isOpen, onClose, quizId, onQuizUpdated }) => {
                             onClick={handleSaveQuiz}
                             className="text-black font-extrabold text-lg bg-gradient px-11 py-2 hover:box-shadow-yellow mb-4"
                         >
-                            Guardar Quiz
+                            <p className="gradient-text">Guardar Quiz</p>
                         </button>
                         <button
                             onClick={handleEditQuestions}
                             className="text-black font-extrabold text-lg bg-gradient px-11 py-2 hover:box-shadow-yellow"
                         >
-                            Editar preguntas
+                            <p className="gradient-text">Editar preguntas</p>
                         </button>
                     </div>
                 </form>

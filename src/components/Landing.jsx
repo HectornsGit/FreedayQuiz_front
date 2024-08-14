@@ -49,7 +49,7 @@ const Landing = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="min-h-screen flex items-center justify-center bg-[var(--bg-hab-black)]">
             <div className="text-center text-white">
                 <h1 className="text-4xl font-bold mb-4">¡Bienvenido/a!</h1>
                 <p className="mb-6">
@@ -67,7 +67,7 @@ const Landing = () => {
                         className="text-black font-extrabold text-lg bg-gradient px-11 py-2 hover:bg-black hover:box-shadow-yellow"
                         onClick={handleSubmit}
                     >
-                        Ingresar
+                        <p className="gradient-text">Ingresar</p>
                     </button>
                 </div>
             </div>

@@ -5,9 +5,11 @@ import { signIn } from 'next-auth/react';
 import EyeOpen from './icons/EyeOpen'; //icono ojo aberto
 import EyeClose from './icons/EyeClose'; //icono ojo cerrado
 import useApiRequest from '@/hooks/useApiRequest';
+import { useRouter } from 'next/navigation';
 
 function LoginForm() {
     const { fetchData } = useApiRequest();
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPass, setShowPass] = useState(false); //para mostrar o no el texto en el campo contraseña
@@ -18,11 +20,17 @@ function LoginForm() {
         toast.success('Logueado correctamente');
         setEmail('');
         setPassword('');
-        await signIn('credentials', {
+        const result = await signIn('credentials', {
             redirect: false,
             email: email,
             password: password,
         });
+
+        if (result.ok) {
+            router.push('/');
+        } else {
+            toast.error('Error en el inicio de sesión');
+        }
     };
     const onError = (error) => {
         toast.error(error.error);

@@ -16,7 +16,11 @@ const ManagerButton = ({
                 onClick={handleClick || null}
                 disabled={disabled}
             >
-                {text}
+                {isPrimary && !disabled ? (
+                    <span className="gradient-text">{text}</span>
+                ) : (
+                    text
+                )}
             </button>
         </div>
     );
