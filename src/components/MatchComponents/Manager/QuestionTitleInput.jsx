@@ -20,6 +20,7 @@ const QuestionTitleInput = ({ id, text, isInput, defaultValue }) => {
                         e.preventDefault();
                         setValue(e.target.value);
                     }}
+                    max={100}
                 />
             ) : (
                 <p className=" font-medium">{defaultValue}</p>
