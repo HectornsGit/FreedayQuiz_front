@@ -333,7 +333,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 <ManagerButton
                                     isPrimary={true}
                                     handleClick={showScoresHandler}
-                                    disabled={!isQuestionRunning}
+                                    disabled={
+                                        !isQuestionRunning || timeLeft > 0
+                                    }
                                     text="Puntaciones"
                                 />
                             </li>
