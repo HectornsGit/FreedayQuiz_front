@@ -10,6 +10,8 @@ import QuestionImage from '../QuestionImage';
 import Accordion from '@/components/Accordion';
 import ListPlayerStats from '../listPlayerStats';
 import Points from '@/components/icons/Points';
+import GenerateCSVButton from '@/components/GenerateCSVButton';
+
 const MatchComponentAsManager = ({ managerProps }) => {
     const hiddenTextRef = useRef(null);
     const {
@@ -119,6 +121,13 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             <ListPlayerStats
                                 players={playerData}
                             ></ListPlayerStats>
+                            {playerData.length > 0 && (
+                                <div className="bg-[yellow] text-black  font-bold">
+                                    <GenerateCSVButton
+                                        playerData={playerData}
+                                    />
+                                </div>
+                            )}
                         </Accordion>
                     </div>
                 )}
@@ -133,6 +142,13 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             <ListPlayerStats
                                 players={playerData}
                             ></ListPlayerStats>
+                            {playerData.length > 0 && (
+                                <div className="bg-[yellow] text-black  font-bold">
+                                    <GenerateCSVButton
+                                        playerData={playerData}
+                                    />
+                                </div>
+                            )}
                         </Accordion>
                     </div>
                 )}

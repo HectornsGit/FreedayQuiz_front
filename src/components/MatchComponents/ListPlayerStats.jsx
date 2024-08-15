@@ -2,7 +2,7 @@ import PlayerStats from './PlayerStats';
 const ListPlayerStats = ({ players }) => {
     if (players.length > 0)
         return (
-            <ul className="text-xl px-2">
+            <ul className="text-xl px-2 mb-8">
                 {players.map((player) => (
                     <li key={player.id} className="border-b flex  justify-end">
                         <PlayerStats player={player}></PlayerStats>
