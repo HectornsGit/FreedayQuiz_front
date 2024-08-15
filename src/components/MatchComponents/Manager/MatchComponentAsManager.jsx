@@ -186,30 +186,10 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 </ul>
                                 {isInput === false && (
                                     <select
-                                        className="sm:5/6s w-full md:w-full 2xl:w-4/6 font-bold mb-4  p-2 animate-textScroll  z-10 text-black text-md py-2"
+                                        className="sm:5/6s w-full md:w-full 2xl:w-4/6 font-bold mb-2  p-2 animate-textScroll  z-10 text-black text-md py-2"
                                         onChange={getQuestionFromList}
                                         disabled={disableQuestionsButton}
                                         value={question.questionNumber}
-                                        onMouseOver={() => {
-                                            if (question.question.length > 50) {
-                                                hiddenTextRef?.current.classList.add(
-                                                    'visible'
-                                                );
-                                                hiddenTextRef?.current.classList.remove(
-                                                    'invisible'
-                                                );
-                                            }
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            if (question.question.length > 50) {
-                                                hiddenTextRef?.current.classList.add(
-                                                    'invisible'
-                                                );
-                                                hiddenTextRef?.current.classList.remove(
-                                                    'visible'
-                                                );
-                                            }
-                                        }}
                                     >
                                         {quizData &&
                                             quizData.list_of_questions?.map(
@@ -239,12 +219,15 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                             )}
                                     </select>
                                 )}
-                                <p
-                                    ref={hiddenTextRef}
-                                    className=" invisible xl:invisible h-12 lg:-left-40  inset-4 sm:-left-20 w-4/6 lg:w-80 relative -top-12 bg-[yellow] text-left  font-bold mb-4  p-2 z-10 text-black text-xs py-2"
-                                >
-                                    {question.question}
-                                </p>
+                                {window.innerWidth < 1280 &&
+                                    question.question.length > 48 && (
+                                        <p
+                                            ref={hiddenTextRef}
+                                            className=" visible xl:invisible h-8  w-full lg:w-80 relative  bg-[yellow] text-left  font-bold mb-4  p-2 z-10 text-black text-xs py-2"
+                                        >
+                                            {question.question}
+                                        </p>
+                                    )}
                                 <ul className="xl:grid xl:grid-cols-2  md:place-items-center   flex flex-col self-center w-full items-center  gap-6">
                                     <li
                                         key={'correctAnswer'}
