@@ -3,7 +3,7 @@ import QuestionTitleInput from './QuestionTitleInput';
 import NumberInput from '@/components/NumberInput';
 import Clock from '@/components/Clock';
 import YellowBgPencil from '@/components/icons/YellowBgPencil';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AnswerInputComponent from './AnswerInputComponent';
 import ManagerButton from './ManagerButton';
 import QuestionImage from '../QuestionImage';
@@ -11,6 +11,7 @@ import Accordion from '@/components/Accordion';
 import ListPlayerStats from '../listPlayerStats';
 import Points from '@/components/icons/Points';
 const MatchComponentAsManager = ({ managerProps }) => {
+    const hiddenTextRef = useRef(null);
     const {
         endQuiz,
         handleQuestionChange,
@@ -185,25 +186,48 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 </ul>
                                 {isInput === false && (
                                     <select
-                                        className=" sm:w-96 w-full font-bold mb-4  p-2  z-10 text-black text-md py-2"
+                                        className="sm:5/6s w-full md:w-full 2xl:w-4/6 font-bold mb-2  p-2 animate-textScroll  z-10 text-black text-md py-2"
                                         onChange={getQuestionFromList}
                                         disabled={disableQuestionsButton}
                                         value={question.questionNumber}
                                     >
                                         {quizData &&
                                             quizData.list_of_questions?.map(
-                                                (question, index) => (
-                                                    <option
-                                                        className="font-semibold py-2 selection:bg-slate-400"
-                                                        key={index}
-                                                        value={question.number}
-                                                    >
-                                                        {`${question.number}. ${question.title}`}
-                                                    </option>
-                                                )
+                                                (question, index) => {
+                                                    return (
+                                                        <option
+                                                            className=" whitespace-pre-wrap font-semibold py-2 selection:bg-slate-400"
+                                                            key={index}
+                                                            value={
+                                                                question.number
+                                                            }
+                                                        >
+                                                            {window.innerWidth <
+                                                            1280
+                                                                ? `${question.number}. ${question.title}`
+                                                                      .length >
+                                                                  50
+                                                                    ? `${question.number}. ${question.title}`.substring(
+                                                                          0,
+                                                                          48
+                                                                      ) + '...'
+                                                                    : `${question.number}. ${question.title}`
+                                                                : `${question.number}. ${question.title}`}
+                                                        </option>
+                                                    );
+                                                }
                                             )}
                                     </select>
                                 )}
+                                {window.innerWidth < 1280 &&
+                                    question.question.length > 48 && (
+                                        <p
+                                            ref={hiddenTextRef}
+                                            className=" visible xl:invisible h-8  w-full lg:w-80 relative  bg-[yellow] text-left  font-bold mb-4  p-2 z-10 text-black text-xs py-2"
+                                        >
+                                            {question.question}
+                                        </p>
+                                    )}
                                 <ul className="xl:grid xl:grid-cols-2  md:place-items-center   flex flex-col self-center w-full items-center  gap-6">
                                     <li
                                         key={'correctAnswer'}
