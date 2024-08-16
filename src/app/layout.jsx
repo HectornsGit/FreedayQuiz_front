@@ -8,8 +8,11 @@ import { SessionProvider } from 'next-auth/react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useMemo } from 'react'
+import { usePathname } from 'next/navigation'
 
 export default function RootLayout({ children, session }) {
+    const pathname = usePathname();
+    const DontShowHeader = !pathname.startsWith('/QR/');
     const toastConfig = useMemo(
         () => ({
             position: 'top-center',
@@ -37,7 +40,7 @@ export default function RootLayout({ children, session }) {
             </head>
             <body className={`${inter.className} `}>
                 <SessionProvider session={session}>
-                    <Header />
+                    {DontShowHeader && <Header />}
                     <main className="w-full min-h-[76vh]">
                         <ToastContainer {...toastConfig} />
                         {children}
@@ -46,5 +49,5 @@ export default function RootLayout({ children, session }) {
                 </SessionProvider>
             </body>
         </html>
-    )
+    );
 }

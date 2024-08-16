@@ -74,7 +74,7 @@ export default function Header() {
                             alt="Avatar"
                             width={40}
                             height={40}
-                            className="rounded-full cursor-pointer w-14 h-14 object-cover"
+                            className="rounded-full cursor-pointer w-12 h-12 object-cover border-2 border-[var(--yellow)]"
                         />
                     )}
                 </button>
@@ -145,7 +145,7 @@ export default function Header() {
                                         <img
                                             src={`${process.env.NEXT_PUBLIC_API_HOST}/uploads/${userInfo.avatar}`}
                                             alt="Avatar"
-                                            className="rounded-full cursor-pointer md:w-20 md:h-20 object-cover"
+                                            className="rounded-full cursor-pointer md:w-20 md:h-20 object-cover border-2 border-[var(--yellow)]"
                                         />
                                     ) : (
                                         <span>Perfil</span>

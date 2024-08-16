@@ -105,3 +105,7 @@ body {
         display: none;
     }
 }
+
+.qr-code img {
+    filter: sepia(82%) saturate(2000%) hue-rotate(0deg) brightness(105%) contrast(104%);
+}
