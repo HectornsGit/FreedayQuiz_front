@@ -51,7 +51,7 @@ function CreateQuizModal({ onQuizCreated }) {
     };
 
     return (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center md:h-[80px]">
             <button
                 onClick={() => setIsModalOpen(true)}
                 className="text-[#FCFF00] font-bold text-sm w-38 h-32 border-2 border-[#FCFF00] bg-[var(--bg-hab-black)] px-5"

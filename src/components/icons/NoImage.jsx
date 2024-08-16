@@ -1,4 +1,3 @@
-// NoImage.js
 export default function NoImage({ className }) {
     return (
         <svg

@@ -1,5 +1,5 @@
 import GenerateCSVButton from './GenerateCSVButton';
-import GenerateQRButton from './GenerateQRButton';
+import GenerateQRCode from './GenerateQRCode';
 import ShowTime from './MatchComponents/Player/ShowTime';
 const MasterPrueba = ({ masterProps }) => {
     const {
@@ -63,7 +63,7 @@ const MasterPrueba = ({ masterProps }) => {
             )}
             <button onClick={signOutHandler}>Cerrar sesión de usuario</button>
             <button onClick={requestSetWinnerOn}>Activar ganador</button>
-            <GenerateQRButton quizId={quizData.id} />
+            <GenerateQRCode quizId={quizData.id} />
             <GenerateCSVButton playerData={playerData} />
 
             {isThereAWinner && <p>Habemus ganador</p>}
