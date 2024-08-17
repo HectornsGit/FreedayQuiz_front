@@ -1,13 +1,13 @@
 import quizReducer from '../reducer/quizReducer';
 import { ActionTypes } from '../reducer/actions';
 import { initialState } from '../reducer/initialState';
-import { useReducer } from 'react';
+import { useCallback, useReducer } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 const useFunctions = (Arguments) => {
     const [state, dispatch] = useReducer(quizReducer, initialState);
 
-    const initializePlayer = () => {
+    const initializePlayer = useCallback(() => {
         let {
             isMaster,
             playerId,
@@ -17,6 +17,7 @@ const useFunctions = (Arguments) => {
             setSessionTime,
             setItemWithExpiry,
         } = Arguments;
+
         if (!playerId && !isMaster) {
             playerId = uuidv4();
             setItemWithExpiry('idNewPlayer', playerId, 12);
@@ -26,55 +27,97 @@ const useFunctions = (Arguments) => {
                 payload: false,
             });
         }
+
         if (playerName) {
             dispatch({ type: ActionTypes.SET_IS_NAME_SETTED, payload: true });
         }
+
         if (quizSessionDuration) {
             setSessionTime(quizSessionDuration);
         }
-    };
+    }, [Arguments, dispatch]);
     //Funciones manejadoras de dispatchs:
-    const setIsInput = (value) =>
-        dispatch({ type: ActionTypes.SET_IS_INPUT, payload: value });
+    const setIsInput = useCallback(
+        (value) => {
+            dispatch({ type: ActionTypes.SET_IS_INPUT, payload: value });
+        },
+        [dispatch]
+    );
 
-    const setIsNameSetted = (value) =>
-        dispatch({ type: ActionTypes.SET_IS_NAME_SETTED, payload: value });
+    const setIsNameSetted = useCallback(
+        (value) => {
+            dispatch({ type: ActionTypes.SET_IS_NAME_SETTED, payload: value });
+        },
+        [dispatch]
+    );
 
-    const setSessionRecovery = (value) =>
-        dispatch({
-            type: ActionTypes.SET_SESSION_RECOVERY,
-            payload: value,
-        });
+    const setSessionRecovery = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_SESSION_RECOVERY,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
 
-    const setIsQuestionRunning = (value) =>
-        dispatch({
-            type: ActionTypes.SET_IS_QUESTION_RUNNING,
-            payload: value,
-        });
+    const setIsQuestionRunning = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_IS_QUESTION_RUNNING,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
 
-    const setIsClockInput = (value) =>
-        dispatch({ type: ActionTypes.SET_IS_CLOCK_INPUT, payload: value });
+    const setIsClockInput = useCallback(
+        (value) => {
+            dispatch({ type: ActionTypes.SET_IS_CLOCK_INPUT, payload: value });
+        },
+        [dispatch]
+    );
 
-    const setIsThereAWinner = (value) =>
-        dispatch({
-            type: ActionTypes.SET_IS_THERE_A_WINNER,
-            payload: value,
-        });
+    const setIsThereAWinner = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_IS_THERE_A_WINNER,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
 
-    const setIsDisabled = (value) => {
-        dispatch({ type: ActionTypes.SET_IS_DISABLED, payload: value });
-    };
-    const setJoinedQuiz = (value) =>
-        dispatch({ type: ActionTypes.SET_JOINED_QUIZ, payload: value });
+    const setIsDisabled = useCallback(
+        (value) => {
+            dispatch({ type: ActionTypes.SET_IS_DISABLED, payload: value });
+        },
+        [dispatch]
+    );
 
-    const setShowScores = (value) =>
-        dispatch({ type: ActionTypes.SET_SHOW_SCORES, payload: value });
+    const setJoinedQuiz = useCallback(
+        (value) => {
+            dispatch({ type: ActionTypes.SET_JOINED_QUIZ, payload: value });
+        },
+        [dispatch]
+    );
 
-    const setIsMasterOnline = (value) =>
-        dispatch({
-            type: ActionTypes.SET_IS_MASTER_ONLINE,
-            payload: value,
-        });
+    const setShowScores = useCallback(
+        (value) => {
+            dispatch({ type: ActionTypes.SET_SHOW_SCORES, payload: value });
+        },
+        [dispatch]
+    );
+
+    const setIsMasterOnline = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_IS_MASTER_ONLINE,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
 
     return {
         initializePlayer,
