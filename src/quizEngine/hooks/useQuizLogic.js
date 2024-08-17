@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useParams, useRouter } from 'next/navigation';
+
 import {
     shuffleArray,
     findValue,
     startNewPlayer,
     signOutHandler,
-    setItemWithExpiry,
     getItemWithExpiry,
+    setItemWithExpiry,
 } from '../utils';
 import useSocketConfig from './useSocketConfig';
 import { useQuizHandlers } from './useQuizHandlers';
@@ -30,6 +30,7 @@ import {
     startRandomQuestion,
     requestSetWinnerOn,
 } from '../handlers/index';
+import useFunctions from './useFunctions';
 
 const useQuizLogic = () => {
     const params = useParams();
@@ -45,30 +46,18 @@ const useQuizLogic = () => {
     //Estados del cliente local, con la información particular del jugador:
     const [initialPlayerData, setInitialPlayerData] = useState([]);
     const [nickName, setNickName] = useState('');
-    const [isNameSetted, setIsNameSetted] = useState(false);
 
     //Estados que se manejan automáticamente:
-    const [_joinedQuiz, setJoinedQuiz] = useState(false);
     const [socket, setSocket] = useState(null);
     const [error, setError] = useState(null);
     const [shuffledQuestionResponses, setShuffledQuestionResponses] =
         useState(null);
-    const [isQuestionRunning, setIsQuestionRunning] = useState(false);
     const [questionsToDelete, setQuestionsToDelete] = useState([]);
     const [timeLeft, setTimeLeft] = useState(null);
-    const [showScores, setShowScores] = useState(false);
-    const [isDisabled, setIsDisabled] = useState(true);
-    const [sessionRecovery, setSessionRecovery] = useState(true);
     const [sessionTime, setSessionTime] = useState(0);
     const [sessionTimeLeft, setSessionTimeLeft] = useState(0);
     const [connectedClients, setConnectedClients] = useState(0);
-    const [, setIsMasterOnline] = useState(false);
     const [questionsExecuted, setQuestionsExecuted] = useState([]);
-    const [isThereAWinner, setIsThereAWinner] = useState(false);
-
-    //Estados que controlan si son inputs los componentes de la pantalla del Master.
-    const [isClockInput, setIsClockInput] = useState(false);
-    const [isInput, setIsInput] = useState(false);
 
     //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
     const loggedUserId = session?.user.data.id;
@@ -87,20 +76,44 @@ const useQuizLogic = () => {
     quizSessionDuration = getItemWithExpiry('QuizSessionDuration');
     let isMaster = getItemWithExpiry('isMaster');
 
+    const {
+        initializePlayer,
+        state,
+        setIsThereAWinner,
+        setIsClockInput,
+        setIsQuestionRunning,
+        setSessionRecovery,
+        setIsNameSetted,
+        setIsInput,
+        setIsDisabled,
+        setJoinedQuiz,
+        setShowScores,
+        setIsMasterOnline,
+    } = useFunctions({
+        isMaster,
+        playerId,
+        quizId,
+        playerName,
+        quizSessionDuration,
+        setSessionTime,
+        setItemWithExpiry,
+    });
+
+    //Estados:
+    const {
+        isNameSetted,
+        isQuestionRunning,
+        showScores,
+        isDisabled,
+        sessionRecovery,
+        isThereAWinner,
+        isClockInput,
+        isInput,
+    } = state;
+
     //Solo se ejecutará una vez al montar el componente, para evitar el bucle infinito de renderizaciones:
     useEffect(() => {
-        if (!playerId && !isMaster) {
-            playerId = uuidv4();
-            setItemWithExpiry('idNewPlayer', playerId, 12);
-            setItemWithExpiry('quizId', quizId, 12);
-            setSessionRecovery(false);
-        }
-        if (playerName) {
-            setIsNameSetted(true);
-        }
-        if (quizSessionDuration) {
-            setSessionTime(quizSessionDuration);
-        }
+        initializePlayer();
     }, [playerId]);
 
     //Aquí van los handlers que necesitan useCallback:
@@ -125,6 +138,7 @@ const useQuizLogic = () => {
         setIsDisabled,
     });
 
+    //Desordenar las preguntas:
     useEffect(() => {
         if (question) {
             const questionResponses = [
@@ -179,6 +193,7 @@ const useQuizLogic = () => {
     });
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:
+
     return {
         endQuiz: () => endQuiz(quizData, socket, quizId, questionsToDelete),
         findValue,
