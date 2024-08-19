@@ -368,17 +368,18 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     )}
                     <div className="flex flex-col items-center">
                         <button
-                            className="text-[--yellow] font-bold text-lg mt-10 p-1"
+                            className="text-[--yellow] font-bold text-lg mt-10 p-1 disabled:text-gray-600"
                             onClick={handleFinalScore}
+                            disabled={!isQuestionRunning || timeLeft > 0}
                         >
-                            <span className="flex flex-row gap-3 hover:bg-gradient">
+                            <span className="flex flex-row gap-3 hover:bg-gradient ">
                                 <Points className="w-4" />
                                 Mostrar puntuacion final
                                 <Points className="w-4" />
                             </span>
                         </button>
                         <button
-                            className="text-white font-light text-lg mt-20 px-11 py-2"
+                            className="text-white font-light text-lg mt-20 px-11 py-2 "
                             onClick={endQuiz}
                         >
                             Finalizar quiz
