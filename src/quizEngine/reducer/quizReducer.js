@@ -23,6 +23,29 @@ const quizReducer = (state, action) => {
             return { ...state, isMasterOnline: action.payload };
         case ActionTypes.SET_SHOW_SCORES:
             return { ...state, showScores: action.payload };
+        case ActionTypes.SET_TIME_LEFT:
+            return { ...state, timeLeft: action.payload };
+        case ActionTypes.SET_ERROR:
+            return { ...state, error: action.payload };
+        case ActionTypes.SET_SOCKET:
+            return { ...state, socket: action.payload };
+        case ActionTypes.SET_SESSION_TIME:
+            return { ...state, sessionTime: action.payload };
+        case ActionTypes.SET_NICKNAME:
+            return { ...state, nickName: action.payload };
+        case ActionTypes.SET_CLICKED_RESPONSES:
+            return { ...state, clickedResponses: action.payload };
+        case ActionTypes.SET_SESSION_TIME_LEFT:
+            return { ...state, sessionTimeLeft: action.payload };
+        case ActionTypes.SET_CONNECTED_CLIENTS:
+            return { ...state, connectedClients: action.payload };
+        case ActionTypes.SET_QUESTION:
+            return { ...state, question: action.payload };
+        case ActionTypes.SET_QUESTION_TO_DELETE:
+            return {
+                ...state,
+                questionsToDelete: [...state.questionsToDelete, action.payload],
+            };
         default:
             return state;
     }

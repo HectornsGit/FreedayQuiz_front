@@ -14,7 +14,6 @@ const useFunctions = (Arguments) => {
             quizId,
             playerName,
             quizSessionDuration,
-            setSessionTime,
             setItemWithExpiry,
         } = Arguments;
 
@@ -33,9 +32,13 @@ const useFunctions = (Arguments) => {
         }
 
         if (quizSessionDuration) {
-            setSessionTime(quizSessionDuration);
+            dispatch({
+                type: ActionTypes.SET_SESSION_TIME,
+                payload: quizSessionDuration,
+            });
         }
     }, [Arguments, dispatch]);
+
     //Funciones manejadoras de dispatchs:
     const setIsInput = useCallback(
         (value) => {
@@ -118,6 +121,97 @@ const useFunctions = (Arguments) => {
         },
         [dispatch]
     );
+    const setTimeLeft = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_TIME_LEFT,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
+    const setError = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_ERROR,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
+    const setSocket = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_SOCKET,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
+    const setSessionTime = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_SESSION_TIME,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
+    const setNickName = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_NICKNAME,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
+
+    const setClickedResponses = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_CLICKED_RESPONSES,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
+    const setSessionTimeLeft = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_SESSION_TIME_LEFT,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
+    const setConnectedClients = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_CONNECTED_CLIENTS,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
+    const setQuestion = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_QUESTION,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
+    const setQuestionsToDelete = useCallback(
+        (value) => {
+            dispatch({
+                type: ActionTypes.SET_QUESTION_TO_DELETE,
+                payload: value,
+            });
+        },
+        [dispatch]
+    );
 
     return {
         initializePlayer,
@@ -132,6 +226,16 @@ const useFunctions = (Arguments) => {
         setJoinedQuiz,
         setShowScores,
         setIsMasterOnline,
+        setTimeLeft,
+        setError,
+        setSocket,
+        setSessionTime,
+        setNickName,
+        setClickedResponses,
+        setSessionTimeLeft,
+        setConnectedClients,
+        setQuestion,
+        setQuestionsToDelete,
     };
 };
 export default useFunctions;

@@ -84,7 +84,7 @@ const useSocketConfig = (argumentsData) => {
         );
 
         //Aquí recibo los errores del back y los guardo en un estado:
-        errorHandler(socketInstance, setError);
+        errorHandler(socketInstance);
         disconnectHandler(socketInstance, playerId);
 
         // Si el componente se desmonta, se desconecta de la sala

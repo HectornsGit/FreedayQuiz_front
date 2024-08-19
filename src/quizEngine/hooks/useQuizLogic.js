@@ -37,27 +37,13 @@ const useQuizLogic = () => {
     const router = useRouter();
     const { data: session } = useSession();
 
-    //Estados para manejar el master, con los datos comunes de todos los jugadores en tiempo real del quiz:
-    const [quizData, setQuizData] = useState(null);
-    const [question, setQuestion] = useState(null);
-    const [playerData, setPlayerData] = useState([]);
-    const [clickedResponses, setClickedResponses] = useState({});
-
-    //Estados del cliente local, con la información particular del jugador:
-    const [initialPlayerData, setInitialPlayerData] = useState([]);
-    const [nickName, setNickName] = useState('');
-
-    //Estados que se manejan automáticamente:
-    const [socket, setSocket] = useState(null);
-    const [error, setError] = useState(null);
+    //Estados complejos: (setQuestion está en el reducer):
+    const [quizData, setQuizData] = useState(null); //Datos del quiz.
+    const [playerData, setPlayerData] = useState([]); //Datos de todos los jugadores.
+    const [initialPlayerData, setInitialPlayerData] = useState([]); //Datos del jugador conectado.
     const [shuffledQuestionResponses, setShuffledQuestionResponses] =
-        useState(null);
-    const [questionsToDelete, setQuestionsToDelete] = useState([]);
-    const [timeLeft, setTimeLeft] = useState(null);
-    const [sessionTime, setSessionTime] = useState(0);
-    const [sessionTimeLeft, setSessionTimeLeft] = useState(0);
-    const [connectedClients, setConnectedClients] = useState(0);
-    const [questionsExecuted, setQuestionsExecuted] = useState([]);
+        useState(null); //Preguntas desordenadas:
+    const [questionsExecuted, setQuestionsExecuted] = useState([]); //Preguntas ya ejecutadas.
 
     //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
     const loggedUserId = session?.user.data.id;
@@ -89,34 +75,55 @@ const useQuizLogic = () => {
         setJoinedQuiz,
         setShowScores,
         setIsMasterOnline,
+        setTimeLeft,
+        setError,
+        setSocket,
+        setSessionTime,
+        setNickName,
+        setClickedResponses,
+        setSessionTimeLeft,
+        setConnectedClients,
+        setQuestion,
+        setQuestionsToDelete,
     } = useFunctions({
         isMaster,
         playerId,
         quizId,
         playerName,
         quizSessionDuration,
-        setSessionTime,
         setItemWithExpiry,
     });
 
-    //Estados:
+    //Estados procedentes del reducer:
     const {
+        question,
+        clickedResponses,
+        nickName,
         isNameSetted,
+        joinedQuiz, //Se setea, pero no se usa como tal.
+        socket,
+        error,
         isQuestionRunning,
+        questionsToDelete,
+        timeLeft,
         showScores,
         isDisabled,
         sessionRecovery,
+        sessionTime,
+        sessionTimeLeft,
+        connectedClients,
+        isMasterOnline, //Se setea, pero no se usa como tal.
         isThereAWinner,
         isClockInput,
         isInput,
     } = state;
 
-    //Solo se ejecutará una vez al montar el componente, para evitar el bucle infinito de renderizaciones:
+    //Ver en useFunctions:
     useEffect(() => {
         initializePlayer();
     }, [playerId]);
 
-    //Aquí van los handlers que necesitan useCallback:
+    //Aquí van los socket handlers que necesitan useCallback:
     const {
         handleAnswerSubmitted,
         handleAnswerSubmit,

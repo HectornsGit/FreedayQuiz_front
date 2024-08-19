@@ -1,6 +1,6 @@
 import { fetchAPI } from '@/api/fetch-api';
 import { useSession } from 'next-auth/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export const useUserInfo = () => {
     const { data: session, status } = useSession();
@@ -8,7 +8,7 @@ export const useUserInfo = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const getUserInfo = async () => {
+    const getUserInfo = useCallback(async () => {
         if (status === 'loading' || !session) {
             return;
         }
@@ -40,7 +40,7 @@ export const useUserInfo = () => {
 
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             };
 
             await fetchAPI(
@@ -56,11 +56,11 @@ export const useUserInfo = () => {
             setError(error);
             setLoading(false);
         }
-    };
+    }, [session, status]);
 
     useEffect(() => {
         getUserInfo();
-    }, [session, status]);
+    }, [session, status, getUserInfo]);
 
     return { getUserInfo, userInfo, error, loading };
 };
