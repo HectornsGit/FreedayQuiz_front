@@ -189,7 +189,12 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                             <p>Texto pregunta</p>
                                         )}
                                     </li>
-                                    <li>
+                                    <li
+                                        className={
+                                            (isInput ? 'pb-10 ' : '') +
+                                            'self-center'
+                                        }
+                                    >
                                         <button
                                             disabled={disableQuestionsButton}
                                             type="button"
