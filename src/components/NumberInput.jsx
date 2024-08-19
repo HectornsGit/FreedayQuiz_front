@@ -8,7 +8,7 @@ const NumberInput = ({ id, text, defaultValue, isInput }) => {
         setValue(defaultValue);
     }, [defaultValue]);
     return (
-        <div className="flex font-black relative -top-20 -left-48 text-black rounded-full bg-[--yellow]  text-left w-16 h-16 flex-col items-center justify-center ">
+        <div className="flex font-black relative -top-20 sm:-top-24 -left-4 sm:-left-80 text-black rounded-full bg-[--yellow]  text-left w-16 h-16 flex-col items-center justify-center ">
             <label className="hidden text-md " htmlFor={id}>
                 {text}
             </label>
