@@ -368,7 +368,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     )}
                     <div className="flex flex-col items-center">
                         <button
-                            className="text-[--yellow] font-bold text-lg mt-10 p-1 disabled:text-gray-600"
+                            className="text-[--yellow] font-bold text-lg mt-10 p-1 disabled:text-gray-600 disabled:bg-black"
                             onClick={handleFinalScore}
                             disabled={!isQuestionRunning || timeLeft > 0}
                         >
