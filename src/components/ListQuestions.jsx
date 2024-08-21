@@ -1,23 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
-import AddQuestion from './icons/AddQuestion'; //recuadro dentro de modal para agregar question
-
-//importamos slider para mover imgs de izquierda a derecha
+import AddQuestion from './icons/AddQuestion';
 import Slider from './Slider';
-
-//me traigo el hook que lista las preguntas
 import { useListQuestions } from '@/hooks/useListQuestions';
-
-//me traigo hook para eliminar preguntas
 import { useDeleteQuestions } from '@/hooks/useDeleteQuestions';
-
-//importamos useRouter para usar enrutados (al hacer click en la imagen lleva a la ruta de cada pregunta)
 import { useRouter } from 'next/navigation';
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export default function ListQuestions({ quizId, closeModal }) {
-    const url = process.env.NEXT_PUBLIC_API_HOST; //para indicar mas facil la ruta dónde estan las imágenes
+    const url = process.env.NEXT_PUBLIC_API_HOST;
 
     const [valueCheckbox, setValueCheckbox] = useState([]);
     const {
@@ -34,21 +26,22 @@ export default function ListQuestions({ quizId, closeModal }) {
         closeModal
     );
 
-    const router = useRouter(); //llamo al router para hacer enrutado (para llevar a la ruta de las questions)
+    const router = useRouter();
 
-    //funcion para que cargue ruta dinámica, al hacer click en la imagen nos lleva a editar la pregunta que toque (id params, questionNUmber params)
-    const handleRouteQuestion = (quizId, questionNumber) => {
-        router.push(`/edit-question/${quizId}/${questionNumber}`);
-    };
+    const handleRouteQuestion = useCallback(
+        (quizId, questionNumber) => {
+            router.push(`/edit-question/${quizId}/${questionNumber}`);
+        },
+        [router]
+    );
 
-    const handleAddQuestion = () => {
-        console.log('quizId:', quizId);
+    const handleAddQuestion = useCallback(() => {
         window.location.href = `/new-question/${quizId}`;
-    };
+    }, [quizId]);
 
     useEffect(() => {
         getQuestions(quizId);
-    }, [quizId]);
+    }, [quizId, getQuestions]);
 
     return (
         <>
@@ -61,12 +54,11 @@ export default function ListQuestions({ quizId, closeModal }) {
                         >
                             X
                         </p>
-                        {/*Sólo muestra botón 'eliminar preguntas' si hay checks marcados   */}
+                        {/* Solo muestra el botón 'eliminar preguntas' si hay checks marcados */}
                         {valueCheckbox.length > 0 && (
                             <button
                                 onClick={deleteQuestions}
-                                className="text-black font-extrabold text-lg bg-white px-11 py-2 
-                                    hover:bg-black hover:text-white hover:box-shadow-white"
+                                className="text-black font-extrabold text-lg bg-white px-11 py-2 hover:bg-black hover:text-white hover:box-shadow-white"
                             >
                                 Eliminar preguntas
                             </button>
@@ -85,7 +77,7 @@ export default function ListQuestions({ quizId, closeModal }) {
                             </div>
 
                             {dataQuizz &&
-                                dataQuizz?.map((question) => (
+                                dataQuizz.map((question) => (
                                     <div
                                         key={question.questionId}
                                         className="w-[200px] md:w-[400px] inline-flex mx-8 md:mx-4 justify-center"
@@ -98,17 +90,11 @@ export default function ListQuestions({ quizId, closeModal }) {
                                                 type="checkbox"
                                                 value={question.questionId}
                                                 onChange={handleValue}
-                                                className="appearance-none cursor-pointer w-[30px] h-[30px] border-2 border-solid border-[#fcff00] bg-black
-                                            checked:before:content-['✔']
-                                            text-center
-                                            text-[#fcff00]
-                                            leading-[1.5rem]
-                                            text-2xl
-                                            "
+                                                className="appearance-none cursor-pointer w-[30px] h-[30px] border-2 border-solid border-[#fcff00] bg-black checked:before:content-['✔'] text-center text-[#fcff00] leading-[1.5rem] text-2xl"
                                             />
                                         </div>
                                         <img
-                                            className="cursor-pointer hover: p-[0.35rem] hover:border-2 hover:border-solid hover:border-[--yellow] hover: rounded "
+                                            className="cursor-pointer p-[0.35rem] hover:border-2 hover:border-solid hover:border-[--yellow] hover:rounded"
                                             onClick={() =>
                                                 handleRouteQuestion(
                                                     quizId,

@@ -1,53 +1,10 @@
-// components/GenerateQRCode.js
-import { useEffect, useState } from 'react';
-import useApiRequest from '@/hooks/useApiRequest';
+/* eslint-disable @next/next/no-img-element */
+import useGenerateQRCode from '@/hooks/useGenerateQRCode';
 import { useSession } from 'next-auth/react';
-import { toast } from 'react-toastify';
 
 const GenerateQRCode = ({ quizId }) => {
-    const [qrCode, setQrCode] = useState('');
-    const [loading, setLoading] = useState(true);
-    const { fetchData } = useApiRequest();
     const { data: session, status } = useSession();
-
-    useEffect(() => {
-        if (status === 'loading') return; // Espera a que la sesión esté lista
-
-        if (!session?.accessToken) {
-            toast.error('Token de autenticación no disponible');
-            setLoading(false);
-            return;
-        }
-
-        const generateQR = async () => {
-            try {
-                const urlData = {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${session.accessToken}`,
-                    },
-                };
-                const urlGetQR = `${process.env.NEXT_PUBLIC_API_HOST}/generate-qr/${quizId}`;
-                const response = await fetch(urlGetQR, urlData);
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error || 'Error al generar QR');
-                }
-
-                setQrCode(data.qrCode.url);
-                toast.success(data.message);
-            } catch (error) {
-                toast.error(error.message);
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        generateQR();
-    }, [session, status, quizId]);
+    const { qrCode, loading } = useGenerateQRCode(session, status, quizId);
 
     if (loading) return <div>Loading...</div>;
 

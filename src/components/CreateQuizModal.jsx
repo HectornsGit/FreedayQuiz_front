@@ -1,55 +1,17 @@
-import { useState } from 'react';
+import useCreateQuizModal from '@/hooks/useCreateQuizModal';
 import { useSession } from 'next-auth/react';
-import { toast } from 'react-toastify';
-import { fetchAPI } from '@/api/fetch-api';
 
 function CreateQuizModal({ onQuizCreated }) {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: session } = useSession();
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const payload = {
-            title,
-            description,
-        };
-
-        try {
-            const headers = {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${session?.accessToken}`,
-            };
-
-            const onSuccess = (data) => {
-                toast.success('Quiz creado');
-                console.log('Quiz creado:', data);
-                setTitle('');
-                setDescription('');
-                setIsModalOpen(false);
-                onQuizCreated(data.data.id);
-            };
-
-            const onError = (error) => {
-                toast.error(error.message);
-                console.error('Error al crear el quiz:', error);
-            };
-
-            await fetchAPI(
-                '/create-quiz',
-                'POST',
-                payload,
-                onSuccess,
-                onError,
-                headers
-            );
-        } catch (error) {
-            toast.error(error.message);
-            console.error('Error al crear el quiz:', error);
-        }
-    };
-
+    const {
+        isModalOpen,
+        setIsModalOpen,
+        description,
+        setDescription,
+        title,
+        setTitle,
+        handleSubmit,
+    } = useCreateQuizModal(session, onQuizCreated);
     return (
         <div className="flex flex-col justify-center items-center md:h-[80px]">
             <button

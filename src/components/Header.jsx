@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';

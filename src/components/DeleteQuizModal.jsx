@@ -1,41 +1,14 @@
-import React from 'react';
-import { toast } from 'react-toastify';
-import { fetchAPI } from '@/api/fetch-api';
 import { useSession } from 'next-auth/react';
+import useDeleteQuizModal from '@/hooks/useDeleteQuizModal';
 
 const DeleteQuizModal = ({ isOpen, onClose, quizId, onQuizDeleted }) => {
     const { data: session } = useSession();
-    const handleDelete = async () => {
-        try {
-            const headers = {
-                Authorization: `Bearer ${session?.accessToken}`,
-            };
-
-            const onSuccess = () => {
-                toast.success('Quiz eliminado');
-                if (onQuizDeleted) onQuizDeleted();
-                onClose();
-            };
-
-            const onError = (error) => {
-                toast.error(error.message);
-                console.error('Error al eliminar el quiz:', error);
-            };
-
-            await fetchAPI(
-                `/delete-quiz/${quizId}`,
-                'DELETE',
-                null,
-                onSuccess,
-                onError,
-                headers
-            );
-        } catch (error) {
-            toast.error(error.message);
-            console.error('Error al eliminar el quiz:', error);
-        }
-    };
-
+    const { handleDelete } = useDeleteQuizModal(
+        session,
+        quizId,
+        onQuizDeleted,
+        onClose
+    );
     if (!isOpen) return null;
 
     return (
