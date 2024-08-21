@@ -1,52 +1,18 @@
-import { useState } from 'react';
 import Link from 'next/link';
-import { toast } from 'react-toastify';
-import { signIn } from 'next-auth/react';
 import EyeOpen from './icons/EyeOpen'; //icono ojo aberto
 import EyeClose from './icons/EyeClose'; //icono ojo cerrado
-import useApiRequest from '@/hooks/useApiRequest';
-import { useRouter } from 'next/navigation';
+import useLoginForm from '@/hooks/useLoginForm';
 
 function LoginForm() {
-    const { fetchData } = useApiRequest();
-    const router = useRouter();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPass, setShowPass] = useState(false); //para mostrar o no el texto en el campo contraseña
-
-    const host = process.env.NEXT_PUBLIC_API_HOST;
-
-    const onSuccess = async (_data) => {
-        toast.success('Logueado correctamente');
-        setEmail('');
-        setPassword('');
-        const result = await signIn('credentials', {
-            redirect: false,
-            email: email,
-            password: password,
-        });
-
-        if (result.ok) {
-            router.push('/');
-        } else {
-            toast.error('Error en el inicio de sesión');
-        }
-    };
-    const onError = (error) => {
-        toast.error(error.error);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const body = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email, password: password }),
-        };
-        fetchData(host + '/login', body, onSuccess, onError);
-    };
-
+    const {
+        handleSubmit,
+        showPass,
+        setShowPass,
+        password,
+        setPassword,
+        email,
+        setEmail,
+    } = useLoginForm();
     return (
         <div>
             <form

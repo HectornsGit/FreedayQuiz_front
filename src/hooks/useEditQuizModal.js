@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 
 const useEditQuizModal = (session, isOpen, onClose, quizId, onQuizUpdated) => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+    const [title, setTitle] = React.useState('');
+    const [description, setDescription] = React.useState('');
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (isOpen && quizId) {
             const fetchQuizDetails = async () => {
                 try {
@@ -48,67 +48,59 @@ const useEditQuizModal = (session, isOpen, onClose, quizId, onQuizUpdated) => {
         }
     }, [isOpen, quizId, session]);
 
-    const saveQuiz = useCallback(
-        async (shouldUpdate) => {
-            const payload = {
-                title,
-                description,
+    const saveQuiz = async (shouldUpdate) => {
+        const payload = {
+            title,
+            description,
+        };
+
+        try {
+            const headers = {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${session?.accessToken}`,
             };
 
-            try {
-                const headers = {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session?.accessToken}`,
-                };
+            const onSuccess = (data) => {
+                toast.success('Quiz actualizado');
+                setTitle('');
+                setDescription('');
 
-                const onSuccess = (data) => {
-                    toast.success('Quiz actualizado');
-                    setTitle('');
-                    setDescription('');
+                if (shouldUpdate) {
+                    onQuizUpdated(quizId);
+                }
 
-                    if (shouldUpdate) {
-                        onQuizUpdated(quizId);
-                    }
+                onClose();
+            };
 
-                    onClose();
-                };
-
-                const onError = (error) => {
-                    toast.error('Error al actualizar el quiz');
-                    console.error('Error al actualizar el quiz:', error);
-                };
-
-                await fetchAPI(
-                    `/update-quiz/${quizId}`,
-                    'PATCH',
-                    payload,
-                    onSuccess,
-                    onError,
-                    headers
-                );
-            } catch (error) {
-                toast.error(error.message);
+            const onError = (error) => {
+                toast.error('Error al actualizar el quiz');
                 console.error('Error al actualizar el quiz:', error);
-            }
-        },
-        [title, description, session, quizId, onQuizUpdated, onClose] // Dependencias
-    );
+            };
 
-    const handleSaveQuiz = useCallback(
-        (e) => {
-            e.preventDefault();
-            saveQuiz(false); // No llamar a onQuizUpdated
-        },
-        [saveQuiz] // Dependencia
-    );
+            await fetchAPI(
+                `/update-quiz/${quizId}`,
+                'PATCH',
+                payload,
+                onSuccess,
+                onError,
+                headers
+            );
+        } catch (error) {
+            toast.error(error.message);
+            console.error('Error al actualizar el quiz:', error);
+        }
+    };
 
-    const handleEditQuestions = useCallback(
-        (e) => {
-            e.preventDefault();
-            saveQuiz(true); // Llamar a onQuizUpdated
-        },
-        [saveQuiz] // Dependencia
-    );
+    // Funciones para manejar cada botón
+    const handleSaveQuiz = (e) => {
+        e.preventDefault();
+        saveQuiz(false); // No llamar a onQuizUpdated
+    };
+
+    const handleEditQuestions = (e) => {
+        e.preventDefault();
+        saveQuiz(true); // Llamar a onQuizUpdated
+    };
 
     return {
         title,
@@ -120,5 +112,4 @@ const useEditQuizModal = (session, isOpen, onClose, quizId, onQuizUpdated) => {
         saveQuiz,
     };
 };
-
 export default useEditQuizModal;

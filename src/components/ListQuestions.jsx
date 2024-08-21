@@ -41,7 +41,8 @@ export default function ListQuestions({ quizId, closeModal }) {
 
     useEffect(() => {
         getQuestions(quizId);
-    }, [quizId, getQuestions]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [quizId]);
 
     return (
         <>
