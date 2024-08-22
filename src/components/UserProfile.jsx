@@ -12,6 +12,8 @@ import Delete from './icons/Delete';
 import { fetchAPI } from '@/api/fetch-api';
 import QR from './icons/QR';
 import '../styles/profile.css';
+import ChevronRight from './icons/ChevronRight';
+import ChevronLeft from './icons/ChevronLeft';
 
 const UserProfile = () => {
     const { getUserInfo, userInfo, error, loading } = useUserInfo();
@@ -130,12 +132,8 @@ const UserProfile = () => {
         }
     };
 
-    const handleQuizClick = (quizId) => {
+    const handleCreateQuiz = (quizId) => {
         router.push(`new-question/${quizId}`);
-    };
-
-    const handlePlayClick = (quizId) => {
-        router.push(`/match/${quizId}`);
     };
 
     const handleDeleteClick = (quizId) => {
@@ -143,7 +141,7 @@ const UserProfile = () => {
         setIsDeleteModalOpen(true);
     };
 
-    const handleEditQuizClick = (quizId) => {
+    const handleEditQuiz = (quizId) => {
         setSelectedQuizId(quizId);
         setIsEditModalOpen(true);
     };
@@ -169,7 +167,8 @@ const UserProfile = () => {
         setQuizIndex((prevIndex) => prevIndex - quizzesPerPage);
     };
 
-    const handleQRButton = (quizId) => {
+    const handlePlayQuiz = (quizId) => {
+        // Abrir la ventana emergente con el QR
         const qrUrl = `/QR/${quizId}`;
         const width = 280;
         const height = 600;
@@ -183,7 +182,11 @@ const UserProfile = () => {
 
         const windowConf = `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`;
 
+        // Abrir la ventana emergente
         window.open(qrUrl, '_blank', windowConf);
+
+        // Redirigir a la página de match
+        router.push(`/match/${quizId}`);
     };
 
     if (loading) {
@@ -322,7 +325,7 @@ const UserProfile = () => {
                         </ul>
                     </div>
                     <div className="block md:hidden">
-                        <CreateQuizModal onQuizCreated={handleQuizClick} />
+                        <CreateQuizModal onQuizCreated={handleCreateQuiz} />
                     </div>
                     {userInfo.quizzes && userInfo.quizzes.length > 0 && (
                         <div className="text-center mb-10">
@@ -332,7 +335,7 @@ const UserProfile = () => {
                             <ul className="relative list-none p-0 mx-auto grid-md grid-lg">
                                 <li className="hidden md:block">
                                     <CreateQuizModal
-                                        onQuizCreated={handleQuizClick}
+                                        onQuizCreated={handleCreateQuiz}
                                     />
                                 </li>
                                 {userInfo.quizzes
@@ -355,7 +358,7 @@ const UserProfile = () => {
                                                 <div className="flex justify-between items-center gap-4 mx-auto mt-2 w-4/5">
                                                     <button
                                                         onClick={() =>
-                                                            handleEditQuizClick(
+                                                            handleEditQuiz(
                                                                 quiz.id
                                                             )
                                                         }
@@ -375,23 +378,13 @@ const UserProfile = () => {
                                                     </button>
                                                     <button
                                                         onClick={() =>
-                                                            handleQRButton(
-                                                                quiz.id
-                                                            )
-                                                        }
-                                                        className="text-[#FCFF00] hover:underline"
-                                                    >
-                                                        <QR className="w-4 h-4 mr-2" />
-                                                    </button>
-                                                    <button
-                                                        onClick={() =>
-                                                            handlePlayClick(
+                                                            handlePlayQuiz(
                                                                 quiz.id
                                                             )
                                                         }
                                                         className="text-[#FCFF00] hover:underline flex-shrink-0"
                                                     >
-                                                        Iniciar
+                                                        <QR className="w-4 h-4 mr-2" />
                                                     </button>
                                                 </div>
                                             </section>
@@ -400,13 +393,15 @@ const UserProfile = () => {
                                 <button
                                     onClick={handlePrevPage}
                                     disabled={quizIndex === 0}
-                                    className={`absolute -left-[12] top-1/2 transform -translate-y-1/2 ${
+                                    className={`absolute -left-[12%] top-1/2 transform -translate-y-1/2 ${
                                         quizIndex === 0
                                             ? 'opacity-50 cursor-not-allowed'
                                             : 'hover:underline'
                                     } text-[#FCFF00]`}
                                 >
-                                    Ant
+                                    <div className="bg-[#FCFF00] rounded-full p-2">
+                                        <ChevronLeft className="w-5 h-5 text-black" />
+                                    </div>
                                 </button>
                                 <button
                                     onClick={handleNextPage}
@@ -421,7 +416,9 @@ const UserProfile = () => {
                                             : 'hover:underline'
                                     } text-[#FCFF00]`}
                                 >
-                                    Sig
+                                    <div className="bg-[#FCFF00] rounded-full p-2">
+                                        <ChevronRight className="w-5 h-5 text-black" />
+                                    </div>
                                 </button>
                             </ul>
                         </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
+import XMark from './icons/XMark';
 
 function CreateQuizModal({ onQuizCreated }) {
     const [title, setTitle] = useState('');
@@ -54,9 +55,10 @@ function CreateQuizModal({ onQuizCreated }) {
         <div className="flex flex-col justify-center items-center md:h-[80px]">
             <button
                 onClick={() => setIsModalOpen(true)}
-                className="text-[#FCFF00] font-bold text-sm w-38 h-32 border-2 border-[#FCFF00] bg-[var(--bg-hab-black)] px-5"
+                className="text-[#FCFF00] font-bold text-sm w-38 h-32 border-2 border-[#FCFF00] bg-[var(--bg-hab-black)] px-5 flex flex-col items-center justify-center"
             >
-                Añadir nuevo Quiz
+                <XMark className="w-6 h-6" />
+                <span className="mt-2 text-[1em]">Añadir nuevo Quiz</span>
             </button>
 
             {isModalOpen && (
