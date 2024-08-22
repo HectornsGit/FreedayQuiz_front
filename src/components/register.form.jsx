@@ -33,8 +33,14 @@ function RegisterForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const payload = { name, email, password, avatar };
-        console.log('Datos del formulario:', payload);
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('password', password);
+        if (avatar) {
+            formData.append('avatar', avatar);
+        }
+        console.log('Datos del formulario:', formData);
 
         const onSuccess = (data) => {
             toast.success('Registrado correctamente');
@@ -50,7 +56,9 @@ function RegisterForm() {
             setPassword('');
         };
 
-        fetchAPI('/register', 'POST', payload, onSuccess, onError, null);
+        fetchAPI('/register', 'POST', formData, onSuccess, onError, null, {
+            'Content-Type': 'multipart/form-data',
+        });
     };
 
     return (
