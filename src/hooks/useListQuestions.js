@@ -1,46 +1,37 @@
-/* NOTA: Este hook utiliza una lógica para listar preguntas de un quizz creado*/
-
-//Voy a necesitar hacer un fetch para traer las preguntas
 import { fetchAPI } from '@/api/fetch-api';
-
-//me traigo info de sesion para coger el token
 import { useSession } from 'next-auth/react';
+import { useState, useEffect, useCallback } from 'react';
 
-import { useState } from 'react';
-
-export const useListQuestions = () => {
-    const { data: session } = useSession(); //para obtener el token de la sesion.
-    const [dataQuizz, setDataQuizz] = useState([]); //iniciamos con un array vacío para poder hacer un .map
-
-    const [modal, setModal] = useState(false); // para activar un modal (se abre cuando haces click al boton)
+export const useListQuestions = (router, quizId) => {
+    const { data: session } = useSession();
+    const [dataQuizz, setDataQuizz] = useState([]);
+    const [valueCheckbox, setValueCheckbox] = useState([]);
+    const [modal, setModal] = useState(false);
 
     const getQuestions = async (quizId) => {
-        //funcion que se ejecuta cuando va todo bien :)
         const onSuccess = async (data) => {
             const idQuiz = data.id;
-            const questions = data.questions; //de toda la data(JSON) del back, cojo la parte de las preguntas
+            const questions = data.questions;
 
-            //me guardo en la constante dataQuestions los datos que quiero 'pintar en el front'
             const dataQuestions = questions?.map((question) => ({
                 idQuiz: idQuiz,
                 questionId: question.id,
                 questionImage: question.image,
                 questionNumber: question.questionNumber,
-            })); //me creo un objeto, dataQuestions con los datos que me interesan recuperar del back
-            setDataQuizz(dataQuestions); //para setear los datos e imprimir lo que corresponda
-            setModal(!modal); //muestra listado de preguntas en un modal
+            }));
+            setDataQuizz(dataQuestions);
+            setModal(!modal);
         };
 
-        //funcion que se ejecuta cuando hay algun error
         const onError = async (data) => {
             console.log('Error:', data);
         };
 
         try {
-            const token = session.accessToken; //en esta constante me guardo el token
+            const token = session.accessToken;
             const headers = {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`, //metemos token en la cabecera
+                Authorization: `Bearer ${token}`,
             };
 
             await fetchAPI(
@@ -56,10 +47,33 @@ export const useListQuestions = () => {
         }
     };
 
-    /* Funcion pequeña para poder cerrar el modal y asignarlo a un boton*/
     const closeModal = () => {
         setModal(false);
     };
 
-    return { getQuestions, dataQuizz, modal, closeModal };
+    const handleRouteQuestion = useCallback(
+        (quizId, questionNumber) => {
+            router.push(`/edit-question/${quizId}/${questionNumber}`);
+        },
+        [router]
+    );
+
+    const handleAddQuestion = useCallback(() => {
+        window.location.href = `/new-question/${quizId}`;
+    }, [quizId]);
+
+    useEffect(() => {
+        getQuestions(quizId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [quizId]);
+
+    return {
+        dataQuizz,
+        modal,
+        closeModal,
+        valueCheckbox,
+        setValueCheckbox,
+        handleRouteQuestion,
+        handleAddQuestion,
+    };
 };

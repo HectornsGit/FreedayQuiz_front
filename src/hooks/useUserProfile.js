@@ -1,11 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useUserInfo } from '@/hooks/useUserInfo';
 import { useRouter } from 'next/navigation';
 import { fetchAPI } from '@/api/fetch-api';
 
 const useUserProfile = (session) => {
-    const { getUserInfo, userInfo, error, loading } = useUserInfo();
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // quizz
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false); //quizz
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedQuizId, setSelectedQuizId] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('');
@@ -23,6 +22,7 @@ const useUserProfile = (session) => {
     });
     const [quizIndex, setQuizIndex] = useState(0);
     const [quizzesPerPage, setQuizzesPerPage] = useState(5);
+    const { getUserInfo, userInfo, error, loading } = useUserInfo();
     const router = useRouter();
 
     useEffect(() => {
@@ -46,7 +46,8 @@ const useUserProfile = (session) => {
 
     useEffect(() => {
         getUserInfo();
-    }, [getUserInfo]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (userInfo) {
@@ -59,16 +60,16 @@ const useUserProfile = (session) => {
         }
     }, [userInfo]);
 
-    const handleEditClick = useCallback((field) => {
+    const handleEditClick = (field) => {
         setIsEditing((prev) => ({ ...prev, [field]: true }));
-    }, []);
+    };
 
-    const handleChange = useCallback((e) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setEditableUserInfo((prev) => ({ ...prev, [name]: value }));
-    }, []);
+    };
 
-    const handleAvatarChange = useCallback((e) => {
+    const handleAvatarChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -78,9 +79,9 @@ const useUserProfile = (session) => {
             };
             reader.readAsDataURL(file);
         }
-    }, []);
+    };
 
-    const handleSave = useCallback(async () => {
+    const handleSave = async () => {
         const formData = new FormData();
         formData.append('name', editableUserInfo.name);
         formData.append('email', editableUserInfo.email);
@@ -117,57 +118,45 @@ const useUserProfile = (session) => {
                 headers
             );
         }
-    }, [editableUserInfo, getUserInfo, session]);
+    };
 
-    const handleQuizClick = useCallback(
-        (quizId) => {
-            router.push(`new-question/${quizId}`);
-        },
-        [router]
-    );
+    const handleCreateQuiz = (quizId) => {
+        router.push(`new-question/${quizId}`);
+    };
 
-    const handlePlayClick = useCallback(
-        (quizId) => {
-            router.push(`/match/${quizId}`);
-        },
-        [router]
-    );
-
-    const handleDeleteClick = useCallback((quizId) => {
+    const handleDeleteClick = (quizId) => {
         setSelectedQuizId(quizId);
         setIsDeleteModalOpen(true);
-    }, []);
+    };
 
-    const handleEditQuizClick = useCallback((quizId) => {
+    const handleEditQuiz = (quizId) => {
         setSelectedQuizId(quizId);
         setIsEditModalOpen(true);
-    }, []);
+    };
 
-    const handleModalClose = useCallback(() => {
+    const handleModalClose = () => {
         setIsDeleteModalOpen(false);
         setIsEditModalOpen(false);
-    }, []);
+    };
 
-    const handleQuizDeleted = useCallback(() => {
+    const handleQuizDeleted = () => {
         getUserInfo(); // Refresca la lista de quizzes después de eliminar uno
-    }, [getUserInfo]);
+    };
 
-    const handleQuizUpdated = useCallback(
-        (quizId) => {
-            router.push(`edit-question/${quizId}/1`);
-        },
-        [router]
-    );
+    const handleQuizUpdated = (quizId) => {
+        router.push(`edit-question/${quizId}/1`);
+    };
 
-    const handleNextPage = useCallback(() => {
+    const handleNextPage = () => {
         setQuizIndex((prevIndex) => prevIndex + quizzesPerPage);
-    }, [quizzesPerPage]);
+    };
 
-    const handlePrevPage = useCallback(() => {
+    const handlePrevPage = () => {
         setQuizIndex((prevIndex) => prevIndex - quizzesPerPage);
-    }, [quizzesPerPage]);
+    };
 
-    const handleQRButton = useCallback((quizId) => {
+    const handlePlayQuiz = (quizId) => {
+        // Abrir la ventana emergente con el QR
         const qrUrl = `/QR/${quizId}`;
         const width = 280;
         const height = 600;
@@ -181,15 +170,18 @@ const useUserProfile = (session) => {
 
         const windowConf = `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`;
 
+        // Abrir la ventana emergente
         window.open(qrUrl, '_blank', windowConf);
-    }, []);
+
+        // Redirigir a la página de match
+        router.push(`/match/${quizId}`);
+    };
 
     return {
         getUserInfo,
         userInfo,
         error,
         loading,
-        handleQRButton,
         handlePrevPage,
         handleNextPage,
         isEditModalOpen,
@@ -198,11 +190,8 @@ const useUserProfile = (session) => {
         setIsDeleteModalOpen,
         handleQuizUpdated,
         handleQuizDeleted,
-        handleEditQuizClick,
         handleModalClose,
         handleDeleteClick,
-        handlePlayClick,
-        handleQuizClick,
         handleEditClick,
         handleChange,
         handleAvatarChange,
@@ -218,6 +207,9 @@ const useUserProfile = (session) => {
         selectedQuizId,
         setSelectedQuizId,
         isEditing,
+        handleCreateQuiz,
+        handlePlayQuiz,
+        handleEditQuiz,
     };
 };
 

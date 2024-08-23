@@ -1,10 +1,6 @@
 import useCreateQuizModal from '@/hooks/useCreateQuizModal';
 import { useSession } from 'next-auth/react';
-
-import { toast } from 'react-toastify';
-import { fetchAPI } from '@/api/fetch-api';
 import XMark from './icons/XMark';
-
 
 function CreateQuizModal({ onQuizCreated }) {
     const { data: session } = useSession();
