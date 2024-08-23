@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import { useEffect, useState } from 'react';
 const QuestionImage = ({ image }) => {
@@ -9,7 +10,11 @@ const QuestionImage = ({ image }) => {
     }, [image]);
     return (
         <div className="self-center">
-            <img src={route} className="object-cover"></img>
+            <img
+                src={route}
+                alt="Imagen de la pregunta"
+                className="object-cover"
+            ></img>
         </div>
     );
 };

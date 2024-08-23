@@ -1,8 +1,10 @@
+
 import { useEffect, useState } from 'react';
+
 import { useSession } from 'next-auth/react';
-import { toast } from 'react-toastify';
 
 const GenerateQRCode = ({ quizId }) => {
+
     const [qrCode, setQrCode] = useState('');
     const [accessCode, setAccessCode] = useState('');
     const [loading, setLoading] = useState(true);
@@ -72,6 +74,7 @@ const GenerateQRCode = ({ quizId }) => {
         generateQR(); // Genera el código QR
         setLoading(false); // Deja de cargar
     }, [session, status, quizId]);
+
 
     if (loading) return <div>Loading...</div>;
 

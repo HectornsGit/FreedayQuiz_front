@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useParams, useRouter } from 'next/navigation';
+
 import {
     shuffleArray,
     findValue,
     startNewPlayer,
     signOutHandler,
-    setItemWithExpiry,
     getItemWithExpiry,
+    setItemWithExpiry,
 } from '../utils';
 import useSocketConfig from './useSocketConfig';
 import { useQuizHandlers } from './useQuizHandlers';
@@ -30,45 +30,20 @@ import {
     startRandomQuestion,
     requestSetWinnerOn,
 } from '../handlers/index';
+import useFunctions from './useFunctions';
 
 const useQuizLogic = () => {
     const params = useParams();
     const router = useRouter();
     const { data: session } = useSession();
 
-    //Estados para manejar el master, con los datos comunes de todos los jugadores en tiempo real del quiz:
-    const [quizData, setQuizData] = useState(null);
-    const [question, setQuestion] = useState(null);
-    const [playerData, setPlayerData] = useState([]);
-    const [clickedResponses, setClickedResponses] = useState({});
-
-    //Estados del cliente local, con la información particular del jugador:
-    const [initialPlayerData, setInitialPlayerData] = useState([]);
-    const [nickName, setNickName] = useState('');
-    const [isNameSetted, setIsNameSetted] = useState(false);
-
-    //Estados que se manejan automáticamente:
-    const [_joinedQuiz, setJoinedQuiz] = useState(false);
-    const [socket, setSocket] = useState(null);
-    const [error, setError] = useState(null);
+    //Estados complejos: (setQuestion está en el reducer):
+    const [quizData, setQuizData] = useState(null); //Datos del quiz.
+    const [playerData, setPlayerData] = useState([]); //Datos de todos los jugadores.
+    const [initialPlayerData, setInitialPlayerData] = useState([]); //Datos del jugador conectado.
     const [shuffledQuestionResponses, setShuffledQuestionResponses] =
-        useState(null);
-    const [isQuestionRunning, setIsQuestionRunning] = useState(false);
-    const [questionsToDelete, setQuestionsToDelete] = useState([]);
-    const [timeLeft, setTimeLeft] = useState(null);
-    const [showScores, setShowScores] = useState(false);
-    const [isDisabled, setIsDisabled] = useState(true);
-    const [sessionRecovery, setSessionRecovery] = useState(true);
-    const [sessionTime, setSessionTime] = useState(0);
-    const [sessionTimeLeft, setSessionTimeLeft] = useState(0);
-    const [connectedClients, setConnectedClients] = useState(0);
-    const [, setIsMasterOnline] = useState(false);
-    const [questionsExecuted, setQuestionsExecuted] = useState([]);
-    const [isThereAWinner, setIsThereAWinner] = useState(false);
-
-    //Estados que controlan si son inputs los componentes de la pantalla del Master.
-    const [isClockInput, setIsClockInput] = useState(false);
-    const [isInput, setIsInput] = useState(false);
+        useState(null); //Preguntas desordenadas:
+    const [questionsExecuted, setQuestionsExecuted] = useState([]); //Preguntas ya ejecutadas.
 
     //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
     const loggedUserId = session?.user.data.id;
@@ -87,23 +62,68 @@ const useQuizLogic = () => {
     quizSessionDuration = getItemWithExpiry('QuizSessionDuration');
     let isMaster = getItemWithExpiry('isMaster');
 
-    //Solo se ejecutará una vez al montar el componente, para evitar el bucle infinito de renderizaciones:
+    const {
+        initializePlayer,
+        state,
+        setIsThereAWinner,
+        setIsClockInput,
+        setIsQuestionRunning,
+        setSessionRecovery,
+        setIsNameSetted,
+        setIsInput,
+        setIsDisabled,
+        setJoinedQuiz,
+        setShowScores,
+        setIsMasterOnline,
+        setTimeLeft,
+        setError,
+        setSocket,
+        setSessionTime,
+        setNickName,
+        setClickedResponses,
+        setSessionTimeLeft,
+        setConnectedClients,
+        setQuestion,
+        setQuestionsToDelete,
+    } = useFunctions({
+        isMaster,
+        playerId,
+        quizId,
+        playerName,
+        quizSessionDuration,
+        setItemWithExpiry,
+    });
+
+    //Estados procedentes del reducer:
+    const {
+        question,
+        clickedResponses,
+        nickName,
+        isNameSetted,
+        joinedQuiz, //Se setea, pero no se usa como tal.
+        socket,
+        error,
+        isQuestionRunning,
+        questionsToDelete,
+        timeLeft,
+        showScores,
+        isDisabled,
+        sessionRecovery,
+        sessionTime,
+        sessionTimeLeft,
+        connectedClients,
+        isMasterOnline, //Se setea, pero no se usa como tal.
+        isThereAWinner,
+        isClockInput,
+        isInput,
+    } = state;
+
+    //Ver en useFunctions:
     useEffect(() => {
-        if (!playerId && !isMaster) {
-            playerId = uuidv4();
-            setItemWithExpiry('idNewPlayer', playerId, 12);
-            setItemWithExpiry('quizId', quizId, 12);
-            setSessionRecovery(false);
-        }
-        if (playerName) {
-            setIsNameSetted(true);
-        }
-        if (quizSessionDuration) {
-            setSessionTime(quizSessionDuration);
-        }
+        initializePlayer();
     }, [playerId]);
 
-    //Aquí van los handlers que necesitan useCallback:
+    //Aquí van los socket handlers que necesitan useCallback:
     const {
         handleAnswerSubmitted,
         handleAnswerSubmit,
@@ -125,6 +145,7 @@ const useQuizLogic = () => {
         setIsDisabled,
     });
 
+    //Desordenar las preguntas:
     useEffect(() => {
         if (question) {
             const questionResponses = [
@@ -179,6 +200,7 @@ const useQuizLogic = () => {
     });
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:
+
     return {
         endQuiz: () => endQuiz(quizData, socket, quizId, questionsToDelete),
         findValue,

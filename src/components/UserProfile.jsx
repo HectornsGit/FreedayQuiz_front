@@ -1,23 +1,21 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
-
-import React, { useState, useEffect } from 'react';
-import { useUserInfo } from '@/hooks/useUserInfo';
-import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import CreateQuizModal from './CreateQuizModal';
 import DeleteQuizModal from './DeleteQuizModal';
 import EditQuizModal from './EditQuizModal';
 import YellowPencil from './icons/YellowPencil';
 import Delete from './icons/Delete';
-import { fetchAPI } from '@/api/fetch-api';
 import QR from './icons/QR';
+
 import ChevronRight from './icons/ChevronRight';
 import ChevronLeft from './icons/ChevronLeft';
 import Points from './icons/Points';
 
+
 const UserProfile = () => {
-    const { getUserInfo, userInfo, error, loading } = useUserInfo();
     const { data: session } = useSession();
+
     const [isEditModalOpen, setIsEditModalOpen] = useState(false); //quizz
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedQuizId, setSelectedQuizId] = useState(null);
@@ -188,6 +186,7 @@ const UserProfile = () => {
         // Redirigir a la página de match
         router.push(`/match/${quizId}`);
     };
+
 
     if (loading) {
         return <p>Loading...</p>;
