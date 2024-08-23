@@ -1,10 +1,9 @@
 import useRequestResetPassword from '../hooks/useRequestResetPassword';
 
-const ResetPasswordBox = () => {
+const RequestResetPassword = () => {
     const { email, setEmail, handleEmail } = useRequestResetPassword();
 
     return (
-        <div>
             <form
                 onSubmit={handleEmail}
                 className="flex flex-col justify-center items-center"
@@ -33,8 +32,7 @@ const ResetPasswordBox = () => {
                     </button>
                 </div>
             </form>
-        </div>
     );
 };
 
-export default ResetPasswordBox;
+export default RequestResetPassword;
