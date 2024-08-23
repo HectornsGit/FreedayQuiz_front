@@ -6,18 +6,20 @@ import Slider from './Slider';
 import { useListQuestions } from '@/hooks/useListQuestions';
 import { useDeleteQuestions } from '@/hooks/useDeleteQuestions';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect, useCallback } from 'react';
 
 export default function ListQuestions({ quizId, closeModal }) {
     const url = process.env.NEXT_PUBLIC_API_HOST;
+    const router = useRouter();
 
-    const [valueCheckbox, setValueCheckbox] = useState([]);
     const {
-        getQuestions,
         dataQuizz,
         modal,
         closeModal: listCloseModal,
-    } = useListQuestions();
+        valueCheckbox,
+        setValueCheckbox,
+        handleRouteQuestion,
+        handleAddQuestion,
+    } = useListQuestions(router, quizId);
 
     const { deleteQuestions, handleValue } = useDeleteQuestions(
         valueCheckbox,
@@ -25,24 +27,6 @@ export default function ListQuestions({ quizId, closeModal }) {
         setValueCheckbox,
         closeModal
     );
-
-    const router = useRouter();
-
-    const handleRouteQuestion = useCallback(
-        (quizId, questionNumber) => {
-            router.push(`/edit-question/${quizId}/${questionNumber}`);
-        },
-        [router]
-    );
-
-    const handleAddQuestion = useCallback(() => {
-        window.location.href = `/new-question/${quizId}`;
-    }, [quizId]);
-
-    useEffect(() => {
-        getQuestions(quizId);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [quizId]);
 
     return (
         <>

@@ -1,34 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import '../styles/header.css';
 import ButtonPrimary from './ButtonPrimary';
 import ButtonSecondary from './ButtonSecondary';
-import { useUserInfo } from '@/hooks/useUserInfo';
+import useHeader from '@/hooks/useHeader';
 
 export default function Header() {
-    const [menu, setMenu] = useState(false); // Para el menú de móvil
-    const [desktopMenuOpen, setdesktopMenuOpen] = useState(false); // Para el menú desplegable de escritorio
     const { data: session } = useSession();
-    const { userInfo, loading } = useUserInfo();
-
-    const toggleMenu = () => {
-        setMenu(!menu);
-    };
-
-    const toggledesktopMenu = () => {
-        setdesktopMenuOpen(!desktopMenuOpen);
-    };
-
-    const handleMenuClose = () => {
-        setMenu(false);
-    };
-
-    const handledesktopMenuClose = () => {
-        setdesktopMenuOpen(false);
-    };
+    const {
+        menu,
+        desktopMenuOpen,
+        toggleMenu,
+        toggledesktopMenu,
+        handleMenuClose,
+        handledesktopMenuClose,
+        userInfo,
+        loading,
+    } = useHeader();
 
     return (
         <header className="flex items-center justify-between text-white p-8 bg-header">

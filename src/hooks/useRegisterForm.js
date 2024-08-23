@@ -37,7 +37,6 @@ const useRegisterForm = () => {
         if (avatar) {
             formData.append('avatar', avatar);
         }
-        console.log('Datos del formulario:', formData);
 
         const onSuccess = (data) => {
             console.log('Datos del usuario registrado', data);
@@ -49,7 +48,7 @@ const useRegisterForm = () => {
         };
 
         const onError = (error) => {
-            toast.error('Ha habido un error en el registro');
+            toast.error(error.error);
             console.log('Ha habido un error en el registro', error);
             setPassword('');
         };
