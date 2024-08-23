@@ -5,6 +5,7 @@ import EyeClose from './icons/EyeClose'; //icono ojo cerrado
 import useRegisterForm from '@/hooks/useRegisterForm';
 
 function RegisterForm() {
+
     const {
         fileInputRef,
         handleSubmit,
@@ -19,6 +20,7 @@ function RegisterForm() {
         setPassword,
         avatarPreview,
     } = useRegisterForm();
+
 
     return (
         <>

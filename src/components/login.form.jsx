@@ -56,7 +56,7 @@ function LoginForm() {
                         {showPass ? <EyeClose /> : <EyeOpen />}
                     </div>
                     <Link
-                        href="/"
+                        href="/request-resetpassword"
                         className=" mt-2 font-medium text-base underline hover:text-[--yellow]"
                     >
                         He olvidado mi contraseña
@@ -67,7 +67,7 @@ function LoginForm() {
                     <button
                         type="submit"
                         className="text-black font-extrabold text-lg bg-white px-11 py-2 
-                hover:bg-black hover:text-white hover:box-shadow-white"
+                hover:bg-black transition-colors duration-300 ease-in-out hover:text-white hover:box-shadow-white"
                     >
                         {' '}
                         Iniciar sesión{' '}

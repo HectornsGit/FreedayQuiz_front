@@ -5,7 +5,7 @@ const QuestionTitleInput = ({ id, text, isInput, defaultValue }) => {
         setValue(defaultValue);
     }, [defaultValue]);
     return (
-        <div className="flex w-60 my-6 flex-col items-start m-2">
+        <div className="flex w-32 my-6 flex-col items-start m-2">
             <label className="text-md my-3 font-medium" htmlFor={id}>
                 {text}
             </label>

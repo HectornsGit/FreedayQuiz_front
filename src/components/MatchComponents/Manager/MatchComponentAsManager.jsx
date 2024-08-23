@@ -76,7 +76,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                         Duración máxima de la sesión (en minutos)
                     </label>
                     <input
-                        className='font-semibold w-full mb-10  p-2  text-black text-md py-2"'
+                        className='font-semibold  w-11/12 mb-10  p-2  text-black text-md py-2"'
                         type="number"
                         id="session"
                         name="session"
@@ -89,7 +89,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
     }
 
     return (
-        <section className="lg:w-full lg:items-start lg:grid lg:grid-cols-[0.44fr_1.2fr_0.44fr] lg:grid-rows-[0.2fr_1.3fr_1fr] lg:gap-0 w-11/12 mx-2 flex flex-col  items-center">
+        <section className=" lg:w-full lg:items-start lg:grid lg:grid-cols-[0.44fr_1.2fr_0.44fr] lg:grid-rows-[0.2fr_1.3fr_1fr] lg:gap-0 w-11/12 mx-2 flex flex-col  items-center">
             <header className="lg:col-span-3   lg:row-span-1 flex flex-col mb-6 w-full">
                 <ul className="flex grow mb-4 h-12 items-center mx-4 lg:justify-around justify-between">
                     <li>
@@ -154,7 +154,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                 )}
             </aside>
             {loggedUserId && loggedUserId == quizData?.owner_id && (
-                <section className="lg:col-span-1 lg:row-span-2 flex-col justify-center">
+                <section className=" max-w-full lg:col-span-1 lg:row-span-2 flex-col justify-center">
                     {question && (
                         <section className="flex flex-col justify-center">
                             <QuestionImage
@@ -189,7 +189,12 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                             <p>Texto pregunta</p>
                                         )}
                                     </li>
-                                    <li>
+                                    <li
+                                        className={
+                                            (isInput ? 'pb-10 ' : '') +
+                                            'self-center'
+                                        }
+                                    >
                                         <button
                                             disabled={disableQuestionsButton}
                                             type="button"
@@ -202,7 +207,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 </ul>
                                 {isInput === false && (
                                     <select
-                                        className="sm:5/6s w-full md:w-full 2xl:w-4/6 font-bold mb-2  p-2 animate-textScroll  z-10 text-black text-md py-2"
+                                        className="sm:5/6s w-full md:w-full 2xl:w-4/6 font-bold mb-2  p-2  z-10 text-black text-sm sm:text-md py-2"
                                         onChange={getQuestionFromList}
                                         disabled={disableQuestionsButton}
                                         value={question.questionNumber}
@@ -220,14 +225,26 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                         >
                                                             {window.innerWidth <
                                                             1280
-                                                                ? `${question.number}. ${question.title}`
-                                                                      .length >
-                                                                  50
-                                                                    ? `${question.number}. ${question.title}`.substring(
-                                                                          0,
-                                                                          48
-                                                                      ) + '...'
+                                                                ? window.innerWidth <
+                                                                  400
+                                                                    ? `${question.number}. ${question.title}`
+                                                                          .length >
+                                                                      26
+                                                                        ? `${question.number}. ${question.title}`.substring(
+                                                                              0,
+                                                                              26
+                                                                          ) +
+                                                                          '...'
+                                                                        : `${question.number}. ${question.title}`
                                                                     : `${question.number}. ${question.title}`
+                                                                            .length >
+                                                                        50
+                                                                      ? `${question.number}. ${question.title}`.substring(
+                                                                            0,
+                                                                            48
+                                                                        ) +
+                                                                        '...'
+                                                                      : `${question.number}. ${question.title}`
                                                                 : `${question.number}. ${question.title}`}
                                                         </option>
                                                     );
@@ -236,10 +253,10 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     </select>
                                 )}
                                 {window.innerWidth < 1280 &&
-                                    question.question.length > 48 && (
+                                    question.question.length > 26 && (
                                         <p
                                             ref={hiddenTextRef}
-                                            className=" visible xl:invisible h-8  w-full lg:w-80 relative  bg-[yellow] text-left  font-bold mb-4  p-2 z-10 text-black text-xs py-2"
+                                            className=" visible xl:invisible h-12 w-full lg:w-80 relative  bg-[yellow] text-left  font-bold mb-4  p-2 z-10 text-black text-xs py-2"
                                         >
                                             {question.question}
                                         </p>
@@ -328,7 +345,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                         </section>
                     )}
                     {isInput == false && (
-                        <ul className="flex justify-center items-center mt-4 gap-6">
+                        <ul className="flex flex-col sm:flex-row justify-center items-center mt-4 gap-6">
                             <li>
                                 <ManagerButton
                                     isPrimary={true}
@@ -351,17 +368,18 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     )}
                     <div className="flex flex-col items-center">
                         <button
-                            className="text-[--yellow] font-bold text-lg mt-10 p-1"
+                            className="text-[--yellow] font-bold text-lg mt-10 p-1 disabled:text-gray-600 disabled:bg-black"
                             onClick={handleFinalScore}
+                            disabled={!isQuestionRunning || timeLeft > 0}
                         >
-                            <span className="flex flex-row gap-3 hover:bg-gradient">
+                            <span className="flex flex-row gap-3 hover:bg-gradient ">
                                 <Points className="w-4" />
                                 Mostrar puntuacion final
                                 <Points className="w-4" />
                             </span>
                         </button>
                         <button
-                            className="text-white font-light text-lg mt-20 px-11 py-2"
+                            className="text-white font-light text-lg mt-20 px-11 py-2 "
                             onClick={endQuiz}
                         >
                             Finalizar quiz
