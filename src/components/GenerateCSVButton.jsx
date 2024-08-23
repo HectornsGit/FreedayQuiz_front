@@ -2,7 +2,7 @@ import useApiRequest from '@/hooks/useApiRequest';
 import { formatDate } from '@/quizEngine/utils/index';
 import { toast } from 'react-toastify';
 
-const GenerateCSVButton = ({ playerData }) => {
+const GenerateCSVButton = ({ playerData, quizData }) => {
     const { fetchData } = useApiRequest();
 
     const onSuccessCSV = async (data) => {
@@ -14,7 +14,7 @@ const GenerateCSVButton = ({ playerData }) => {
         const url = window.URL.createObjectURL(data);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${playerData.title}"-"${formattedDate}.csv`;
+        a.download = `${quizData.title}"-"${formattedDate}.csv`;
         document.body.appendChild(a);
         a.click();
         a.remove();

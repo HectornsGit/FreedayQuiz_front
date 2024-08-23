@@ -7,11 +7,14 @@ import EditQuizModal from './EditQuizModal';
 import YellowPencil from './icons/YellowPencil';
 import Delete from './icons/Delete';
 import QR from './icons/QR';
+import { useState, useEffect } from 'react';
+import { fetchAPI } from '@/api/fetch-api';
 
 import ChevronRight from './icons/ChevronRight';
 import ChevronLeft from './icons/ChevronLeft';
 import Points from './icons/Points';
-
+import { useRouter } from 'next/navigation';
+import { useUserInfo } from '@/hooks/useUserInfo';
 
 const UserProfile = () => {
     const { data: session } = useSession();
@@ -34,6 +37,7 @@ const UserProfile = () => {
     });
     const [quizIndex, setQuizIndex] = useState(0);
     const [quizzesPerPage, setQuizzesPerPage] = useState(5);
+    const { getUserInfo, userInfo, error, loading } = useUserInfo();
     const router = useRouter();
 
     useEffect(() => {
@@ -57,6 +61,7 @@ const UserProfile = () => {
 
     useEffect(() => {
         getUserInfo();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -186,7 +191,6 @@ const UserProfile = () => {
         // Redirigir a la página de match
         router.push(`/match/${quizId}`);
     };
-
 
     if (loading) {
         return <p>Loading...</p>;

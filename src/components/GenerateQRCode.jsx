@@ -1,10 +1,9 @@
-
+/* eslint-disable @next/next/no-img-element */
+import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
-
 import { useSession } from 'next-auth/react';
 
 const GenerateQRCode = ({ quizId }) => {
-
     const [qrCode, setQrCode] = useState('');
     const [accessCode, setAccessCode] = useState('');
     const [loading, setLoading] = useState(true);
@@ -75,7 +74,6 @@ const GenerateQRCode = ({ quizId }) => {
         setLoading(false); // Deja de cargar
     }, [session, status, quizId]);
 
-
     if (loading) return <div>Loading...</div>;
 
     return (
@@ -90,10 +88,10 @@ const GenerateQRCode = ({ quizId }) => {
                     <img src={qrCode} alt="QR Code" className="mx-auto mb-4" />
                     {accessCode && (
                         <div className="mt-4">
-                            <h2 className="font-bold text-xl">
-                                Pin de juego
-                            </h2>
-                            <p className="text-lg text-[var(--yellow)]">{accessCode}</p>
+                            <h2 className="font-bold text-xl">Pin de juego</h2>
+                            <p className="text-lg text-[var(--yellow)]">
+                                {accessCode}
+                            </p>
                         </div>
                     )}
                 </div>

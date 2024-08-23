@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react';
 const QuestionImage = ({ image }) => {
     const [route, setRoute] = useState(
-        'http://localhost:4000/uploads/' + image
+        process.env.NEXT_PUBLIC_API_HOST + '/uploads/' + image
     );
     useEffect(() => {
-        setRoute('http://localhost:4000/uploads/' + image);
+        setRoute(process.env.NEXT_PUBLIC_API_HOST + '/uploads/' + image);
     }, [image]);
     return (
         <div className="self-center">

@@ -1,9 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import NoImage from '../components/icons/NoImage';
+import { useRouter } from 'next/navigation';
 
 const useEditQuestionForm = (quizId, questionNumber, session) => {
+    const router = useRouter();
     const [quizTitle, setQuizTitle] = useState('');
     const [formData, setFormData] = useState({
         image: null,
@@ -13,8 +16,8 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
         optionB: '',
         optionC: '',
         correctAnswer: '',
-        question_number: '',
     });
+    const [initialFormData, setInitialFormData] = useState(null);
     const [imagePreview, setImagePreview] = useState(
         <NoImage className="w-48 h-48" />
     );
@@ -44,7 +47,7 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
                             );
 
                             if (question) {
-                                setFormData({
+                                const initialData = {
                                     image: question.image || null,
                                     question: question.question || '',
                                     question_time: question.questionTime || '',
@@ -52,13 +55,14 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
                                     optionB: question.optionB || '',
                                     optionC: question.optionC || '',
                                     correctAnswer: question.correctAnswer || '',
-                                    question_number:
-                                        question.questionNumber || '',
-                                });
+                                };
+
+                                setFormData(initialData);
+                                setInitialFormData(initialData);
+
                                 if (question.image) {
                                     const imageUrl = `${process.env.NEXT_PUBLIC_API_HOST}/uploads/${question.image}`;
                                     setImagePreview(
-                                        // eslint-disable-next-line @next/next/no-img-element
                                         <img
                                             src={imageUrl}
                                             alt="Vista previa de la imagen"
@@ -97,20 +101,19 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
         fetchQuizData();
     }, [quizId, questionNumber, session]);
 
-    const handleInputChange = useCallback((e) => {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    }, []);
+        setFormData({ ...formData, [name]: value });
+    };
 
-    const handleFileChange = useCallback((e) => {
+    const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setFormData((prev) => ({ ...prev, image: file }));
+        setFormData({ ...formData, image: file });
 
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreview(
-                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                         src={reader.result}
                         alt="Vista previa de la imagen"
@@ -127,57 +130,65 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
         } else {
             setImagePreview(<NoImage className="w-48 h-48" />);
         }
-    }, []);
+    };
 
-    const handleSubmit = useCallback(
-        async (e) => {
-            e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-            const formDataToSend = new FormData();
-            Object.keys(formData).forEach((key) => {
-                formDataToSend.append(key, formData[key]);
-            });
+        const formDataToSend = new FormData();
+        Object.keys(formData).forEach((key) => {
+            formDataToSend.append(key, formData[key]);
+        });
 
-            try {
-                const token = session.accessToken;
-                const headers = {
-                    Authorization: `Bearer ${token}`,
-                };
+        try {
+            const token = session.accessToken;
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
 
-                await fetchAPI(
-                    `/update-question/${quizId}/${formData.question_number}`,
-                    'PATCH',
-                    formDataToSend,
-                    (data) => {
-                        toast.success('Pregunta editada');
-                        console.log('Pregunta editada:', data);
-                    },
-                    (error) => {
-                        toast.error(error.message);
-                        console.error('Error al editar la pregunta:', error);
-                    },
-                    headers
-                );
-            } catch (error) {
-                toast.error(error.message);
-                console.error('Error al editar la pregunta:', error);
-            }
-        },
-        [formData, quizId, session]
-    );
+            await fetchAPI(
+                `/update-question/${quizId}/${questionNumber}`,
+                'PATCH',
+                formDataToSend,
+                (data) => {
+                    toast.success('Pregunta editada');
+                    console.log('Pregunta editada:', data);
+                    setInitialFormData({ ...formData });
+                },
+                (error) => {
+                    toast.error(error.message);
+                    console.error('Error al editar la pregunta:', error);
+                },
+                headers
+            );
+        } catch (error) {
+            toast.error(error.message);
+            console.error('Error al editar la pregunta:', error);
+        }
+    };
 
-    const openModal = useCallback(async () => {
-        await handleSubmit(new Event('submit'));
+    const openModal = async () => {
+        // Comparar el estado actual con el estado inicial
+        if (JSON.stringify(formData) !== JSON.stringify(initialFormData)) {
+            await handleSubmit(new Event('submit'));
+        }
         setIsModalOpen(true);
-    }, [handleSubmit]);
+    };
 
-    const closeModal = useCallback(() => {
+    const closeModal = () => {
         setIsModalOpen(false);
-    }, []);
+    };
 
-    const handleImageClick = useCallback(() => {
+    const handleImageClick = () => {
         fileInputRef.current.click();
-    }, []);
+    };
+
+    const handleFinishEdit = async () => {
+        if (JSON.stringify(formData) !== JSON.stringify(initialFormData)) {
+            await handleSubmit(new Event('submit'));
+        }
+        router.push('/profile');
+    };
 
     return {
         handleImageClick,
@@ -195,6 +206,7 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
         formData,
         setFormData,
         fileInputRef,
+        handleFinishEdit,
     };
 };
 

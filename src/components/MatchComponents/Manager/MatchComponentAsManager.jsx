@@ -125,6 +125,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 <div className="bg-[yellow] text-black  font-bold">
                                     <GenerateCSVButton
                                         playerData={playerData}
+                                        quizData={quizData}
                                     />
                                 </div>
                             )}
