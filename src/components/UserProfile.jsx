@@ -11,9 +11,9 @@ import YellowPencil from './icons/YellowPencil';
 import Delete from './icons/Delete';
 import { fetchAPI } from '@/api/fetch-api';
 import QR from './icons/QR';
-import '../styles/profile.css';
 import ChevronRight from './icons/ChevronRight';
 import ChevronLeft from './icons/ChevronLeft';
+import Points from './icons/Points';
 
 const UserProfile = () => {
     const { getUserInfo, userInfo, error, loading } = useUserInfo();
@@ -327,18 +327,18 @@ const UserProfile = () => {
                     <div className="block md:hidden">
                         <CreateQuizModal onQuizCreated={handleCreateQuiz} />
                     </div>
-                    {userInfo.quizzes && userInfo.quizzes.length > 0 && (
-                        <div className="text-center mb-10">
-                            <h2 className="mt-4 md:mt-8 md:mb-8 font-extrabold text-[1.5rem] sm:text-[1.7rem] xl:text-[2rem]">
-                                Quizzes creados
-                            </h2>
-                            <ul className="relative list-none p-0 mx-auto grid-md grid-lg">
-                                <li className="hidden md:block">
-                                    <CreateQuizModal
-                                        onQuizCreated={handleCreateQuiz}
-                                    />
-                                </li>
-                                {userInfo.quizzes
+                    <div className="text-center mb-10">
+                        <h2 className="mt-4 md:mt-8 md:mb-8 font-extrabold text-[1.5rem] sm:text-[1.7rem] xl:text-[2rem]">
+                            Quizzes creados
+                        </h2>
+                        <ul className="relative list-none p-0 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            <li className="hidden md:block">
+                                <CreateQuizModal
+                                    onQuizCreated={handleCreateQuiz}
+                                />
+                            </li>
+                            {userInfo.quizzes.some((quiz) => quiz.id) ? (
+                                userInfo.quizzes
                                     .slice(
                                         quizIndex,
                                         quizIndex + quizzesPerPage
@@ -346,13 +346,13 @@ const UserProfile = () => {
                                     .map((quiz, index) => (
                                         <li
                                             key={index}
-                                            className="mt-4 md:mt-0 p-[2px] bg-gradient-to-br from-[var(--cyan)] to-[var(--yellow)]"
+                                            className="mt-4 md:mt-0 p-[2px] bg-gradient-to-br from-[var(--cyan)] to-[var(--yellow)] flex flex-col justify-between"
                                         >
-                                            <section className="bg-[var(--bg-hab-black)]">
-                                                <h3 className="mx-auto text-lg font-bold break-words">
+                                            <section className="bg-[var(--bg-hab-black)] flex flex-col justify-between h-full p-2">
+                                                <h3 className="text-lg font-bold break-words">
                                                     {quiz.title}
                                                 </h3>
-                                                <p className="mx-auto text-sm break-words">
+                                                <p className="text-sm break-words">
                                                     {quiz.description}
                                                 </p>
                                                 <div className="flex justify-between items-center gap-4 mx-auto mt-2 w-4/5">
@@ -389,40 +389,46 @@ const UserProfile = () => {
                                                 </div>
                                             </section>
                                         </li>
-                                    ))}
-                                <button
-                                    onClick={handlePrevPage}
-                                    disabled={quizIndex === 0}
-                                    className={`absolute -left-[12%] top-1/2 transform -translate-y-1/2 ${
-                                        quizIndex === 0
-                                            ? 'opacity-50 cursor-not-allowed'
-                                            : 'hover:underline'
-                                    } text-[#FCFF00]`}
-                                >
-                                    <div className="bg-[#FCFF00] rounded-full p-2">
-                                        <ChevronLeft className="w-5 h-5 text-black" />
-                                    </div>
-                                </button>
-                                <button
-                                    onClick={handleNextPage}
-                                    disabled={
-                                        quizIndex + quizzesPerPage >=
-                                        userInfo.quizzes.length
-                                    }
-                                    className={`absolute -right-[12%] top-1/2 transform -translate-y-1/2 ${
-                                        quizIndex + quizzesPerPage >=
-                                        userInfo.quizzes.length
-                                            ? 'opacity-50 cursor-not-allowed'
-                                            : 'hover:underline'
-                                    } text-[#FCFF00]`}
-                                >
-                                    <div className="bg-[#FCFF00] rounded-full p-2">
-                                        <ChevronRight className="w-5 h-5 text-black" />
-                                    </div>
-                                </button>
-                            </ul>
-                        </div>
-                    )}
+                                    ))
+                            ) : (
+                                <p className="text-[--yellow] font-bold text-lg p-1 flex flex-row gap-3 w-full justify-center">
+                                    <Points className="w-4" />
+                                    Crea tu primer quizz
+                                    <Points className="w-4" />
+                                </p>
+                            )}
+                            <button
+                                onClick={handlePrevPage}
+                                disabled={quizIndex === 0}
+                                className={`absolute -left-[12%] top-1/2 transform -translate-y-1/2 ${
+                                    quizIndex === 0
+                                        ? 'opacity-50 cursor-not-allowed'
+                                        : 'hover:underline'
+                                } text-[#FCFF00]`}
+                            >
+                                <div className="bg-[#FCFF00] rounded-full p-2">
+                                    <ChevronLeft className="w-5 h-5 text-black" />
+                                </div>
+                            </button>
+                            <button
+                                onClick={handleNextPage}
+                                disabled={
+                                    quizIndex + quizzesPerPage >=
+                                    userInfo.quizzes.length
+                                }
+                                className={`absolute -right-[12%] top-1/2 transform -translate-y-1/2 ${
+                                    quizIndex + quizzesPerPage >=
+                                    userInfo.quizzes.length
+                                        ? 'opacity-50 cursor-not-allowed'
+                                        : 'hover:underline'
+                                } text-[#FCFF00]`}
+                            >
+                                <div className="bg-[#FCFF00] rounded-full p-2">
+                                    <ChevronRight className="w-5 h-5 text-black" />
+                                </div>
+                            </button>
+                        </ul>
+                    </div>
                     <EditQuizModal
                         isOpen={isEditModalOpen}
                         onClose={handleModalClose}
