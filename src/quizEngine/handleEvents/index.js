@@ -23,6 +23,7 @@ import firstDataHandler from './firstDataHandler';
 import getResults from './getResults';
 import restartTimeSession from './restartTimeSession';
 import setWinnerOn from './setWinnerOn';
+import stopQuestionTime from './stopQuestionTime';
 export {
     connectHandler,
     errorHandler,
@@ -49,4 +50,5 @@ export {
     answerMessage,
     firstDataHandler,
     setWinnerOn,
+    stopQuestionTime,
 };

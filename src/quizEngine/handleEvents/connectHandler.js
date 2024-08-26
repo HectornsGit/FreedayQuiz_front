@@ -28,7 +28,7 @@ const connectHandler = (
             setJoinedQuiz(true);
         } else {
             console.log('Connected to server');
-            toast.success('Connected to server');
+            // toast.success('Connected to server');
             setJoinedQuiz(true);
         }
         // Esto es para simular que el cliente se desconecta del servidor sin usar socket.disconnect:

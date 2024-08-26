@@ -44,6 +44,7 @@ const useQuizLogic = () => {
     const [shuffledQuestionResponses, setShuffledQuestionResponses] =
         useState(null); //Preguntas desordenadas:
     const [questionsExecuted, setQuestionsExecuted] = useState([]); //Preguntas ya ejecutadas.
+    const [numberAnswersPerQuestion, setNumberAnswersPerQuestion] = useState(0);
 
     //Para activar la recuperación y sincronización de datos en caso de que salga de la pantalla o la refresque por error:
     const loggedUserId = session?.user.data.id;
@@ -143,6 +144,10 @@ const useQuizLogic = () => {
         loggedUserId,
         timeLeft,
         setIsDisabled,
+        setNumberAnswersPerQuestion,
+        numberAnswersPerQuestion,
+        connectedClients,
+        setTimeLeft,
     });
 
     //Desordenar las preguntas:
@@ -197,6 +202,9 @@ const useQuizLogic = () => {
         questionsToDelete,
         setQuestionsExecuted,
         setIsThereAWinner,
+        setNumberAnswersPerQuestion,
+        connectedClients,
+        numberAnswersPerQuestion,
     });
 
     //Las funciones que dependen de uno o varios estados, habrá que envolverlas en funciones anónimas. Las demás, no es necesario, pero habrá que hacer en la función original una función que devuelva una función:

@@ -26,6 +26,7 @@ import {
     getResults,
     restartTimeSession,
     setWinnerOn,
+    stopQuestionTime,
 } from '../handleEvents';
 
 const useSocketConfig = (argumentsData) => {
@@ -61,6 +62,9 @@ const useSocketConfig = (argumentsData) => {
         setQuestionsExecuted,
         sessionTime,
         setIsThereAWinner,
+        setNumberAnswersPerQuestion,
+        connectedClients,
+        numberAnswersPerQuestion,
     } = argumentsData;
 
     useEffect(() => {
@@ -176,14 +180,21 @@ const useSocketConfig = (argumentsData) => {
             socket,
             setIsQuestionRunning,
             setShowScores,
-            setIsDisabled
+            setIsDisabled,
+            setPlayerData
         );
         return () => {
             if (socket) {
                 socket.off('questionStarted');
             }
         };
-    }, [socket, setIsQuestionRunning, setShowScores, setIsDisabled]);
+    }, [
+        socket,
+        setIsQuestionRunning,
+        setShowScores,
+        setIsDisabled,
+        setPlayerData,
+    ]);
 
     useEffect(() => {
         //Aquí el usuario ingresa su nombre de jugador, se setea su estado players y se envía al back para que este notifique a todos los usuarios de la sala, incluyendo el master:
@@ -316,7 +327,8 @@ const useSocketConfig = (argumentsData) => {
             setShowScores,
             setClickedResponses,
             setInitialPlayerData,
-            sessionRecovery
+            sessionRecovery,
+            setNumberAnswersPerQuestion
         );
         return () => {
             if (socket) {
@@ -330,6 +342,7 @@ const useSocketConfig = (argumentsData) => {
         setClickedResponses,
         setInitialPlayerData,
         sessionRecovery,
+        setNumberAnswersPerQuestion,
     ]);
 
     //Cada vez que se conecta o desconecta un cliente, se envía el nuevo estado a todos los clientes de la sala:
@@ -355,6 +368,24 @@ const useSocketConfig = (argumentsData) => {
             }
         };
     }, [socket, setClickedResponses]);
+
+    useEffect(() => {
+        stopQuestionTime(
+            socket,
+            connectedClients,
+            numberAnswersPerQuestion,
+            setTimeLeft,
+            quizId,
+            setIsDisabled,
+            setIsQuestionRunning
+        );
+        return () => {
+            if (socket) {
+                socket.off('closeQuestionInterval');
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [socket, numberAnswersPerQuestion]);
 
     useEffect(() => {
         setWinnerOn(socket, setIsThereAWinner);

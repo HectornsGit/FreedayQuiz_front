@@ -10,7 +10,7 @@ const timeUpHandler = (socket, setIsDisabled, playerData, quizId) => {
     if (socket && playerName) {
         socket.on('timeUp', () => {
             setIsDisabled(true);
-            toast.success('Fin del tiempo');
+            // toast.success('Fin del tiempo');
         });
     }
     if (socket && isMaster) {
