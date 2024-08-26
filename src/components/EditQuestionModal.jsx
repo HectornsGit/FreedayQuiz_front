@@ -30,7 +30,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
             </h1>
             <form onSubmit={handleSubmit}>
                 <div
-                    className="flex flex-col self-center items-center mb-4 relative cursor-pointer"
+                    className="flex flex-col self-center items-center mb-4 relative cursor-pointer xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] mx-auto"
                     onClick={handleImageClick}
                 >
                     <label className="block mb-2">Imagen</label>
@@ -54,7 +54,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                             name="question_time"
                             value={formData.question_time}
                             onChange={handleInputChange}
-                            className="flex items-center text-center sm:w-80 w-[90vw] text-black"
+                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] input-default"
                         />
                     </li>
                     <li className="flex flex-col">
@@ -64,7 +64,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                             name="question"
                             value={formData.question}
                             onChange={handleInputChange}
-                            className="flex items-center text-center sm:w-80 w-[90vw] text-black"
+                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] input-default"
                         />
                     </li>
                 </ul>
@@ -76,7 +76,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                             value={formData.optionA}
                             onChange={handleInputChange}
                             placeholder="Respuesta 1"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black sm:w-80 w-[90vw]"
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
                     </li>
                     <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
@@ -86,7 +86,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                             value={formData.optionB}
                             onChange={handleInputChange}
                             placeholder="Respuesta 2"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black sm:w-80 w-[90vw]"
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
                     </li>
                     <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
@@ -96,7 +96,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                             value={formData.optionC}
                             onChange={handleInputChange}
                             placeholder="Respuesta 3"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black sm:w-80 w-[90vw]"
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
                     </li>
                     <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
@@ -106,7 +106,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                             value={formData.correctAnswer}
                             onChange={handleInputChange}
                             placeholder="Respuesta Correcta"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black sm:w-80 w-[90vw]"
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
                     </li>
                 </ul>
