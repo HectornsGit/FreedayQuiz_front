@@ -3,6 +3,7 @@ import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import ListQuestions from './ListQuestions';
 import useCreateQuestionForm from '@/hooks/useCreateQuestionForm';
+import YellowPencil from './icons/YellowPencil';
 
 const CreateQuestionForm = () => {
     const { data: session } = useSession();
@@ -17,6 +18,7 @@ const CreateQuestionForm = () => {
         openModal,
         closeModal,
         handleImageClick,
+        handleFinishEdit,
         fileInputRef,
     } = useCreateQuestionForm(quizId, session);
 
@@ -27,7 +29,7 @@ const CreateQuestionForm = () => {
             </h1>
             <form onSubmit={(e) => e.preventDefault()}>
                 <div
-                    className="flex flex-col self-center items-center mb-4 relative cursor-pointer"
+                    className="flex flex-col self-center items-center mb-4 relative cursor-pointer xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] mx-auto"
                     onClick={handleImageClick}
                 >
                     <label className="block mb-2">Imagen</label>
@@ -38,8 +40,11 @@ const CreateQuestionForm = () => {
                         ref={fileInputRef}
                         className="hidden"
                     />
-                    <div className="mt-4">{imagePreview}</div>
+                    <div className="mt-4 w-full aspect-video">
+                        {imagePreview}
+                    </div>
                 </div>
+
                 <ul className="flex flex-col self-center w-full items-center lg:gap-1 space-y-5">
                     <li className="flex flex-col">
                         <label>
@@ -51,7 +56,7 @@ const CreateQuestionForm = () => {
                             name="question_time"
                             value={formData.question_time}
                             onChange={handleInputChange}
-                            className="flex items-center text-center sm:w-80 w-[90vw]"
+                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] input-default"
                         />
                     </li>
                     <li className="flex flex-col">
@@ -61,7 +66,7 @@ const CreateQuestionForm = () => {
                             name="question"
                             value={formData.question}
                             onChange={handleInputChange}
-                            className="flex items-center text-center sm:w-80 w-[90vw]"
+                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] input-default"
                         />
                     </li>
                 </ul>
@@ -77,7 +82,7 @@ const CreateQuestionForm = () => {
                             value={formData.optionA}
                             onChange={handleInputChange}
                             placeholder="Respuesta 1"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black sm:w-80 w-[90vw] "
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
                     </li>
                     <li
@@ -91,7 +96,7 @@ const CreateQuestionForm = () => {
                             value={formData.optionB}
                             onChange={handleInputChange}
                             placeholder="Respuesta 2"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black sm:w-80 w-[90vw]"
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
                     </li>
                     <li
@@ -105,7 +110,7 @@ const CreateQuestionForm = () => {
                             value={formData.optionC}
                             onChange={handleInputChange}
                             placeholder="Respuesta 3"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black sm:w-80 w-[90vw] "
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
                     </li>
                     <li
@@ -119,31 +124,25 @@ const CreateQuestionForm = () => {
                             value={formData.correctAnswer}
                             onChange={handleInputChange}
                             placeholder="Respuesta Correcta"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black sm:w-80 w-[90vw] "
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
                     </li>
                 </ul>
-                <ul className="flex flex-col self-center w-full items-center lg:gap-1 mt-4">
-                    <li className="flex flex-col">
-                        <label>Número de pregunta</label>
-                        <input
-                            type="number"
-                            name="question_number"
-                            value={formData.question_number}
-                            onChange={handleInputChange}
-                            className="flex items-center text-center sm:w-80 w-[90vw]"
-                        />
-                    </li>
-                </ul>
-                <div className="flex justify-end p-4">
+                <div className="relative p-4 flex items-center justify-end">
+                    <button
+                        type="button"
+                        onClick={handleFinishEdit}
+                        className="absolute left-1/2 transform -translate-x-1/2 py-2 px-4 bg-blue-500 text-white font-bold rounded-sm"
+                    >
+                        Finalizar edición
+                    </button>
+
                     <button
                         type="button"
                         onClick={openModal}
-                        className="relative w-10 h-10 bg-gradient-to-br from-[#01FFFF] to-[#FCFF00] font-bold rounded-sm flex items-center justify-center"
+                        className="relative w-10 h-10 font-bold rounded-sm flex items-center justify-center"
                     >
-                        <span className="absolute text-black text-5xl font-extrabold">
-                            +
-                        </span>
+                        <YellowPencil />
                     </button>
                 </div>
             </form>

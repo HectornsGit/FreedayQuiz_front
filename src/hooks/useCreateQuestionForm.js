@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import NoImage from '../components/icons/NoImage';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
+import { useRouter } from 'next/navigation';
 
 const useCreateQuestionForm = (quizId, session) => {
     const [quizTitle, setQuizTitle] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const router = useRouter();
     const [formData, setFormData] = useState({
         image: null,
         question: '',
@@ -19,14 +21,14 @@ const useCreateQuestionForm = (quizId, session) => {
 
     // Icono NoImage por defecto
     const [imagePreview, setImagePreview] = useState(
-        <NoImage className="w-48 h-48" />
+        <NoImage className="w-full aspect-video" />
     );
 
     const fileInputRef = useRef(null);
 
     useEffect(() => {
-        // Función para obtener el título del quiz
-        const fetchQuizTitle = async () => {
+        // Función para obtener el título del quiz y el numero de ultima pregunta creada
+        const fetchQuizData = async () => {
             if (quizId && session) {
                 try {
                     const token = session.accessToken;
@@ -37,6 +39,16 @@ const useCreateQuestionForm = (quizId, session) => {
 
                     const onSuccess = (data) => {
                         setQuizTitle(data.title);
+
+                        const lastQuestionNumber = Math.max(
+                            0,
+                            ...data.questions.map((q) => q.questionNumber || 0)
+                        );
+
+                        setFormData((prevData) => ({
+                            ...prevData,
+                            question_number: lastQuestionNumber + 1,
+                        }));
                     };
 
                     const onError = (error) => {
@@ -63,7 +75,7 @@ const useCreateQuestionForm = (quizId, session) => {
             }
         };
 
-        fetchQuizTitle();
+        fetchQuizData();
     }, [quizId, session]);
 
     const handleInputChange = (e) => {
@@ -84,18 +96,13 @@ const useCreateQuestionForm = (quizId, session) => {
                     <img
                         src={reader.result}
                         alt="Vista previa de la imagen"
-                        className="max-w-full h-[200px] object-cover"
-                        style={{
-                            maxWidth: '70vw',
-                            height: '200px',
-                            width: 'calc(200px * 16 / 9)',
-                        }}
+                        className="w-full aspect-video"
                     />
                 );
             };
             reader.readAsDataURL(file);
         } else {
-            setImagePreview(<NoImage className="w-48 h-48" />);
+            setImagePreview(<NoImage className="w-full aspect-video" />);
         }
     };
 
@@ -109,13 +116,12 @@ const useCreateQuestionForm = (quizId, session) => {
             !formData.optionA ||
             !formData.optionB ||
             !formData.optionC ||
-            !formData.correctAnswer ||
-            !formData.question_number
+            !formData.correctAnswer
         ) {
             toast.error(
                 'Por favor, completa los campos obligatorios, solo la imagen es opcional'
             );
-            return;
+            return false;
         }
 
         const formDataToSend = new FormData();
@@ -133,33 +139,48 @@ const useCreateQuestionForm = (quizId, session) => {
                 Authorization: `Bearer ${token}`,
             };
 
-            const onSuccess = (data) => {
-                toast.success('Pregunta creada');
-                console.log('Pregunta creada:', data);
-            };
-
-            const onError = (error) => {
-                toast.error(error.message);
-                console.error('Error al crear la pregunta:', error);
-            };
-
             await fetchAPI(
                 '/create-questions',
                 'POST',
                 formDataToSend,
-                onSuccess,
-                onError,
+                (data) => {
+                    toast.success('Pregunta creada');
+                    console.log('Pregunta creada:', data);
+                },
+                (error) => {
+                    toast.error(error.message);
+                    console.error('Error al crear la pregunta:', error);
+                    return false;
+                },
                 headers
             );
+
+            return true;
         } catch (error) {
             toast.error(error.message);
             console.error('Error al crear la pregunta:', error);
+            return false;
         }
     };
 
     const openModal = async () => {
-        await handleSubmit(new Event('submit'));
-        setIsModalOpen(true);
+        const isFormEmpty = Object.keys(formData).every(
+            (key) =>
+                (key === 'question_number' && formData[key] !== '') ||
+                formData[key] === null ||
+                formData[key] === ''
+        );
+
+        if (isFormEmpty) {
+            setIsModalOpen(true);
+            return;
+        }
+
+        const isSuccess = await handleSubmit(new Event('submit'));
+
+        if (isSuccess) {
+            setIsModalOpen(true);
+        }
     };
 
     const closeModal = () => {
@@ -169,6 +190,34 @@ const useCreateQuestionForm = (quizId, session) => {
     const handleImageClick = () => {
         fileInputRef.current.click();
     };
+
+    const handleFinishEdit = async () => {
+        try {
+            const isFormEmpty = Object.keys(formData).every(
+                (key) =>
+                    (key === 'question_number' && formData[key] !== '') ||
+                    formData[key] === null ||
+                    formData[key] === ''
+            );
+
+            // Redirige directamente si el formulario está vacío
+            if (isFormEmpty) {
+                router.push('/profile');
+                return;
+            }
+
+            const isSuccess = await handleSubmit(new Event('submit'));
+
+            // Solo redirige si el submit fue exitoso
+            if (isSuccess) {
+                router.push('/profile');
+            }
+        } catch (error) {
+            console.error('Error al guardar y redirigir:', error);
+            toast.error('Error al guardar los cambios.');
+        }
+    };
+
 
     return {
         quizTitle,
@@ -182,6 +231,7 @@ const useCreateQuestionForm = (quizId, session) => {
         openModal,
         closeModal,
         handleImageClick,
+        handleFinishEdit,
         fileInputRef,
     };
 };
