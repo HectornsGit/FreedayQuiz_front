@@ -101,7 +101,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
 
                     {!isQuestionRunning && !showScores && (
                         <p className="self-baseline font-medium mb-10">
-                            Jugadores conectados: {connectedClients}
+                            Jugadores conectados: {connectedClients - 1}
                         </p>
                     )}
                     <form className="flex self-baseline">
