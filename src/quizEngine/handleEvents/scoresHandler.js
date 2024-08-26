@@ -8,12 +8,15 @@ const scoresHandler = (
     setShowScores,
     setClickedResponses,
     setInitialPlayerData,
-    sessionRecovery
+    sessionRecovery,
+    setNumberAnswersPerQuestion
 ) => {
     if (socket) {
         socket.on('scores', () => {
             const playerName = getItemWithExpiry('playerName');
             const isMaster = getItemWithExpiry('isMaster');
+            //Reseteamos el número de respuestas por pregunta:
+            setNumberAnswersPerQuestion(0);
 
             if (!playerName && !isMaster) {
                 toast.warning(

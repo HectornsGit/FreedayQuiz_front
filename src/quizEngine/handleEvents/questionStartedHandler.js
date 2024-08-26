@@ -6,7 +6,8 @@ const questionStartedHandler = (
     socket,
     setIsQuestionRunning,
     setShowScores,
-    setIsDisabled
+    setIsDisabled,
+    setPlayerData
 ) => {
     if (socket) {
         socket.on('questionStarted', () => {
@@ -23,6 +24,14 @@ const questionStartedHandler = (
             setIsQuestionRunning(true);
             setShowScores(false);
             setIsDisabled(false);
+
+            //Esto es para que se resetée la última respuesta al iniciar otra, y evitar que envíe la anterior en caso de que el jugador no responda a la pregunta en curso:
+            setPlayerData((prev) => {
+                return prev.map((player) => ({
+                    ...player,
+                    lastAnswerText: 0,
+                }));
+            });
         });
     }
 };

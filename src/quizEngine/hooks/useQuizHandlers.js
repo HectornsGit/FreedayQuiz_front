@@ -14,6 +14,7 @@ export const useQuizHandlers = ({
     loggedUserId,
     timeLeft,
     setIsDisabled,
+    setNumberAnswersPerQuestion,
 }) => {
     const handleAnswerSubmitted = useCallback(
         (backData) => {
@@ -33,8 +34,10 @@ export const useQuizHandlers = ({
                     return frontData;
                 })
             );
+            //Contabiliza el número de jugadores que han respondido a la pregunta en curso:
+            setNumberAnswersPerQuestion((prevData) => prevData + 1);
         },
-        [setPlayerData]
+        [setPlayerData, setNumberAnswersPerQuestion]
     );
 
     const handleAnswerSubmit = useCallback(
@@ -51,6 +54,16 @@ export const useQuizHandlers = ({
                 });
                 setIsDisabled(true);
 
+                //Esta parte es para actualizar los estados condicionales cada vez que un jugador responde (para evitar un bug, que al recuperar sesión se vuelvan a activar los botones de respuesta de la pregunta en curso)
+                if (socket) {
+                    const singleResponse = true;
+                    const states = {
+                        isQuestionRunning: true,
+                        showScores: false,
+                        isDisabled: true,
+                    };
+                    socket.emit('showScores', quizId, states, singleResponse);
+                }
                 setInitialPlayerData((prevData) => {
                     prevData[0].lastAnswerText = response;
                     prevData[0].lastQuestionNumber = question.questionNumber;
