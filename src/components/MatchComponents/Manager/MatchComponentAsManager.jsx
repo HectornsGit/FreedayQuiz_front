@@ -121,14 +121,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             <ListPlayerStats
                                 players={playerData}
                             ></ListPlayerStats>
-                            {playerData.length > 0 && (
-                                <div className="bg-[yellow] text-black  font-bold">
-                                    <GenerateCSVButton
-                                        playerData={playerData}
-                                        quizData={quizData}
-                                    />
-                                </div>
-                            )}
                         </Accordion>
                     </div>
                 )}
@@ -388,6 +380,14 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 <Points className="w-4" />
                             </span>
                         </button>
+                        {playerData.length > 0 && isThereAWinner && (
+                            <div className="bg-[yellow] my-6 p-4 text-black  font-bold">
+                                <GenerateCSVButton
+                                    playerData={playerData}
+                                    quizData={quizData}
+                                />
+                            </div>
+                        )}
                         <button
                             className="text-white font-light text-lg mt-20 px-11 py-2 "
                             onClick={endQuiz}

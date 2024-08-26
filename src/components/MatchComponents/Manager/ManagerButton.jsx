@@ -11,7 +11,7 @@ const ManagerButton = ({
                     (isPrimary && !disabled
                         ? ' bg-gradient hover:box-shadow-yellow hover:bg-black '
                         : 'bg-white hover:bg-black hover:text-white hover:box-shadow-white ') +
-                    'text-black relative bottom-5 box-border font-extrabold text-lg w-full h-12 mx-0  px-2 py-2 mt-5 disabled:bottom-6 disabled:bg-black disabled:box-shadow-gray   disabled:text-gray-600 '
+                    'text-black relative bottom-5 box-border font-extrabold text-md w-full h-12 mx-0  px-2 py-2 mt-5 disabled:bottom-6 disabled:bg-black disabled:box-shadow-gray   disabled:text-gray-600 '
                 }
                 onClick={handleClick || null}
                 disabled={disabled}
@@ -26,4 +26,3 @@ const ManagerButton = ({
     );
 };
 export default ManagerButton;
-
