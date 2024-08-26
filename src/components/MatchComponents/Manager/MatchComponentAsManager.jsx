@@ -26,7 +26,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
         timeLeft,
         showScoresHandler,
         isQuestionRunning,
-        showScores,
         sessionTime,
         setSessionTimeHandler,
         sessionTimeLeft,
@@ -39,6 +38,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
         playerData,
         requestSetWinnerOn,
         isThereAWinner,
+        startRandomQuestion,
     } = managerProps;
 
     // Iconos para las respuestas.
@@ -346,7 +346,24 @@ const MatchComponentAsManager = ({ managerProps }) => {
                         </section>
                     )}
                     {isInput == false && (
-                        <ul className="flex flex-col sm:flex-row justify-center items-center mt-4 gap-6">
+                        <ul className="flex flex-col  justify-center items-center mt-4 gap-6">
+                            <ul className="flex flex-col sm:flex-row justify-center items-center mt-4 gap-6">
+                                <li>
+                                    <ManagerButton
+                                        text="Iniciar pregunta"
+                                        isPrimary={true}
+                                        disabled={isQuestionRunning}
+                                        handleClick={initQuestion}
+                                    />
+                                </li>
+                                <li>
+                                    <ManagerButton
+                                        text={'Pregunta aleatoria'}
+                                        disabled={isQuestionRunning}
+                                        handleClick={startRandomQuestion}
+                                    ></ManagerButton>
+                                </li>
+                            </ul>
                             <li>
                                 <ManagerButton
                                     isPrimary={true}
@@ -355,14 +372,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                         !isQuestionRunning || timeLeft > 0
                                     }
                                     text="Puntaciones"
-                                />
-                            </li>
-                            <li>
-                                <ManagerButton
-                                    text="Iniciar pregunta"
-                                    isPrimary={true}
-                                    disabled={isQuestionRunning}
-                                    handleClick={initQuestion}
                                 />
                             </li>
                         </ul>
