@@ -59,7 +59,7 @@ const useGenerateQRCode = (session, status, quizId) => {
                 }
 
                 setQrCode(data.qrCode.url);
-                toast.success(data.message);
+                // toast.success(data.message);
             } catch (error) {
                 toast.error(error.message);
                 console.error(error);
