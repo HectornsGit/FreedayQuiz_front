@@ -21,7 +21,7 @@ export default function Header() {
     } = useHeader();
 
     return (
-        <header className="flex items-center justify-between text-white p-8 bg-header">
+        <header className="min-h-[14vh] flex items-center justify-between text-white p-8 bg-header">
             <h1>
                 <Link href="/">
                     <img

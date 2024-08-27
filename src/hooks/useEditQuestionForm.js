@@ -19,7 +19,7 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
     });
     const [initialFormData, setInitialFormData] = useState(null);
     const [imagePreview, setImagePreview] = useState(
-        <NoImage className="w-48 h-48" />
+        <NoImage className="w-full aspect-video" />
     );
     const [isModalOpen, setIsModalOpen] = useState(false);
     const fileInputRef = useRef(null);
@@ -66,17 +66,12 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
                                         <img
                                             src={imageUrl}
                                             alt="Vista previa de la imagen"
-                                            className="max-w-full h-[200px] object-cover"
-                                            style={{
-                                                maxWidth: '70vw',
-                                                height: '200px',
-                                                width: 'calc(200px * 16 / 9)',
-                                            }}
+                                            className="w-full aspect-video"
                                         />
                                     );
                                 } else {
                                     setImagePreview(
-                                        <NoImage className="w-48 h-48" />
+                                        <NoImage className="w-full aspect-video" />
                                     );
                                 }
                             }
@@ -117,23 +112,33 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
                     <img
                         src={reader.result}
                         alt="Vista previa de la imagen"
-                        className="max-w-full h-[200px] object-cover"
-                        style={{
-                            maxWidth: '70vw',
-                            height: '200px',
-                            width: 'calc(200px * 16 / 9)',
-                        }}
+                        className="w-full aspect-video"
                     />
                 );
             };
             reader.readAsDataURL(file);
         } else {
-            setImagePreview(<NoImage className="w-48 h-48" />);
+            setImagePreview(<NoImage className="w-full aspect-video" />);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Verificación de campos obligatorios
+        if (
+            !formData.question ||
+            !formData.question_time ||
+            !formData.optionA ||
+            !formData.optionB ||
+            !formData.optionC ||
+            !formData.correctAnswer
+        ) {
+            toast.error(
+                'Por favor, completa los campos obligatorios, solo la imagen es opcional'
+            );
+            return false;
+        }
 
         const formDataToSend = new FormData();
         Object.keys(formData).forEach((key) => {
@@ -158,21 +163,29 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
                 (error) => {
                     toast.error(error.message);
                     console.error('Error al editar la pregunta:', error);
+                    return false;
                 },
                 headers
             );
+
+            return true;
         } catch (error) {
             toast.error(error.message);
             console.error('Error al editar la pregunta:', error);
+            return false;
         }
     };
 
     const openModal = async () => {
         // Comparar el estado actual con el estado inicial
         if (JSON.stringify(formData) !== JSON.stringify(initialFormData)) {
-            await handleSubmit(new Event('submit'));
+            const isSuccess = await handleSubmit(new Event('submit'));
+            if (isSuccess) {
+                setIsModalOpen(true);
+            }
+        } else {
+            setIsModalOpen(true); // Abre el modal si no hay cambios
         }
-        setIsModalOpen(true);
     };
 
     const closeModal = () => {
