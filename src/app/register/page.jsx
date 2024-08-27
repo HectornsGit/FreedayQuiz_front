@@ -1,5 +1,6 @@
 'use client';
 import RegisterForm from '../../components/register.form';
+import Link from 'next/link';
 
 function RegisterPage() {
     return (
@@ -11,6 +12,15 @@ function RegisterPage() {
                     divertidos
                 </p>
                 <RegisterForm />
+                <p className="mt-6 font-medium text-base">
+                    ¿Ya tienes cuenta?,{' '}
+                    <Link
+                        href="/login"
+                        className="underline font-semibold hover:text-[--yellow]"
+                    >
+                        inicia sesión
+                    </Link>
+                </p>
             </div>
         </>
     );

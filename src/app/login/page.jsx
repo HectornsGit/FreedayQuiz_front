@@ -11,7 +11,7 @@ export default function LoginPage() {
     return (
         <div className="h-fit flex flex-col content-center text-center mb-14">
             <h2 className="text-4xl font-extrabold mb-4">Iniciar sesión</h2>
-            <p className="mb-10 text-lg">
+            <p className="mb-10 text-lg px-2 py-1">
                 {' '}
                 <span className="text-4xl">🎲</span> Inicia sesión para comenzar
                 a crear partidas
