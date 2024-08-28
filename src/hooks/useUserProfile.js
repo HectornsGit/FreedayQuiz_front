@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUserInfo } from '@/hooks/useUserInfo';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 
 const useUserProfile = (session) => {
@@ -111,6 +112,10 @@ const useUserProfile = (session) => {
                     });
                     setAvatarPreview('');
                     getUserInfo();
+
+                    if (editableUserInfo.password) {
+                        toast.success('Contraseña cambiada');
+                    }
                 },
                 (error) => {
                     console.error('Failed to update user info:', error);

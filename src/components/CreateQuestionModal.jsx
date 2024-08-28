@@ -132,7 +132,7 @@ const CreateQuestionForm = () => {
                     <button
                         type="button"
                         onClick={handleFinishEdit}
-                        className="absolute left-1/2 transform -translate-x-1/2 py-2 px-4 bg-blue-500 text-white font-bold rounded-sm"
+                        className="absolute left-1/2 transform -translate-x-1/2 py-2 px-4 bg-[--yellow] text-black font-bold rounded-sm"
                     >
                         Finalizar edición
                     </button>
