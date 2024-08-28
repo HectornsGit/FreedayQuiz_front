@@ -144,7 +144,13 @@ const useUserProfile = (session) => {
     };
 
     const handleQuizUpdated = (quizId) => {
-        router.push(`edit-question/${quizId}/1`);
+         const quiz = userInfo.quizzes.find((q) => q.id === quizId);
+
+         if (quiz && quiz.questions && quiz.questions.length > 0) {
+             router.push(`edit-question/${quizId}/1`);
+         } else {
+             router.push(`/new-question/${quizId}`);
+         }
     };
 
     const handleNextPage = () => {
