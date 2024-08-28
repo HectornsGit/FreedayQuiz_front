@@ -23,8 +23,9 @@ export const useUserInfo = () => {
                     id: quiz.id,
                     title: quiz.title,
                     description: quiz.description,
+                    questions: quiz.questions,
                 }));
-                setUserInfo({ name, email, avatar, quizzes: quizzesData });
+                setUserInfo({ name, email, avatar, quizzes: quizzesData }); 
             }
             setLoading(false);
         };
