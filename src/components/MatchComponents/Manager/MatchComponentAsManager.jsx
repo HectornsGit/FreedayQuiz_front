@@ -374,7 +374,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             </span>
                         </button>
                         {playerData.length > 0 && isThereAWinner && (
-                            <div className="bg-[yellow] my-6 p-4 text-black  font-bold">
+                            <div className="bg-[--yellow] my-6 p-4 text-black  font-bold">
                                 <GenerateCSVButton
                                     playerData={playerData}
                                     quizData={quizData}
