@@ -135,13 +135,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             <ListPlayerStats
                                 players={playerData}
                             ></ListPlayerStats>
-                            {playerData.length > 0 && (
-                                <div className="bg-[yellow] text-black  font-bold">
-                                    <GenerateCSVButton
-                                        playerData={playerData}
-                                    />
-                                </div>
-                            )}
                         </Accordion>
                     </div>
                 )}
