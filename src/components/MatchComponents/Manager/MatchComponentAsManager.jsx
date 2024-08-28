@@ -11,6 +11,7 @@ import Accordion from '@/components/Accordion';
 import ListPlayerStats from '../listPlayerStats';
 import Points from '@/components/icons/Points';
 import GenerateCSVButton from '@/components/GenerateCSVButton';
+import TrashCan from '@/components/icons/TrashCan';
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const hiddenTextRef = useRef(null);
@@ -140,7 +141,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                 )}
             </aside>
             {loggedUserId && loggedUserId == quizData?.owner_id && (
-                <section className=" max-w-full lg:col-span-1 lg:row-span-2 flex-col justify-center">
+                <section className=" max-w-full lg:col-span-1 lg:row-span-2 flex-col justify-center ">
                     {question && (
                         <section className="flex flex-col justify-center">
                             <QuestionImage
@@ -149,7 +150,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             <form
                                 id={'questionForm'}
                                 onSubmit={updateQuestionDataInBackend}
-                                className="flex sm:items-center items-start gap-4 flex-col"
+                                className="flex sm:items-center items-start  self-center sm:w-5/6 gap-4 flex-col"
                             >
                                 <NumberInput
                                     id={'questionTime'}
@@ -158,85 +159,93 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     defaultValue={question.questionTime}
                                     handleChange={handleQuestionChange}
                                 ></NumberInput>
-                                <ul className="flex justify-between sm:w-96 w-full">
-                                    <li className="z-10">
-                                        {isInput ? (
-                                            <QuestionTitleInput
-                                                text={'Texto pregunta'}
-                                                id={'question'}
-                                                name={'question'}
-                                                defaultValue={question.question}
-                                                handleChange={
-                                                    handleQuestionChange
-                                                }
-                                                isInput={isInput}
-                                            />
-                                        ) : (
-                                            <p>Texto pregunta</p>
-                                        )}
-                                    </li>
-                                    <li
-                                        className={
-                                            (isInput ? 'pb-10 ' : '') +
-                                            'self-center'
-                                        }
-                                    >
-                                        <button
-                                            disabled={disableQuestionsButton}
-                                            type="button"
-                                            className="text-[--yellow] text-sm"
-                                            onClick={deleteQuestionHandler}
-                                        >
-                                            Elimina la pregunta
-                                        </button>
-                                    </li>
-                                </ul>
+
+                                {isInput ? (
+                                    <QuestionTitleInput
+                                        text={'Texto pregunta'}
+                                        id={'question'}
+                                        name={'question'}
+                                        defaultValue={question.question}
+                                        handleChange={handleQuestionChange}
+                                        isInput={isInput}
+                                    />
+                                ) : (
+                                    <p>Texto pregunta</p>
+                                )}
+
                                 {isInput === false && (
-                                    <select
-                                        className="sm:5/6s w-full md:w-full 2xl:w-4/6 font-bold mb-2  p-2  z-10 text-black text-sm sm:text-md py-2"
-                                        onChange={getQuestionFromList}
-                                        disabled={disableQuestionsButton}
-                                        value={question.questionNumber}
-                                    >
-                                        {quizData &&
-                                            quizData.list_of_questions?.map(
-                                                (question, index) => {
-                                                    return (
-                                                        <option
-                                                            className=" whitespace-pre-wrap font-semibold py-2 selection:bg-slate-400"
-                                                            key={index}
-                                                            value={
-                                                                question.number
-                                                            }
-                                                        >
-                                                            {window.innerWidth <
-                                                            1280
-                                                                ? window.innerWidth <
-                                                                  400
-                                                                    ? `${question.number}. ${question.title}`
-                                                                          .length >
-                                                                      26
-                                                                        ? `${question.number}. ${question.title}`.substring(
-                                                                              0,
-                                                                              26
-                                                                          ) +
-                                                                          '...'
-                                                                        : `${question.number}. ${question.title}`
-                                                                    : `${question.number}. ${question.title}`
-                                                                            .length >
-                                                                        50
-                                                                      ? `${question.number}. ${question.title}`.substring(
-                                                                            0,
-                                                                            48
-                                                                        ) +
-                                                                        '...'
-                                                                      : `${question.number}. ${question.title}`
-                                                                : `${question.number}. ${question.title}`}
-                                                        </option>
-                                                    );
+                                    <ul className="flex justify-between 2xl:w-4/6  w-full gap-2">
+                                        <li className="justify-self-start grow ">
+                                            <select
+                                                className="sm:5/6s w-full md:w-full  font-bold mb-2  p-2  z-10 text-black text-sm sm:text-md py-2"
+                                                onChange={getQuestionFromList}
+                                                disabled={
+                                                    disableQuestionsButton
                                                 }
-                                            )}
-                                    </select>
+                                                value={question.questionNumber}
+                                            >
+                                                {quizData &&
+                                                    quizData.list_of_questions?.map(
+                                                        (question, index) => {
+                                                            return (
+                                                                <option
+                                                                    className=" whitespace-pre-wrap font-semibold py-2 selection:bg-slate-400"
+                                                                    key={index}
+                                                                    value={
+                                                                        question.number
+                                                                    }
+                                                                >
+                                                                    {window.innerWidth <
+                                                                    1280
+                                                                        ? window.innerWidth <
+                                                                          400
+                                                                            ? `${question.number}. ${question.title}`
+                                                                                  .length >
+                                                                              26
+                                                                                ? `${question.number}. ${question.title}`.substring(
+                                                                                      0,
+                                                                                      26
+                                                                                  ) +
+                                                                                  '...'
+                                                                                : `${question.number}. ${question.title}`
+                                                                            : `${question.number}. ${question.title}`
+                                                                                    .length >
+                                                                                50
+                                                                              ? `${question.number}. ${question.title}`.substring(
+                                                                                    0,
+                                                                                    48
+                                                                                ) +
+                                                                                '...'
+                                                                              : `${question.number}. ${question.title}`
+                                                                        : `${question.number}. ${question.title}`}
+                                                                </option>
+                                                            );
+                                                        }
+                                                    )}
+                                            </select>
+                                        </li>
+                                        <li
+                                            className={
+                                                (isInput ? 'pb-10 ' : '') +
+                                                'self-center'
+                                            }
+                                        >
+                                            <button
+                                                disabled={
+                                                    disableQuestionsButton
+                                                }
+                                                type="button"
+                                                className="text-[--yellow] text-sm"
+                                                onClick={deleteQuestionHandler}
+                                            >
+                                                <TrashCan
+                                                    className={
+                                                        'rounded-sm p-1 w-8  bg-[--yellow]'
+                                                    }
+                                                ></TrashCan>
+                                            </button>
+                                        </li>
+                                    </ul>
                                 )}
                                 {window.innerWidth < 1280 &&
                                     question.question.length > 26 && (
