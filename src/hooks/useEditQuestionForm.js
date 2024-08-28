@@ -198,9 +198,13 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
 
     const handleFinishEdit = async () => {
         if (JSON.stringify(formData) !== JSON.stringify(initialFormData)) {
-            await handleSubmit(new Event('submit'));
+        const isSuccess = await handleSubmit(new Event('submit'));
+        if (isSuccess) {
+            router.push('/profile');
         }
+    } else {
         router.push('/profile');
+    }
     };
 
     return {
