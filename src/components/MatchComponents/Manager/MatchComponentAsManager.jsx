@@ -160,17 +160,15 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     handleChange={handleQuestionChange}
                                 ></NumberInput>
 
-                                {isInput ? (
+                                {isInput && (
                                     <QuestionTitleInput
-                                        text={'Texto pregunta'}
+                                        text={'Pregunta'}
                                         id={'question'}
                                         name={'question'}
                                         defaultValue={question.question}
                                         handleChange={handleQuestionChange}
                                         isInput={isInput}
                                     />
-                                ) : (
-                                    <p>Texto pregunta</p>
                                 )}
 
                                 {isInput === false && (
