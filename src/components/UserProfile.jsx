@@ -106,19 +106,19 @@ const UserProfile = () => {
                                 {isEditing.name ? (
                                     <>
                                         <button onClick={handleSave}>
-                                            <YellowPencil className="w-5 h-5 ml-5 text-yellow-400" />
+                                            <YellowPencil className="w-5 h-5 mr-5 text-yellow-400" />
                                         </button>
                                         <input
                                             type="text"
                                             name="name"
                                             value={editableUserInfo.name}
                                             onChange={handleChange}
-                                            className="border p-1 bg-transparent max-w-24"
+                                            className="border p-1 bg-transparent w-full"
                                         />
                                     </>
                                 ) : (
                                     <>
-                                        <YellowPencil className="w-3 h-3 mr-1 text-yellow-400" />
+                                        <YellowPencil className="w-3 h-3 mr-2 text-yellow-400" />
                                         {userInfo.name}
                                     </>
                                 )}
@@ -130,19 +130,19 @@ const UserProfile = () => {
                                 {isEditing.email ? (
                                     <>
                                         <button onClick={handleSave}>
-                                            <YellowPencil className="w-5 h-5 ml-5 text-yellow-400" />
+                                            <YellowPencil className="w-5 h-5 mr-5 text-yellow-400" />
                                         </button>
                                         <input
                                             type="email"
                                             name="email"
                                             value={editableUserInfo.email}
                                             onChange={handleChange}
-                                            className="border p-1 bg-transparent max-w-24"
+                                            className="border p-1 bg-transparent w-full"
                                         />
                                     </>
                                 ) : (
                                     <>
-                                        <YellowPencil className="w-3 h-3 mr-1 text-yellow-400" />
+                                        <YellowPencil className="w-3 h-3 mr-2 text-yellow-400" />
                                         {userInfo.email.length > 15
                                             ? `${userInfo.email.substring(0, 15)}...`
                                             : userInfo.email}
@@ -156,19 +156,19 @@ const UserProfile = () => {
                                 {isEditing.password ? (
                                     <>
                                         <button onClick={handleSave}>
-                                            <YellowPencil className="w-5 h-5 ml-5 text-yellow-400" />
+                                            <YellowPencil className="w-5 h-5 mr-5 text-yellow-400" />
                                         </button>
                                         <input
                                             type="password"
                                             name="password"
                                             value={editableUserInfo.password}
                                             onChange={handleChange}
-                                            className="border p-1 bg-transparent max-w-24"
+                                            className="border p-1 bg-transparent w-full"
                                         />
                                     </>
                                 ) : (
                                     <>
-                                        <YellowPencil className="w-3 h-3 mr-1 text-yellow-400" />
+                                        <YellowPencil className="w-3 h-3 mr-2 text-yellow-400" />
                                         {'Cambiar contraseña'.substring(0, 15)}
                                         ...
                                     </>
@@ -252,14 +252,14 @@ const UserProfile = () => {
                             <button
                                 onClick={handlePrevPage}
                                 disabled={quizIndex === 0}
-                                className={`absolute -left-[12%] top-1/2 transform -translate-y-1/2 ${
+                                className={`absolute -left-[15%] sm:-left-[12%] top-1/2 transform -translate-y-1/2 ${
                                     quizIndex === 0
                                         ? 'opacity-50 cursor-not-allowed'
                                         : 'hover:underline'
                                 } text-[#FCFF00]`}
                             >
                                 <div className="bg-[#FCFF00] rounded-full p-2">
-                                    <ChevronLeft className="w-5 h-5 text-black" />
+                                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
                                 </div>
                             </button>
                             <button
@@ -268,7 +268,7 @@ const UserProfile = () => {
                                     quizIndex + quizzesPerPage >=
                                     userInfo.quizzes.length
                                 }
-                                className={`absolute -right-[12%] top-1/2 transform -translate-y-1/2 ${
+                                className={`absolute -right-[15%] sm:-right-[12%] top-1/2 transform -translate-y-1/2 ${
                                     quizIndex + quizzesPerPage >=
                                     userInfo.quizzes.length
                                         ? 'opacity-50 cursor-not-allowed'
@@ -276,7 +276,7 @@ const UserProfile = () => {
                                 } text-[#FCFF00]`}
                             >
                                 <div className="bg-[#FCFF00] rounded-full p-2">
-                                    <ChevronRight className="w-5 h-5 text-black" />
+                                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
                                 </div>
                             </button>
                         </ul>
