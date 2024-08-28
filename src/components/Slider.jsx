@@ -15,16 +15,20 @@ export default function Slider({ children }) {
 
     return (
         <>
-            <section className="relative flex items-center md:m-8 m-4">
-                <ChevronLeft
-                    onClick={slideLeft}
-                    className=" block cursor-pointer fill-[--yellow] md:w-7 w-3 md:mx-4 mx-2"
-                />
+            <section className="relative flex items-center md:m-8 m-4 space-x-4">
+                <div className="bg-[#FCFF00] rounded-full p-2">
+                    <ChevronLeft
+                        onClick={slideLeft}
+                        className="block cursor-pointer w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7 text-black"
+                    />
+                </div>
                 {children}
-                <ChevronRight
-                    onClick={slideRight}
-                    className=" block cursor-pointer fill-[--yellow] md:w-7 w-3 md:mx-4 mx-2"
-                />
+                <div className="bg-[#FCFF00] rounded-full p-2">
+                    <ChevronRight
+                        onClick={slideRight}
+                        className="block cursor-pointer w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7 text-black"
+                    />
+                </div>
             </section>
         </>
     );
