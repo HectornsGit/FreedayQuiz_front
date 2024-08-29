@@ -6,6 +6,7 @@ import Slider from './Slider';
 import { useListQuestions } from '@/hooks/useListQuestions';
 import { useDeleteQuestions } from '@/hooks/useDeleteQuestions';
 import { useRouter } from 'next/navigation';
+import Delete from './icons/Delete';
 
 export default function ListQuestions({ quizId, closeModal }) {
     const url = process.env.NEXT_PUBLIC_API_HOST;
@@ -21,12 +22,13 @@ export default function ListQuestions({ quizId, closeModal }) {
         handleAddQuestion,
     } = useListQuestions(router, quizId);
 
-    const { deleteQuestions, handleValue } = useDeleteQuestions(
-        valueCheckbox,
-        dataQuizz,
-        setValueCheckbox,
-        closeModal
-    );
+    const { deleteQuestions, handleValue, isGrey, iconDelete } =
+        useDeleteQuestions(
+            valueCheckbox,
+            dataQuizz,
+            setValueCheckbox,
+            closeModal
+        );
 
     return (
         <>
@@ -56,7 +58,7 @@ export default function ListQuestions({ quizId, closeModal }) {
                         >
                             <div
                                 onClick={handleAddQuestion}
-                                className="w-[200px] md:w-[400px] inline-flex mx-8 md:mx-4 justify-center cursor-pointer"
+                                className="inline-flex mx-8 md:mx-4 justify-center cursor-pointer"
                             >
                                 <AddQuestion />
                             </div>
@@ -65,7 +67,7 @@ export default function ListQuestions({ quizId, closeModal }) {
                                 dataQuizz.map((question) => (
                                     <div
                                         key={question.questionId}
-                                        className="w-[200px] md:w-[400px] inline-flex mx-8 md:mx-4 justify-center"
+                                        className="max-w-[500px] md:w-[400px] inline-flex gap-x10 md:mx-4"
                                     >
                                         <div className="flex flex-col items-center pr-1">
                                             <p className="text-2xl mb-4">
@@ -79,7 +81,7 @@ export default function ListQuestions({ quizId, closeModal }) {
                                             />
                                         </div>
                                         <img
-                                            className="cursor-pointer p-[0.35rem] hover:border-2 hover:border-solid hover:border-[--yellow] hover:rounded"
+                                            className={`cursor-pointer w-[350px] h-[205px] overflow-auto p-[0.35rem] hover:border-2 hover:border-solid hover:border-[--yellow] hover:rounded ${isGrey[question.questionId] ? 'grayscale opacity-25' : ''}`}
                                             onClick={() =>
                                                 handleRouteQuestion(
                                                     quizId,
@@ -89,6 +91,11 @@ export default function ListQuestions({ quizId, closeModal }) {
                                             src={`${url}/uploads/${question.questionImage}`}
                                             alt={`foto portada de la pregunta ${question.questionId}`}
                                         />
+                                        {isGrey[question.questionId] && (
+                                            <div className="relative right-[45%] flex items-center justify-center overflow-auto">
+                                                <Delete className="w-12 h-12 fill-[--yellow]" />
+                                            </div>
+                                        )}
                                     </div>
                                 ))}
                         </div>

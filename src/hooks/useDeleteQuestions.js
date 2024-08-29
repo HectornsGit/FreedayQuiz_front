@@ -9,11 +9,16 @@ import { useSession } from 'next-auth/react'
 //Toast para imprimir mensajes de exito o fracaso (avisaré que se han eliminado las preguntas)
 import { toast } from 'react-toastify'
 
+import { useState } from 'react';
+
 
 export const useDeleteQuestions =  (valueCheckbox, dataQuizz, setValueCheckbox, closeModal) => {
     const IdQuiz = dataQuizz[0]?.idQuiz //obtengo el id del quiz
 
     const { data: session } = useSession() //para obtener el token de la sesion.
+
+    const [isGrey, setIsGrey] = useState({}); //aplicará un filter:grayscale al seleccionar la img a eliminar
+    const [iconDelete, setIconDelete] = useState({}); // dibujará el icono de una papelera cuando se seleccione una img para borrar
 
     const deleteQuestions = async () => {
 
@@ -55,16 +60,19 @@ export const useDeleteQuestions =  (valueCheckbox, dataQuizz, setValueCheckbox, 
     const handleValue = (e) => {
         const checked = e.target.checked;
         const value = e.target.value;
-
-        if (checked) {
+        
+    if (checked) {
             setValueCheckbox((prevstate) => [...prevstate, value]);
+            setIsGrey((prevState) => ({...prevState,[value]: checked,})); //muestra filtro escala de grises si está el check marcado
         } else {
             setValueCheckbox((prevState) =>
                 prevState.filter((item) => item !== value)
             );
+            setIsGrey((prevState) => ({...prevState,[value]: checked,}));
         }
+
     };
 
 
-    return{ deleteQuestions, handleValue } 
+    return{ deleteQuestions, handleValue, isGrey, iconDelete } 
 }
