@@ -12,6 +12,7 @@ import ListPlayerStats from '../listPlayerStats';
 import Points from '@/components/icons/Points';
 import GenerateCSVButton from '@/components/GenerateCSVButton';
 import TrashCan from '@/components/icons/TrashCan';
+import ScoreButton from './ScoreButton';
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const hiddenTextRef = useRef(null);
@@ -358,45 +359,44 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     </li>
                                 </ul>
                             </li>
-                            <li>
-                                <ManagerButton
-                                    isPrimary={true}
+                            <li className="md:w-5/12 w-full ">
+                                <ScoreButton
                                     handleClick={showScoresHandler}
                                     disabled={
                                         !isQuestionRunning || timeLeft > 0
                                     }
-                                    text="Puntaciones"
+                                    text={'Puntuaciones'}
                                 />
+                            </li>
+                            <li className="md:w-5/12 w-full ">
+                                <div className="flex flex-col items-center">
+                                    <ScoreButton
+                                        handleClick={handleFinalScore}
+                                        disabled={
+                                            !isQuestionRunning || timeLeft > 0
+                                        }
+                                        primary={true}
+                                        text={'Puntuación final'}
+                                    />
+                                    {playerData.length > 0 &&
+                                        isThereAWinner && (
+                                            <div className="bg-[--yellow] my-6 p-4 text-black  font-bold">
+                                                <GenerateCSVButton
+                                                    playerData={playerData}
+                                                    quizData={quizData}
+                                                />
+                                            </div>
+                                        )}
+                                    <button
+                                        className="text-white font-light text-lg mt-20 px-11 py-2 "
+                                        onClick={endQuiz}
+                                    >
+                                        Finalizar quiz
+                                    </button>
+                                </div>
                             </li>
                         </ul>
                     )}
-                    <div className="flex flex-col items-center">
-                        <button
-                            className="text-[--yellow] font-bold text-lg mt-10 p-1 disabled:text-gray-600 disabled:bg-black"
-                            onClick={handleFinalScore}
-                            disabled={!isQuestionRunning || timeLeft > 0}
-                        >
-                            <span className="flex flex-row gap-3 hover:bg-gradient ">
-                                <Points className="w-4" />
-                                Mostrar puntuacion final
-                                <Points className="w-4" />
-                            </span>
-                        </button>
-                        {playerData.length > 0 && isThereAWinner && (
-                            <div className="bg-[--yellow] my-6 p-4 text-black  font-bold">
-                                <GenerateCSVButton
-                                    playerData={playerData}
-                                    quizData={quizData}
-                                />
-                            </div>
-                        )}
-                        <button
-                            className="text-white font-light text-lg mt-20 px-11 py-2 "
-                            onClick={endQuiz}
-                        >
-                            Finalizar quiz
-                        </button>
-                    </div>
                 </section>
             )}
             <aside className="lg:row-span-2 min-w-72   w-1/3"></aside>
