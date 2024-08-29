@@ -1,11 +1,25 @@
-const ScoreButton = ({ disabled = false, handleClick, text }) => {
+const ScoreButton = ({
+    disabled = false,
+    handleClick,
+    text,
+    primary = false,
+}) => {
     return (
         <button
             onClick={handleClick}
             disabled={disabled}
-            className="w-full bg-[--yellow] font-bold text-black text-lg p-2 disabled:text-gray-600 disabled:bg-black"
+            className={
+                (primary && !disabled
+                    ? 'bg-gradient text-black hover:bg-black  '
+                    : 'bg-[--yellow] text-black hover:bg-black hover:text-[--yellow] ') +
+                'w-full font-bold text-lg p-2 disabled:text-gray-600 disabled:bg-black'
+            }
         >
-            {text}
+            {primary && !disabled ? (
+                <span className="gradient-text">{text}</span>
+            ) : (
+                text
+            )}
         </button>
     );
 };
