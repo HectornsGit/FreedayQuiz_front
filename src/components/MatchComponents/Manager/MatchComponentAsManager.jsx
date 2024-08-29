@@ -11,6 +11,9 @@ import Accordion from '@/components/Accordion';
 import ListPlayerStats from '../listPlayerStats';
 import Points from '@/components/icons/Points';
 import GenerateCSVButton from '@/components/GenerateCSVButton';
+import TrashCan from '@/components/icons/TrashCan';
+import ScoreButton from './ScoreButton';
+import Exit from '@/components/icons/Exit';
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const hiddenTextRef = useRef(null);
@@ -90,8 +93,15 @@ const MatchComponentAsManager = ({ managerProps }) => {
 
     return (
         <section className=" lg:w-full lg:items-start lg:grid lg:grid-cols-[0.44fr_1.2fr_0.44fr] lg:grid-rows-[0.2fr_1.3fr_1fr] lg:gap-0 w-11/12 mx-2 flex flex-col  items-center">
-            <header className="lg:col-span-3   lg:row-span-1 flex flex-col mb-6 w-full">
+            <header className="lg:col-span-1 lg:col-start-2   lg:row-span-1 flex flex-col mb-6 w-full">
                 <ul className="flex grow mb-4 h-12 items-center mx-4 lg:justify-around justify-between">
+                    <li className="">
+                        <button className="" onClick={endQuiz}>
+                            <Exit
+                                className={'rounded-sm  w-8 fill-[--yellow]'}
+                            ></Exit>
+                        </button>
+                    </li>
                     <li>
                         {sessionTimeLeft > 0 && (
                             <Clock
@@ -128,26 +138,19 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     <h1 className="text-3xl font-bold">{quizData?.title}</h1>
                 )}
             </header>
-            <aside className=" lg:row-span-2 lg:flex hidden w-1/3">
+            <aside className=" lg:row-span-2  lg:row-start-2  lg:flex hidden w-1/3">
                 {playerData && (
                     <div className="flex flex-col items-center  mb-4">
                         <Accordion title={'Jugadores'}>
                             <ListPlayerStats
                                 players={playerData}
                             ></ListPlayerStats>
-                            {playerData.length > 0 && (
-                                <div className="bg-[yellow] text-black  font-bold">
-                                    <GenerateCSVButton
-                                        playerData={playerData}
-                                    />
-                                </div>
-                            )}
                         </Accordion>
                     </div>
                 )}
             </aside>
             {loggedUserId && loggedUserId == quizData?.owner_id && (
-                <section className=" max-w-full lg:col-span-1 lg:row-span-2 flex-col justify-center">
+                <section className=" max-w-full lg:col-span-1 lg:row-span-2 lg:row-start-2 flex-col justify-center ">
                     {question && (
                         <section className="flex flex-col justify-center">
                             <QuestionImage
@@ -156,7 +159,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             <form
                                 id={'questionForm'}
                                 onSubmit={updateQuestionDataInBackend}
-                                className="flex sm:items-center items-start gap-4 flex-col"
+                                className="flex sm:items-center items-start  self-center sm:w-5/6 gap-4 flex-col"
                             >
                                 <NumberInput
                                     id={'questionTime'}
@@ -165,85 +168,91 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     defaultValue={question.questionTime}
                                     handleChange={handleQuestionChange}
                                 ></NumberInput>
-                                <ul className="flex justify-between sm:w-96 w-full">
-                                    <li className="z-10">
-                                        {isInput ? (
-                                            <QuestionTitleInput
-                                                text={'Texto pregunta'}
-                                                id={'question'}
-                                                name={'question'}
-                                                defaultValue={question.question}
-                                                handleChange={
-                                                    handleQuestionChange
-                                                }
-                                                isInput={isInput}
-                                            />
-                                        ) : (
-                                            <p>Texto pregunta</p>
-                                        )}
-                                    </li>
-                                    <li
-                                        className={
-                                            (isInput ? 'pb-10 ' : '') +
-                                            'self-center'
-                                        }
-                                    >
-                                        <button
-                                            disabled={disableQuestionsButton}
-                                            type="button"
-                                            className="text-[--yellow] text-sm"
-                                            onClick={deleteQuestionHandler}
-                                        >
-                                            Elimina la pregunta
-                                        </button>
-                                    </li>
-                                </ul>
+
+                                {isInput && (
+                                    <QuestionTitleInput
+                                        text={'Pregunta'}
+                                        id={'question'}
+                                        name={'question'}
+                                        defaultValue={question.question}
+                                        handleChange={handleQuestionChange}
+                                        isInput={isInput}
+                                    />
+                                )}
+
                                 {isInput === false && (
-                                    <select
-                                        className="sm:5/6s w-full md:w-full 2xl:w-4/6 font-bold mb-2  p-2  z-10 text-black text-sm sm:text-md py-2"
-                                        onChange={getQuestionFromList}
-                                        disabled={disableQuestionsButton}
-                                        value={question.questionNumber}
-                                    >
-                                        {quizData &&
-                                            quizData.list_of_questions?.map(
-                                                (question, index) => {
-                                                    return (
-                                                        <option
-                                                            className=" whitespace-pre-wrap font-semibold py-2 selection:bg-slate-400"
-                                                            key={index}
-                                                            value={
-                                                                question.number
-                                                            }
-                                                        >
-                                                            {window.innerWidth <
-                                                            1280
-                                                                ? window.innerWidth <
-                                                                  400
-                                                                    ? `${question.number}. ${question.title}`
-                                                                          .length >
-                                                                      26
-                                                                        ? `${question.number}. ${question.title}`.substring(
-                                                                              0,
-                                                                              26
-                                                                          ) +
-                                                                          '...'
-                                                                        : `${question.number}. ${question.title}`
-                                                                    : `${question.number}. ${question.title}`
-                                                                            .length >
-                                                                        50
-                                                                      ? `${question.number}. ${question.title}`.substring(
-                                                                            0,
-                                                                            48
-                                                                        ) +
-                                                                        '...'
-                                                                      : `${question.number}. ${question.title}`
-                                                                : `${question.number}. ${question.title}`}
-                                                        </option>
-                                                    );
+                                    <ul className="flex justify-between 2xl:w-4/6  w-full gap-2">
+                                        <li className="justify-self-start grow ">
+                                            <select
+                                                className="sm:5/6s w-full md:w-full  font-bold mb-2  p-2  z-10 text-black text-sm sm:text-md py-2"
+                                                onChange={getQuestionFromList}
+                                                disabled={
+                                                    disableQuestionsButton
                                                 }
-                                            )}
-                                    </select>
+                                                value={question.questionNumber}
+                                            >
+                                                {quizData &&
+                                                    quizData.list_of_questions?.map(
+                                                        (question, index) => {
+                                                            return (
+                                                                <option
+                                                                    className=" whitespace-pre-wrap font-semibold py-2 selection:bg-slate-400"
+                                                                    key={index}
+                                                                    value={
+                                                                        question.number
+                                                                    }
+                                                                >
+                                                                    {window.innerWidth <
+                                                                    1280
+                                                                        ? window.innerWidth <
+                                                                          400
+                                                                            ? `${question.number}. ${question.title}`
+                                                                                  .length >
+                                                                              26
+                                                                                ? `${question.number}. ${question.title}`.substring(
+                                                                                      0,
+                                                                                      26
+                                                                                  ) +
+                                                                                  '...'
+                                                                                : `${question.number}. ${question.title}`
+                                                                            : `${question.number}. ${question.title}`
+                                                                                    .length >
+                                                                                50
+                                                                              ? `${question.number}. ${question.title}`.substring(
+                                                                                    0,
+                                                                                    48
+                                                                                ) +
+                                                                                '...'
+                                                                              : `${question.number}. ${question.title}`
+                                                                        : `${question.number}. ${question.title}`}
+                                                                </option>
+                                                            );
+                                                        }
+                                                    )}
+                                            </select>
+                                        </li>
+                                        <li
+                                            className={
+                                                (isInput ? 'pb-10 ' : '') +
+                                                'self-center'
+                                            }
+                                        >
+                                            <button
+                                                disabled={
+                                                    disableQuestionsButton
+                                                }
+                                                type="button"
+                                                className="text-[--yellow] text-sm"
+                                                onClick={deleteQuestionHandler}
+                                            >
+                                                <TrashCan
+                                                    className={
+                                                        'rounded-sm p-1 w-8  bg-[--yellow]'
+                                                    }
+                                                ></TrashCan>
+                                            </button>
+                                        </li>
+                                    </ul>
                                 )}
                                 {window.innerWidth < 1280 &&
                                     question.question.length > 26 && (
@@ -339,62 +348,56 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     )}
                     {isInput == false && (
                         <ul className="flex flex-col  justify-center items-center mt-4 gap-6">
-                            <ul className="flex flex-col sm:flex-row justify-center items-center mt-4 gap-6">
-                                <li>
-                                    <ManagerButton
-                                        text="Iniciar pregunta"
-                                        isPrimary={true}
-                                        disabled={isQuestionRunning}
-                                        handleClick={initQuestion}
-                                    />
-                                </li>
-                                <li>
-                                    <ManagerButton
-                                        text={'Pregunta aleatoria'}
-                                        disabled={isQuestionRunning}
-                                        handleClick={startRandomQuestion}
-                                    ></ManagerButton>
-                                </li>
-                            </ul>
                             <li>
-                                <ManagerButton
-                                    isPrimary={true}
+                                <ul className="flex  justify-center items-center mt-4 gap-4">
+                                    <li className="">
+                                        <ManagerButton
+                                            text="Iniciar pregunta"
+                                            isPrimary={true}
+                                            disabled={isQuestionRunning}
+                                            handleClick={initQuestion}
+                                        />
+                                    </li>
+                                    <li>
+                                        <ManagerButton
+                                            text={'Pregunta aleatoria'}
+                                            disabled={isQuestionRunning}
+                                            handleClick={startRandomQuestion}
+                                        ></ManagerButton>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="md:w-5/12 w-full ">
+                                <ScoreButton
                                     handleClick={showScoresHandler}
                                     disabled={
                                         !isQuestionRunning || timeLeft > 0
                                     }
-                                    text="Puntaciones"
+                                    text={'Puntuaciones'}
                                 />
+                            </li>
+                            <li className="md:w-5/12 w-full ">
+                                <div className="flex flex-col items-center">
+                                    <ScoreButton
+                                        handleClick={handleFinalScore}
+                                        disabled={
+                                            !isQuestionRunning || timeLeft > 0
+                                        }
+                                        primary={true}
+                                        text={'Puntuación final'}
+                                    />
+                                </div>
+                            </li>
+                            <li className="md:w-5/12 w-full ">
+                                {playerData.length > 0 && isThereAWinner && (
+                                    <GenerateCSVButton
+                                        playerData={playerData}
+                                        quizData={quizData}
+                                    />
+                                )}
                             </li>
                         </ul>
                     )}
-                    <div className="flex flex-col items-center">
-                        <button
-                            className="text-[--yellow] font-bold text-lg mt-10 p-1 disabled:text-gray-600 disabled:bg-black"
-                            onClick={handleFinalScore}
-                            disabled={!isQuestionRunning || timeLeft > 0}
-                        >
-                            <span className="flex flex-row gap-3 hover:bg-gradient ">
-                                <Points className="w-4" />
-                                Mostrar puntuacion final
-                                <Points className="w-4" />
-                            </span>
-                        </button>
-                        {playerData.length > 0 && isThereAWinner && (
-                            <div className="bg-[yellow] my-6 p-4 text-black  font-bold">
-                                <GenerateCSVButton
-                                    playerData={playerData}
-                                    quizData={quizData}
-                                />
-                            </div>
-                        )}
-                        <button
-                            className="text-white font-light text-lg mt-20 px-11 py-2 "
-                            onClick={endQuiz}
-                        >
-                            Finalizar quiz
-                        </button>
-                    </div>
                 </section>
             )}
             <aside className="lg:row-span-2 min-w-72   w-1/3"></aside>

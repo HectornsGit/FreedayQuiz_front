@@ -17,10 +17,10 @@ const Clock = ({
     return isClockInput ? (
         <form
             id="clockForm"
-            className="flex w-60 flex-col items-start mb-2 "
+            className="flex w-40 flex-col items-start mb-2 "
             onSubmit={setSessionTimeHandler}
         >
-            <label className="ml-8 text-xs" htmlFor="session">
+            <label className="ml-12 text-xs" htmlFor="session">
                 Tiempo sesión
             </label>
             <div className=" flex items-center justify-center">

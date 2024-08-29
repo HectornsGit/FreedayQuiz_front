@@ -5,13 +5,16 @@ const QuestionTitleInput = ({ id, text, isInput, defaultValue }) => {
         setValue(defaultValue);
     }, [defaultValue]);
     return (
-        <div className="flex w-32 my-6 flex-col items-start m-2">
-            <label className="text-md my-3 font-medium" htmlFor={id}>
+        <div className="flex w-full my-6 flex-col xl:w-5/6  items-center">
+            <label
+                className="text-xl text-left self-start xl:ml-12 2xl:ml-16 my-3 font-semibold"
+                htmlFor={id}
+            >
                 {text}
             </label>
             {isInput ? (
                 <input
-                    className="font-semibold  p-2  text-black text-md sm:w-96 w-[92vw] py-2"
+                    className="font-semibold  p-2  text-black text-md xl:w-5/6 w-full py-2"
                     type="text"
                     id={id}
                     name={id}
