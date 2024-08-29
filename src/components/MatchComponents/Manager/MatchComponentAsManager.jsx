@@ -13,6 +13,7 @@ import Points from '@/components/icons/Points';
 import GenerateCSVButton from '@/components/GenerateCSVButton';
 import TrashCan from '@/components/icons/TrashCan';
 import ScoreButton from './ScoreButton';
+import Exit from '@/components/icons/Exit';
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const hiddenTextRef = useRef(null);
@@ -92,8 +93,15 @@ const MatchComponentAsManager = ({ managerProps }) => {
 
     return (
         <section className=" lg:w-full lg:items-start lg:grid lg:grid-cols-[0.44fr_1.2fr_0.44fr] lg:grid-rows-[0.2fr_1.3fr_1fr] lg:gap-0 w-11/12 mx-2 flex flex-col  items-center">
-            <header className="lg:col-span-3   lg:row-span-1 flex flex-col mb-6 w-full">
+            <header className="lg:col-span-1 lg:col-start-2   lg:row-span-1 flex flex-col mb-6 w-full">
                 <ul className="flex grow mb-4 h-12 items-center mx-4 lg:justify-around justify-between">
+                    <li className="">
+                        <button className="" onClick={endQuiz}>
+                            <Exit
+                                className={'rounded-sm  w-8 fill-[--yellow]'}
+                            ></Exit>
+                        </button>
+                    </li>
                     <li>
                         {sessionTimeLeft > 0 && (
                             <Clock
@@ -130,7 +138,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     <h1 className="text-3xl font-bold">{quizData?.title}</h1>
                 )}
             </header>
-            <aside className=" lg:row-span-2 lg:flex hidden w-1/3">
+            <aside className=" lg:row-span-2  lg:row-start-2  lg:flex hidden w-1/3">
                 {playerData && (
                     <div className="flex flex-col items-center  mb-4">
                         <Accordion title={'Jugadores'}>
@@ -142,7 +150,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                 )}
             </aside>
             {loggedUserId && loggedUserId == quizData?.owner_id && (
-                <section className=" max-w-full lg:col-span-1 lg:row-span-2 flex-col justify-center ">
+                <section className=" max-w-full lg:col-span-1 lg:row-span-2 lg:row-start-2 flex-col justify-center ">
                     {question && (
                         <section className="flex flex-col justify-center">
                             <QuestionImage
@@ -378,22 +386,15 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                         primary={true}
                                         text={'Puntuación final'}
                                     />
-                                    {playerData.length > 0 &&
-                                        isThereAWinner && (
-                                            <div className="bg-[--yellow] my-6 p-4 text-black  font-bold">
-                                                <GenerateCSVButton
-                                                    playerData={playerData}
-                                                    quizData={quizData}
-                                                />
-                                            </div>
-                                        )}
-                                    <button
-                                        className="text-white font-light text-lg mt-20 px-11 py-2 "
-                                        onClick={endQuiz}
-                                    >
-                                        Finalizar quiz
-                                    </button>
                                 </div>
+                            </li>
+                            <li className="md:w-5/12 w-full ">
+                                {playerData.length > 0 && isThereAWinner && (
+                                    <GenerateCSVButton
+                                        playerData={playerData}
+                                        quizData={quizData}
+                                    />
+                                )}
                             </li>
                         </ul>
                     )}
