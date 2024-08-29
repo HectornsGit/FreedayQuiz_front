@@ -45,43 +45,48 @@ export default function ListQuestions({ quizId, closeModal }) {
                         {valueCheckbox.length > 0 && (
                             <button
                                 onClick={deleteQuestions}
-                                className="text-black font-extrabold text-lg bg-white px-11 py-2 hover:bg-black hover:text-white hover:box-shadow-white"
+                                className="text-black font-extrabold lg:text-lg text-sm bg-white lg:px-11 lg:py-2 px-2.5 py-1 hover:bg-black hover:text-white hover:box-shadow-white"
                             >
                                 Eliminar preguntas
                             </button>
                         )}
                     </div>
                     <Slider>
-                        <div
+                        <ul
                             id="slider"
-                            className="w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth"
+                            className="w-full h-full flex content-center overflow-x-scroll scroll whitespace-nowrap scroll-smooth"
                         >
-                            <div
+                            <li
                                 onClick={handleAddQuestion}
-                                className="inline-flex mx-8 md:mx-4 justify-center cursor-pointer"
+                                className="cursor-pointer p-3 inline-flex flex-col items-center justify-center md:gap-y-12 gap-y-5 lg:w-80 lg:h-52 md:w-2/5 md:h-[123px] bg-black border-2 border-solid border-[--yellow] rounded"
                             >
                                 <AddQuestion />
-                            </div>
+                            </li>
 
                             {dataQuizz &&
                                 dataQuizz.map((question) => (
-                                    <div
+                                    <li
                                         key={question.questionId}
-                                        className="max-w-[500px] md:w-[400px] inline-flex gap-x10 md:mx-4"
+                                        className="lg:max-w-[500px] inline-flex md:mx-4 mx-6"
                                     >
                                         <div className="flex flex-col items-center pr-1">
                                             <p className="text-2xl mb-4">
                                                 {question.questionNumber}
                                             </p>
-                                            <input
-                                                type="checkbox"
-                                                value={question.questionId}
-                                                onChange={handleValue}
-                                                className="appearance-none cursor-pointer w-[30px] h-[30px] border-2 border-solid border-[#fcff00] bg-black checked:before:content-['✔'] text-center text-[#fcff00] leading-[1.5rem] text-2xl"
-                                            />
+                                            <div className="box-content flex flex-col items-center gap-y-2">
+                                                <Delete className="w-5 h-5 fill-[#fcff00] bg-black" />
+                                                <input
+                                                    type="checkbox"
+                                                    value={question.questionId}
+                                                    onChange={handleValue}
+                                                    className="appearance-none cursor-pointer w-[30px] h-[30px] border-2 border-solid border-[#fcff00] bg-black 
+                                                    checked:before:content-['✔'] 
+                                                text-center before:text-[#fcff00] leading-[1.5rem] text-2xl"
+                                                />
+                                            </div>
                                         </div>
                                         <img
-                                            className={`cursor-pointer w-[350px] h-[205px] overflow-auto p-[0.35rem] hover:border-2 hover:border-solid hover:border-[--yellow] hover:rounded ${isGrey[question.questionId] ? 'grayscale opacity-25' : ''}`}
+                                            className={`cursor-pointer lg:max-w-[350px] lg:max-h-[205px] max-w-[200px] p-[0.35rem] box-content hover:border-2 hover:border-solid hover:border-[--yellow] hover:rounded ${isGrey[question.questionId] ? 'grayscale brightness-50' : ''}`}
                                             onClick={() =>
                                                 handleRouteQuestion(
                                                     quizId,
@@ -92,13 +97,11 @@ export default function ListQuestions({ quizId, closeModal }) {
                                             alt={`foto portada de la pregunta ${question.questionId}`}
                                         />
                                         {isGrey[question.questionId] && (
-                                            <div className="relative right-[45%] flex items-center justify-center overflow-auto">
-                                                <Delete className="w-12 h-12 fill-[--yellow]" />
-                                            </div>
+                                            <Delete className="lg:w-[50px] lg:h-[50px] md:w-[35px] md:h-[35px] w-[30px] h-[30px] fill-[--yellow] relative top-1/3 right-2/4" />
                                         )}
-                                    </div>
+                                    </li>
                                 ))}
-                        </div>
+                        </ul>
                     </Slider>
                 </>
             )}
