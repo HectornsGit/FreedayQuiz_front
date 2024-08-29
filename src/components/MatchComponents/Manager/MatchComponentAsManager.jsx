@@ -339,23 +339,25 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     )}
                     {isInput == false && (
                         <ul className="flex flex-col  justify-center items-center mt-4 gap-6">
-                            <ul className="flex flex-col sm:flex-row justify-center items-center mt-4 gap-6">
-                                <li>
-                                    <ManagerButton
-                                        text="Iniciar pregunta"
-                                        isPrimary={true}
-                                        disabled={isQuestionRunning}
-                                        handleClick={initQuestion}
-                                    />
-                                </li>
-                                <li>
-                                    <ManagerButton
-                                        text={'Pregunta aleatoria'}
-                                        disabled={isQuestionRunning}
-                                        handleClick={startRandomQuestion}
-                                    ></ManagerButton>
-                                </li>
-                            </ul>
+                            <li>
+                                <ul className="flex  justify-center items-center mt-4 gap-4">
+                                    <li className="">
+                                        <ManagerButton
+                                            text="Iniciar pregunta"
+                                            isPrimary={true}
+                                            disabled={isQuestionRunning}
+                                            handleClick={initQuestion}
+                                        />
+                                    </li>
+                                    <li>
+                                        <ManagerButton
+                                            text={'Pregunta aleatoria'}
+                                            disabled={isQuestionRunning}
+                                            handleClick={startRandomQuestion}
+                                        ></ManagerButton>
+                                    </li>
+                                </ul>
+                            </li>
                             <li>
                                 <ManagerButton
                                     isPrimary={true}
