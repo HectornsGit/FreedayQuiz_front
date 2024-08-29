@@ -5,7 +5,7 @@ const ManagerButton = ({
     isPrimary = false,
 }) => {
     return (
-        <div className="bg-black bg-fixed disabled:bottom-1 md:h-12 h-10 md:w-80 w-36">
+        <div className="bg-black bg-fixed disabled:bottom-1 md:h-12 h-10 md:w-56 w-36">
             <button
                 className={
                     (isPrimary && !disabled
