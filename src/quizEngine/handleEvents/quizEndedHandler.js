@@ -15,6 +15,7 @@ const quizEndedHandler = (
         socket.on('quizEnded', (message) => {
             const numberOfQuestions = quizData.number_of_questions;
             window.localStorage.removeItem('idNewPlayer');
+            window.localStorage.removeItem('setIsDisabled');
             window.localStorage.removeItem('playerName');
             window.localStorage.removeItem('QuizSessionDuration');
             window.localStorage.removeItem('quizId');

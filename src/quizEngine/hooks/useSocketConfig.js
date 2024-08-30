@@ -72,7 +72,7 @@ const useSocketConfig = (argumentsData) => {
         const socketInstance = io(process.env.NEXT_PUBLIC_API_HOST, {
             reconnection: true,
             reconnectionAttempts: Infinity,
-            reconnectionDelay: 1000,
+            reconnectionDelay: 5000,
             reconnectionDelayMax: 5000,
             randomizationFactor: 0.5,
         });
