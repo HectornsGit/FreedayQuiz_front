@@ -17,6 +17,8 @@ const scoresHandler = (
             const isMaster = getItemWithExpiry('isMaster');
             //Reseteamos el número de respuestas por pregunta:
             setNumberAnswersPerQuestion(0);
+            //Borro datos en localstorage del estado de los botones:
+            window.localStorage.removeItem('isDisabled');
 
             if (!playerName && !isMaster) {
                 toast.warning(

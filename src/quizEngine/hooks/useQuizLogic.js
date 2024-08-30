@@ -119,6 +119,14 @@ const useQuizLogic = () => {
         isInput,
     } = state;
 
+    //Actualiza el estado de los botones si se recupera sesión en medio de una pregunta:
+    useEffect(() => {
+        if (isQuestionRunning) {
+            const buttonState = getItemWithExpiry('isDisabled');
+            if (buttonState) setIsDisabled(true);
+        }
+    }, []);
+
     //Ver en useFunctions:
     useEffect(() => {
         initializePlayer();
