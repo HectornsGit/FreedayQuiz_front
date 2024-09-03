@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+    front:
+        image: freedayquiz_front-server:latest
+        ports:
+            - '3000:3000'
+        environment:
+            NEXT_PUBLIC_API_HOST: ${NEXT_PUBLIC_API_HOST}
+            NEXT_PUBLIC_FRONT: ${NEXT_PUBLIC_FRONT}
+
+            SECRET: ${SECRET}
+            NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+        volumes:
+            - .:/usr/src/app
+        command: npm start
