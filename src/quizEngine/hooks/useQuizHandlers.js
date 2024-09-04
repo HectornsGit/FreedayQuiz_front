@@ -54,16 +54,9 @@ export const useQuizHandlers = ({
                 });
                 setIsDisabled(true);
 
-                //Esta parte es para actualizar los estados condicionales cada vez que un jugador responde (para evitar un bug, que al recuperar sesión se vuelvan a activar los botones de respuesta de la pregunta en curso)
-                if (socket) {
-                    const singleResponse = true;
-                    const states = {
-                        isQuestionRunning: true,
-                        showScores: false,
-                        isDisabled: true,
-                    };
-                    socket.emit('showScores', quizId, states, singleResponse);
-                }
+                //Guardo el estado de los botones para recuperar en medio de una pregunta:
+                setItemWithExpiry('isDisabled', true, 1);
+
                 setInitialPlayerData((prevData) => {
                     prevData[0].lastAnswerText = response;
                     prevData[0].lastQuestionNumber = question.questionNumber;
