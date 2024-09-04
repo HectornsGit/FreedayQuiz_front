@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ClockLogo from './icons/ClockLogo';
 import YellowPencil from './icons/YellowPencil';
-import UpdateArrows from './icons/updateArrows';
+import UpdateArrows from './icons/UpdateArrows';
 
 const Clock = ({
     time,
