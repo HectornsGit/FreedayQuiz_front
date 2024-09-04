@@ -32,11 +32,11 @@ const connectHandler = (
             setJoinedQuiz(true);
         }
         // Esto es para simular que el cliente se desconecta del servidor sin usar socket.disconnect:
-        setTimeout(() => {
-            if (socketInstance.io.engine) {
-                socketInstance.io.engine.close();
-            }
-        }, 10000);
+        // setTimeout(() => {
+        //     if (socketInstance.io.engine) {
+        //         socketInstance.io.engine.close();
+        //     }
+        // }, 10000);
     });
 };
 
