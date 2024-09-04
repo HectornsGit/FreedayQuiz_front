@@ -1,5 +1,5 @@
 import Skull from '@/components/icons/Skull';
-import StarEyedSmiley from '@/components/icons/starEyedSmiley';
+import StarEyedSmiley from '@/components/icons/StarEyedSmiley';
 
 const ResultAnswers = ({ question, initialPlayerData, timeLeft }) => {
     const isCorrect =
