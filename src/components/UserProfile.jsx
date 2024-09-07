@@ -90,7 +90,7 @@ const UserProfile = () => {
                                 </div>
                             ) : (
                                 <img
-                                    src={`${process.env.NEXT_PUBLIC_API_HOST}/uploads/${userInfo.avatar}`}
+                                    src={userInfo.avatar}
                                     alt="Avatar"
                                     className="w-[6rem] h-[6rem] md:w-[8rem] md:h-[8rem] xl:w-[10rem] xl:h-[10rem] object-cover rounded-full border-2 border-[var(--yellow)]"
                                 />

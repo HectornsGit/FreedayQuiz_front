@@ -134,7 +134,7 @@ export default function Header() {
                                 >
                                     {!loading && userInfo?.avatar ? (
                                         <img
-                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/uploads/${userInfo.avatar}`}
+                                            src={userInfo.avatar}
                                             alt="Avatar"
                                             className="rounded-full cursor-pointer md:w-20 md:h-20 object-cover border-2 border-[var(--yellow)]"
                                         />

@@ -61,7 +61,7 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
                                 setInitialFormData(initialData);
 
                                 if (question.image) {
-                                    const imageUrl = `${process.env.NEXT_PUBLIC_API_HOST}/uploads/${question.image}`;
+                                    const imageUrl = question.image;
                                     setImagePreview(
                                         <img
                                             src={imageUrl}
@@ -198,13 +198,13 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
 
     const handleFinishEdit = async () => {
         if (JSON.stringify(formData) !== JSON.stringify(initialFormData)) {
-        const isSuccess = await handleSubmit(new Event('submit'));
-        if (isSuccess) {
+            const isSuccess = await handleSubmit(new Event('submit'));
+            if (isSuccess) {
+                router.push('/profile');
+            }
+        } else {
             router.push('/profile');
         }
-    } else {
-        router.push('/profile');
-    }
     };
 
     return {
