@@ -2,11 +2,9 @@
 'use client';
 import { useEffect, useState } from 'react';
 const QuestionImage = ({ image }) => {
-    const [route, setRoute] = useState(
-        process.env.NEXT_PUBLIC_API_HOST + '/uploads/' + image
-    );
+    const [route, setRoute] = useState(image);
     useEffect(() => {
-        setRoute(process.env.NEXT_PUBLIC_API_HOST + '/uploads/' + image);
+        setRoute(image);
     }, [image]);
     return (
         <div className="self-center">
