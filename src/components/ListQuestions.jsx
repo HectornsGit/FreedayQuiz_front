@@ -86,7 +86,7 @@ export default function ListQuestions({ quizId, closeModal }) {
                                                     question.questionNumber
                                                 )
                                             }
-                                            src={`${url}/uploads/${question.questionImage}`}
+                                            src={question.questionImage}
                                             alt={`foto portada de la pregunta ${question.questionId}`}
                                         />
                                     </div>
