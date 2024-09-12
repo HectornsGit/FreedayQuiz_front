@@ -9,7 +9,6 @@ import ManagerButton from './ManagerButton';
 import QuestionImage from '../QuestionImage';
 import Accordion from '@/components/Accordion';
 import ListPlayerStats from '../ListPlayerStats';
-import Points from '@/components/icons/Points';
 import GenerateCSVButton from '@/components/GenerateCSVButton';
 import TrashCan from '@/components/icons/TrashCan';
 import ScoreButton from './ScoreButton';
