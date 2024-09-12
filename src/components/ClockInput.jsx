@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from 'react';
 
-const ClockInput = ({ id, text, defaultValue, isInput }) => {
+const ClockInput = ({
+    id,
+    text,
+    defaultValue,
+    isInput,
+    timeLeft,
+    isQuestionRunning,
+}) => {
     const [value, setValue] = useState(defaultValue);
     useEffect(() => {
         setValue(defaultValue);
@@ -26,7 +33,7 @@ const ClockInput = ({ id, text, defaultValue, isInput }) => {
                 />
             ) : (
                 <p className="text-2xl ">
-                    {value}
+                    {isQuestionRunning ? timeLeft : value}
                     <span className="text-lg p-0 ">s</span>
                 </p>
             )}

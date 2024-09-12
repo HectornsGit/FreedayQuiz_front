@@ -167,6 +167,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                     defaultValue={question.questionTime}
                                     handleChange={handleQuestionChange}
                                     timeLeft={timeLeft}
+                                    isQuestionRunning={isQuestionRunning}
                                 ></ClockInput>
 
                                 {isInput && (
