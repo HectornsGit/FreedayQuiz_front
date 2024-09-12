@@ -1,6 +1,6 @@
 'use client';
 import QuestionTitleInput from './QuestionTitleInput';
-import NumberInput from '@/components/NumberInput';
+import ClockInput from '@/components/ClockInput';
 import Clock from '@/components/Clock';
 import YellowBgPencil from '@/components/icons/YellowBgPencil';
 import { useEffect, useRef, useState } from 'react';
@@ -9,7 +9,6 @@ import ManagerButton from './ManagerButton';
 import QuestionImage from '../QuestionImage';
 import Accordion from '@/components/Accordion';
 import ListPlayerStats from '../ListPlayerStats';
-import Points from '@/components/icons/Points';
 import GenerateCSVButton from '@/components/GenerateCSVButton';
 import TrashCan from '@/components/icons/TrashCan';
 import ScoreButton from './ScoreButton';
@@ -67,9 +66,11 @@ const MatchComponentAsManager = ({ managerProps }) => {
         return (
             <section>
                 {quizData && (
-                    <h1 className="text-3xl font-bold my-8">
-                        {quizData?.title}
-                    </h1>
+                    <div>
+                        <h1 className="text-3xl font-bold my-8">
+                            {quizData?.title}
+                        </h1>
+                    </div>
                 )}
                 <form
                     className="flex flex-col items-center"
@@ -135,7 +136,14 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     </div>
                 )}
                 {quizData && (
-                    <h1 className="text-3xl font-bold">{quizData?.title}</h1>
+                    <div>
+                        <h1 className="text-3xl font-bold">
+                            {quizData?.title}
+                        </h1>
+                        <p className="text-lg text-[--yellow]">
+                            {quizData?.access_code}
+                        </p>
+                    </div>
                 )}
             </header>
             <aside className=" lg:row-span-2  lg:row-start-2  lg:flex hidden w-1/3">
@@ -161,13 +169,15 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 onSubmit={updateQuestionDataInBackend}
                                 className="flex sm:items-center items-start  self-center sm:w-5/6 gap-4 flex-col"
                             >
-                                <NumberInput
+                                <ClockInput
                                     id={'questionTime'}
                                     name={'questionTime'}
                                     isInput={isInput}
                                     defaultValue={question.questionTime}
                                     handleChange={handleQuestionChange}
-                                ></NumberInput>
+                                    timeLeft={timeLeft}
+                                    isQuestionRunning={isQuestionRunning}
+                                ></ClockInput>
 
                                 {isInput && (
                                     <QuestionTitleInput
