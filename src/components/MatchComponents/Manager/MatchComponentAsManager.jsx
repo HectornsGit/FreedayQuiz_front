@@ -66,9 +66,11 @@ const MatchComponentAsManager = ({ managerProps }) => {
         return (
             <section>
                 {quizData && (
-                    <h1 className="text-3xl font-bold my-8">
-                        {quizData?.title}
-                    </h1>
+                    <div>
+                        <h1 className="text-3xl font-bold my-8">
+                            {quizData?.title}
+                        </h1>
+                    </div>
                 )}
                 <form
                     className="flex flex-col items-center"
@@ -134,7 +136,14 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     </div>
                 )}
                 {quizData && (
-                    <h1 className="text-3xl font-bold">{quizData?.title}</h1>
+                    <div>
+                        <h1 className="text-3xl font-bold">
+                            {quizData?.title}
+                        </h1>
+                        <p className="text-lg text-[--yellow]">
+                            {quizData?.access_code}
+                        </p>
+                    </div>
                 )}
             </header>
             <aside className=" lg:row-span-2  lg:row-start-2  lg:flex hidden w-1/3">
