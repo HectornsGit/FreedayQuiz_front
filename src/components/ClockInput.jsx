@@ -26,6 +26,7 @@ const ClockInput = ({
                     id={id}
                     name={id}
                     value={value}
+                    min={5}
                     onChange={(e) => {
                         e.preventDefault();
                         setValue(e.target.value);
