@@ -1,6 +1,6 @@
 'use client';
 import QuestionTitleInput from './QuestionTitleInput';
-import ClockInput from '@/components/NumberInput';
+import ClockInput from '@/components/ClockInput';
 import Clock from '@/components/Clock';
 import YellowBgPencil from '@/components/icons/YellowBgPencil';
 import { useEffect, useRef, useState } from 'react';
