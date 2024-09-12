@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-const NumberInput = ({ id, text, defaultValue, isInput }) => {
+const ClockInput = ({ id, text, defaultValue, isInput }) => {
     const [value, setValue] = useState(defaultValue);
     useEffect(() => {
         setValue(defaultValue);
@@ -33,4 +33,4 @@ const NumberInput = ({ id, text, defaultValue, isInput }) => {
         </div>
     );
 };
-export default NumberInput;
+export default ClockInput;

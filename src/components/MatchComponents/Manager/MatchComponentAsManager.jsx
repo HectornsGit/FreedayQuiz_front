@@ -1,6 +1,6 @@
 'use client';
 import QuestionTitleInput from './QuestionTitleInput';
-import NumberInput from '@/components/NumberInput';
+import ClockInput from '@/components/NumberInput';
 import Clock from '@/components/Clock';
 import YellowBgPencil from '@/components/icons/YellowBgPencil';
 import { useEffect, useRef, useState } from 'react';
@@ -161,13 +161,14 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                 onSubmit={updateQuestionDataInBackend}
                                 className="flex sm:items-center items-start  self-center sm:w-5/6 gap-4 flex-col"
                             >
-                                <NumberInput
+                                <ClockInput
                                     id={'questionTime'}
                                     name={'questionTime'}
                                     isInput={isInput}
                                     defaultValue={question.questionTime}
                                     handleChange={handleQuestionChange}
-                                ></NumberInput>
+                                    timeLeft={timeLeft}
+                                ></ClockInput>
 
                                 {isInput && (
                                     <QuestionTitleInput
