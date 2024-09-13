@@ -141,7 +141,7 @@ const CreateQuestionForm = () => {
                         onClick={openModal}
                         className="py-2 px-4 bg-[--yellow] text-black font-bold rounded-sm mx-2"
                     >
-                        Guardar edición
+                        Guardar pregunta
                     </button>
                 </div>
             </form>
