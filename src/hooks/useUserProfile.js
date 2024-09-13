@@ -185,9 +185,13 @@ const useUserProfile = (session) => {
             navigator.userAgent
         );
 
-        // Redirigir a la página de match
-        if (!isMobileOrTablet) {
+        if (isMobileOrTablet) {
+            // Redirigir a la página del QR en dispositivos móviles o tablets
+            router.push(qrUrl);
+        } else {
+            // Abrir la ventana emergente en dispositivos de escritorio
             window.open(qrUrl, '_blank', windowConf);
+            // Redirigir a la página de match
             router.push(`/match/${quizId}`);
         }
     };

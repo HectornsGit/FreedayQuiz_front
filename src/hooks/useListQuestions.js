@@ -59,8 +59,8 @@ export const useListQuestions = (router, quizId) => {
     );
 
     const handleAddQuestion = useCallback(() => {
-        window.location.href = `/new-question/${quizId}`;
-    }, [quizId]);
+        router.push(`/new-question/${quizId}`);
+    }, [router, quizId]);
 
     useEffect(() => {
         getQuestions(quizId);
