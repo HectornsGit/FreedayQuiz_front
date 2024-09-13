@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 const useCreateQuestionForm = (quizId, session) => {
     const [quizTitle, setQuizTitle] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(true);
     const router = useRouter();
     const [formData, setFormData] = useState({
         image: null,
@@ -121,6 +121,29 @@ const useCreateQuestionForm = (quizId, session) => {
             toast.error(
                 'Por favor, completa los campos obligatorios, solo la imagen es opcional'
             );
+            return false;
+        }
+
+        // Verificación de tiempo mínimo para question_time
+        const minimumTime = 5;
+        if (formData.question_time < minimumTime) {
+            toast.error(
+                `El tiempo mínimo permitido para responder es de ${minimumTime} segundos.`
+            );
+            return false;
+        }
+
+        // Verificación de respuestas duplicadas
+        const answers = [
+            formData.optionA,
+            formData.optionB,
+            formData.optionC,
+            formData.correctAnswer,
+        ];
+        const uniqueAnswers = new Set(answers);
+
+        if (uniqueAnswers.size !== answers.length) {
+            toast.error('No puede haber dos respuestas iguales');
             return false;
         }
 

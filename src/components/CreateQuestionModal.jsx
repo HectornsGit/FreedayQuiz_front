@@ -3,7 +3,6 @@ import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import ListQuestions from './ListQuestions';
 import useCreateQuestionForm from '@/hooks/useCreateQuestionForm';
-import YellowPencil from './icons/YellowPencil';
 
 const CreateQuestionForm = () => {
     const { data: session } = useSession();
@@ -128,21 +127,21 @@ const CreateQuestionForm = () => {
                         />
                     </li>
                 </ul>
-                <div className="relative p-4 flex items-center justify-end">
+                <div className="relative p-4 flex items-center justify-center">
                     <button
                         type="button"
                         onClick={handleFinishEdit}
-                        className="absolute left-1/2 transform -translate-x-1/2 py-2 px-4 bg-[--yellow] text-black font-bold rounded-sm"
+                        className="py-2 px-4 bg-[--yellow] text-black font-bold rounded-sm mx-2"
                     >
-                        Finalizar edición
+                        Volver a perfil
                     </button>
 
                     <button
                         type="button"
                         onClick={openModal}
-                        className="relative w-10 h-10 font-bold rounded-sm flex items-center justify-center"
+                        className="py-2 px-4 bg-[--yellow] text-black font-bold rounded-sm mx-2"
                     >
-                        <YellowPencil />
+                        Guardar edición
                     </button>
                 </div>
             </form>

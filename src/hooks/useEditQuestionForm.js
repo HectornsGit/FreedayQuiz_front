@@ -21,7 +21,7 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
     const [imagePreview, setImagePreview] = useState(
         <NoImage className="w-full aspect-video" />
     );
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(true);
     const fileInputRef = useRef(null);
 
     useEffect(() => {
@@ -137,6 +137,29 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
             toast.error(
                 'Por favor, completa los campos obligatorios, solo la imagen es opcional'
             );
+            return false;
+        }
+
+        // Verificación de tiempo mínimo para question_time
+        const minimumTime = 5;
+        if (formData.question_time < minimumTime) {
+            toast.error(
+                `El tiempo mínimo permitido para responder es de ${minimumTime} segundos.`
+            );
+            return false;
+        }
+
+        // Verificación de respuestas duplicadas
+        const answers = [
+            formData.optionA,
+            formData.optionB,
+            formData.optionC,
+            formData.correctAnswer,
+        ];
+        const uniqueAnswers = new Set(answers);
+
+        if (uniqueAnswers.size !== answers.length) {
+            toast.error('No puede haber dos respuestas iguales');
             return false;
         }
 
