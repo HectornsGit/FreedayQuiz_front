@@ -181,11 +181,15 @@ const useUserProfile = (session) => {
 
         const windowConf = `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`;
 
-        // Abrir la ventana emergente
-        window.open(qrUrl, '_blank', windowConf);
+        const isMobileOrTablet = /iPhone|iPad|iPod|Android/i.test(
+            navigator.userAgent
+        );
 
         // Redirigir a la página de match
-        router.push(`/match/${quizId}`);
+        if (!isMobileOrTablet) {
+            window.open(qrUrl, '_blank', windowConf);
+            router.push(`/match/${quizId}`);
+        }
     };
 
     return {
