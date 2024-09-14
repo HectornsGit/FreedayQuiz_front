@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -71,6 +72,19 @@ const useGenerateQRCode = (session, status, quizId) => {
         setLoading(false); // Deja de cargar
     }, [session, status, quizId]);
 
+    const router = useRouter();
+    const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+
+    // Detectar si es móvil o tablet al cargar el componente
+    useEffect(() => {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        setIsMobileOrTablet(isMobile);
+    }, []);
+
+    const handleGoToMatch = () => {
+        router.push(`/match/${quizId}`);
+    };
+
     return {
         qrCode,
         setQrCode,
@@ -78,6 +92,8 @@ const useGenerateQRCode = (session, status, quizId) => {
         setLoading,
         accessCode,
         setAccessCode,
+        isMobileOrTablet,
+        handleGoToMatch,
     };
 };
 export default useGenerateQRCode;
