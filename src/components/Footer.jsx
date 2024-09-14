@@ -14,7 +14,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                 >
                     <img
-                        src="https://media.licdn.com/dms/image/v2/D4D35AQHKcLZaCU5Udw/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1707939982094?e=1726851600&v=beta&t=5GVdtZ776Kv_qSiYLOFr-ilLBPW-7d5iDAZd-eUOkGo"
+                        src="https://media.licdn.com/dms/image/v2/D4D03AQHQ0gDA3rmdmg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1700155863161?e=2147483647&v=beta&t=UoYQS0eXSSwnMLkSW1c5tOKVuxodIibhq7VtqqTaU40"
                         alt="LinkedIn Guillermo"
                         className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-4 border-[--bg-hab-black] object-cover"
                     />
