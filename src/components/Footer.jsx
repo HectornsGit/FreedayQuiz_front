@@ -28,6 +28,17 @@ export default function Footer() {
                     />
                 </a>
                 <a
+                    href="https://www.linkedin.com/in/nelson-albera-fullstack"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="https://media.licdn.com/dms/image/v2/D4D35AQHOGpj85QBUKQ/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1635012122922?e=1726912800&v=beta&t=HiafqGiPVxwZ5hApzzbShfcpm0yReJR0jXF-sWKU50I"
+                        alt="LinkedIn Nelson"
+                        className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-4 border-[--bg-hab-black]"
+                    />
+                </a>
+                <a
                     href="https://www.linkedin.com/in/javiergómezhuertas"
                     target="_blank"
                     rel="noopener noreferrer"
