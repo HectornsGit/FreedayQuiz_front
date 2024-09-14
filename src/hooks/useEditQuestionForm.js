@@ -164,9 +164,17 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
         }
 
         const formDataToSend = new FormData();
-        Object.keys(formData).forEach((key) => {
-            formDataToSend.append(key, formData[key]);
-        });
+
+        formDataToSend.append('question', formData.question);
+        formDataToSend.append('questionTime', formData.question_time);
+        formDataToSend.append('optionA', formData.optionA);
+        formDataToSend.append('optionB', formData.optionB);
+        formDataToSend.append('optionC', formData.optionC);
+        formDataToSend.append('correctAnswer', formData.correctAnswer);
+
+        if (formData.image) {
+            formDataToSend.append('image', formData.image);
+        }
 
         try {
             const token = session.accessToken;
