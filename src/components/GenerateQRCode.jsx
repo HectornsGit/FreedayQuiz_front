@@ -47,9 +47,9 @@ const GenerateQRCode = ({ quizId }) => {
                     {isMobileOrTablet && (
                         <button
                             onClick={handleGoToMatch}
-                            className="mt-6 mb-6 py-2 px-4 bg-[--yellow] text-black font-bold rounded-sm"
+                            className="text-black font-extrabold text-lg bg-gradient px-11 py-2 hover:box-shadow-yellow"
                         >
-                            Iniciar juego
+                            <p className="gradient-text">Iniciar juego</p>
                         </button>
                     )}
                 </div>
