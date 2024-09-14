@@ -26,8 +26,6 @@ export const useDeleteQuestions =  (valueCheckbox, dataQuizz, setValueCheckbox, 
         const onSuccess =  () => {
             toast.success('Pregunta eliminada');
             setValueCheckbox([]); //dejar los checkboxes vacíos
-             //al terminar cierra el modal
-            closeModal()
         }
 
         const onError =  (error) => {
