@@ -1,28 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { useSession } from 'next-auth/react';
 import useGenerateQRCode from '@/hooks/useGenerateQRCode';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 const GenerateQRCode = ({ quizId }) => {
     const { data: session, status } = useSession();
-    const { qrCode, loading, accessCode } = useGenerateQRCode(
-        session,
-        status,
-        quizId
-    );
-    const router = useRouter();
-    const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
-
-    // Detectar si es móvil o tablet al cargar el componente
-    useEffect(() => {
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        setIsMobileOrTablet(isMobile);
-    }, []);
-
-    const handleGoToMatch = () => {
-        router.push(`/match/${quizId}`);
-    };
+    const { qrCode, loading, accessCode, isMobileOrTablet, handleGoToMatch } =
+        useGenerateQRCode(session, status, quizId);
 
     if (loading) return <div>Loading...</div>;
 
