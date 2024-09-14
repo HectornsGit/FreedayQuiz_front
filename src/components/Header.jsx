@@ -61,7 +61,7 @@ export default function Header() {
                         </svg>
                     ) : (
                         <img
-                            src={`${process.env.NEXT_PUBLIC_API_HOST}/uploads/${userInfo?.avatar || ''}`}
+                            src={userInfo?.avatar}
                             alt="Avatar"
                             width={40}
                             height={40}
