@@ -74,15 +74,22 @@ export default function ListQuestions({ quizId, closeModal }) {
                                                 {question.questionNumber}
                                             </p>
                                             <div className="box-content flex flex-col items-center gap-y-2">
-                                                <Delete className="w-5 h-5 fill-[#fcff00] bg-black" />
-                                                <input
-                                                    type="checkbox"
-                                                    value={question.questionId}
-                                                    onChange={handleValue}
-                                                    className="appearance-none cursor-pointer w-[30px] h-[30px] border-2 border-solid border-[#fcff00] bg-black 
-                                                    checked:before:content-['✔'] 
-                                                text-center before:text-[#fcff00] leading-[1.5rem] text-2xl"
-                                                />
+                                                <label
+                                                    htmlFor={`delete-checkbox-${question.questionId}`}
+                                                    className="cursor-pointer flex items-center"
+                                                >
+                                                    <Delete className={`w-5 h-5 ${isGrey[question.questionId] ? 'fill-gray-500' : 'fill-[#fcff00]'}`}
+                                                    />
+                                                    <input
+                                                        type="checkbox"
+                                                        id={`delete-checkbox-${question.questionId}`}
+                                                        value={
+                                                            question.questionId
+                                                        }
+                                                        onChange={handleValue}
+                                                        className="appearance-none w-5 h-5 absolute opacity-0 cursor-pointer"
+                                                    />
+                                                </label>
                                             </div>
                                         </div>
                                         <img
