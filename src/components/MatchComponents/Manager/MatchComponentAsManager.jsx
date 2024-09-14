@@ -141,7 +141,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             {quizData?.title}
                         </h1>
                         <p className="text-lg text-[--yellow]">
-                            {quizData?.access_code}
+                            PIN: {quizData?.access_code}
                         </p>
                     </div>
                 )}
