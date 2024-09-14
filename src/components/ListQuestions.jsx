@@ -92,19 +92,35 @@ export default function ListQuestions({ quizId, closeModal }) {
                                                 </label>
                                             </div>
                                         </div>
-                                        <img
-                                            className={`cursor-pointer lg:max-w-[350px] lg:max-h-[205px] max-w-[200px] p-[0.35rem] box-content hover:border-2 hover:border-solid hover:border-[--yellow] hover:rounded ${isGrey[question.questionId] ? 'grayscale brightness-50' : ''}`}
-                                            onClick={() =>
-                                                handleRouteQuestion(
-                                                    quizId,
-                                                    question.questionNumber
-                                                )
-                                            }
-                                            src={question.questionImage}
-                                            alt={`foto portada de la pregunta ${question.questionId}`}
-                                        />
-                                        {isGrey[question.questionId] && (
-                                            <Delete className="lg:w-[50px] lg:h-[50px] md:w-[35px] md:h-[35px] w-[30px] h-[30px] fill-[--yellow] relative top-1/3 right-2/4" />
+                                        {isGrey[question.questionId] ? (
+                                            <div className="grid place-items-center relative lg:max-w-[350px] lg:max-h-[205px] max-w-[200px]">
+                                                <Delete className="lg:w-[50px] lg:h-[50px] md:w-[35px] md:h-[35px] w-[30px] h-[30px] fill-[--yellow] absolute z-50" />
+                                                <img
+                                                    className={`cursor-pointer lg:max-w-[350px] lg:max-h-[205px] max-w-[200px] p-[0.35rem] box-content hover:border-2 hover:border-solid hover:border-[--yellow] hover:rounded ${isGrey[question.questionId] ? 'grayscale brightness-50' : ''}`}
+                                                    onClick={() =>
+                                                        handleRouteQuestion(
+                                                            quizId,
+                                                            question.questionNumber
+                                                        )
+                                                    }
+                                                    src={question.questionImage}
+                                                    alt={`foto portada de la pregunta ${question.questionId}`}
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="grid place-items-center relative lg:max-w-[350px] lg:max-h-[205px] max-w-[200px]">
+                                                <img
+                                                    className={`cursor-pointer lg:max-w-[350px] lg:max-h-[205px] max-w-[200px] p-[0.35rem] box-content hover:border-2 hover:border-solid hover:border-[--yellow] hover:rounded ${isGrey[question.questionId] ? 'grayscale brightness-50' : ''}`}
+                                                    onClick={() =>
+                                                        handleRouteQuestion(
+                                                            quizId,
+                                                            question.questionNumber
+                                                        )
+                                                    }
+                                                    src={question.questionImage}
+                                                    alt={`foto portada de la pregunta ${question.questionId}`}
+                                                />
+                                            </div>
                                         )}
                                     </li>
                                 ))}
