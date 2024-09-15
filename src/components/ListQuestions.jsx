@@ -78,7 +78,8 @@ export default function ListQuestions({ quizId, closeModal }) {
                                                     htmlFor={`delete-checkbox-${question.questionId}`}
                                                     className="cursor-pointer flex items-center"
                                                 >
-                                                    <Delete className={`w-5 h-5 ${isGrey[question.questionId] ? 'fill-gray-500' : 'fill-[#fcff00]'}`}
+                                                    <Delete
+                                                        className={`w-5 h-5 ${isGrey[question.questionId] ? 'fill-gray-500' : 'fill-[#fcff00]'}`}
                                                     />
                                                     <input
                                                         type="checkbox"

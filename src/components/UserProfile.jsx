@@ -11,6 +11,7 @@ import ChevronRight from './icons/ChevronRight';
 import ChevronLeft from './icons/ChevronLeft';
 import Points from './icons/Points';
 import useUserProfile from '@/hooks/useUserProfile';
+import Start from './icons/Start';
 
 const UserProfile = () => {
     const { data: session } = useSession();
@@ -216,7 +217,7 @@ const UserProfile = () => {
                                                         }
                                                         className="text-[#FCFF00] hover:underline flex-shrink-0"
                                                     >
-                                                        <YellowPencil className="w-3 h-3 mr-1" />
+                                                        <YellowPencil className="w-4 h-4 mr-1" />
                                                     </button>
                                                     <button
                                                         onClick={() =>
@@ -226,7 +227,7 @@ const UserProfile = () => {
                                                         }
                                                         className="text-[#FCFF00] hover:underline flex-shrink-0"
                                                     >
-                                                        <Delete className="w-3 h-3 mr-1 fill-[--yellow]" />
+                                                        <Delete className="w-4 h-4 mr-1 fill-[--yellow]" />
                                                     </button>
                                                     <button
                                                         onClick={() =>
@@ -236,7 +237,8 @@ const UserProfile = () => {
                                                         }
                                                         className="text-[#FCFF00] hover:underline flex-shrink-0"
                                                     >
-                                                        <QR className="w-4 h-4 mr-2" />
+                                                        {/* <QR className="w-4 h-4 mr-2" /> */}
+                                                        <Start className="w-8 h-8 pt-1 fill-[--yellow]" />
                                                     </button>
                                                 </div>
                                             </section>
