@@ -54,7 +54,7 @@ export default function ListQuestions({ quizId, closeModal }) {
                     <Slider>
                         <ul
                             id="slider"
-                            className="w-full h-full flex content-center overflow-x-scroll scroll whitespace-nowrap scroll-smooth"
+                            className="w-full h-full flex content-center whitespace-nowrap scroll-smooth no-scroll no-scroll2"
                         >
                             <li
                                 onClick={handleAddQuestion}
