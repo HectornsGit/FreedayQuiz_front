@@ -33,9 +33,7 @@ const useCreateQuestionForm = (quizId, session) => {
                 try {
                     const token = session.accessToken;
 
-                    const headers = {
-                        Authorization: `Bearer ${token}`,
-                    };
+                    const headers = { Authorization: `Bearer ${token}` };
 
                     const onSuccess = (data) => {
                         setQuizTitle(data.title);
@@ -80,7 +78,11 @@ const useCreateQuestionForm = (quizId, session) => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        if (name === 'correctAnswer') {
+            setFormData({ ...formData, correctAnswer: value });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
 
     const handleFileChange = (e) => {
@@ -113,13 +115,10 @@ const useCreateQuestionForm = (quizId, session) => {
         if (
             !formData.question ||
             !formData.question_time ||
-            !formData.optionA ||
-            !formData.optionB ||
-            !formData.optionC ||
             !formData.correctAnswer
         ) {
             toast.error(
-                'Por favor, completa los campos obligatorios, solo la imagen es opcional'
+                'La pregunta, el tiempo y la respuesta correcta son obligatorios.'
             );
             return false;
         }
@@ -134,33 +133,39 @@ const useCreateQuestionForm = (quizId, session) => {
         }
 
         // Verificación de respuestas duplicadas
-        const answers = [
+        let allOptions = [
             formData.optionA,
             formData.optionB,
             formData.optionC,
-            formData.correctAnswer,
-        ];
-        const uniqueAnswers = new Set(answers);
+            formData.optionD
+        ].filter(option => option);
 
-        if (uniqueAnswers.size !== answers.length) {
-            toast.error('No puede haber dos respuestas iguales');
+        if (new Set(allOptions).size !== allOptions.length) {
+            toast.error('No puede haber dos respuestas iguales.');
             return false;
         }
 
+        let options = allOptions.filter(
+            (option) => option !== formData.correctAnswer
+        );
+
+        // Reorganización automática de las respuestas
+        const [optionA, optionB, optionC] = options;
+
         const formDataToSend = new FormData();
         formDataToSend.append('quiz_id', quizId);
-        Object.keys(formData).forEach((key) => {
-            if (formData[key] !== null && formData[key] !== '') {
-                formDataToSend.append(key, formData[key]);
-            }
-        });
+        formDataToSend.append('question', formData.question);
+        formDataToSend.append('question_time', formData.question_time);
+        formDataToSend.append('question_number', formData.question_number);
+        formDataToSend.append('correctAnswer', formData.correctAnswer);
+        if (optionA) formDataToSend.append('optionA', optionA);
+        if (optionB) formDataToSend.append('optionB', optionB);
+        if (optionC) formDataToSend.append('optionC', optionC);
+        if (formData.image) formDataToSend.append('image', formData.image);
 
         try {
             const token = session.accessToken;
-
-            const headers = {
-                Authorization: `Bearer ${token}`,
-            };
+            const headers = { Authorization: `Bearer ${token}` };
 
             await fetchAPI(
                 '/create-questions',
@@ -188,10 +193,7 @@ const useCreateQuestionForm = (quizId, session) => {
 
     const openModal = async () => {
         const isFormEmpty = Object.keys(formData).every(
-            (key) =>
-                (key === 'question_number' && formData[key] !== '') ||
-                formData[key] === null ||
-                formData[key] === ''
+            (key) => formData[key] === '' || formData[key] === null
         );
 
         if (isFormEmpty) {
@@ -215,32 +217,21 @@ const useCreateQuestionForm = (quizId, session) => {
     };
 
     const handleFinishEdit = async () => {
-        try {
-            const isFormEmpty = Object.keys(formData).every(
-                (key) =>
-                    (key === 'question_number' && formData[key] !== '') ||
-                    formData[key] === null ||
-                    formData[key] === ''
-            );
+        const isFormEmpty = Object.keys(formData).every(
+            (key) => formData[key] === '' || formData[key] === null
+        );
+        // Redirige directamente si el formulario está vacío
+        if (isFormEmpty) {
+            router.push('/profile');
+            return;
+        }
 
-            // Redirige directamente si el formulario está vacío
-            if (isFormEmpty) {
-                router.push('/profile');
-                return;
-            }
-
-            const isSuccess = await handleSubmit(new Event('submit'));
-
-            // Solo redirige si el submit fue exitoso
-            if (isSuccess) {
-                router.push('/profile');
-            }
-        } catch (error) {
-            console.error('Error al guardar y redirigir:', error);
-            toast.error('Error al guardar los cambios.');
+        const isSuccess = await handleSubmit(new Event('submit'));
+        // Solo redirige si el submit fue exitoso
+        if (isSuccess) {
+            router.push('/profile');
         }
     };
-
 
     return {
         quizTitle,

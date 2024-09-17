@@ -83,6 +83,15 @@ const CreateQuestionForm = () => {
                             placeholder="Respuesta 1"
                             className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
+                        <input
+                            type="radio"
+                            name="correctAnswer"
+                            value={formData.optionA}
+                            checked={
+                                formData.correctAnswer === formData.optionA
+                            }
+                            onChange={handleInputChange}
+                        />
                     </li>
                     <li
                         className={
@@ -96,6 +105,15 @@ const CreateQuestionForm = () => {
                             onChange={handleInputChange}
                             placeholder="Respuesta 2"
                             className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
+                        />
+                        <input
+                            type="radio"
+                            name="correctAnswer"
+                            value={formData.optionB}
+                            checked={
+                                formData.correctAnswer === formData.optionB
+                            }
+                            onChange={handleInputChange}
                         />
                     </li>
                     <li
@@ -111,6 +129,15 @@ const CreateQuestionForm = () => {
                             placeholder="Respuesta 3"
                             className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
+                        <input
+                            type="radio"
+                            name="correctAnswer"
+                            value={formData.optionC}
+                            checked={
+                                formData.correctAnswer === formData.optionC
+                            }
+                            onChange={handleInputChange}
+                        />
                     </li>
                     <li
                         className={
@@ -119,11 +146,20 @@ const CreateQuestionForm = () => {
                     >
                         <input
                             type="text"
-                            name="correctAnswer"
-                            value={formData.correctAnswer}
+                            name="optionD"
+                            value={formData.optionD}
                             onChange={handleInputChange}
-                            placeholder="Respuesta Correcta"
+                            placeholder="Respuesta 4"
                             className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
+                        />
+                        <input
+                            type="radio"
+                            name="correctAnswer"
+                            value={formData.optionD}
+                            checked={
+                                formData.correctAnswer === formData.optionD
+                            }
+                            onChange={handleInputChange}
                         />
                     </li>
                 </ul>
