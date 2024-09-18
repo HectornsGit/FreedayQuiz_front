@@ -189,7 +189,6 @@ const useCreateQuestionForm = (quizId, session) => {
                 formDataToSend,
                 (data) => {
                     toast.success('Pregunta creada');
-                    console.log('Pregunta creada:', data);
                     // Actualiza el número de la última pregunta después de crear una nueva
                     setLastQuestionNumber(lastQuestionNumber + 1);
                 },

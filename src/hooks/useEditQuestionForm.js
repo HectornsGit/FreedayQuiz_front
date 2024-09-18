@@ -56,7 +56,6 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
                                     optionC: question.optionC || '',
                                     optionD: question.correctAnswer || '',
                                 };
-                                console.log(data);
 
                                 setFormData(initialData);
                                 setInitialFormData(initialData);
@@ -190,7 +189,6 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
                 formDataToSend,
                 (data) => {
                     toast.success('Pregunta editada');
-                    console.log('Pregunta editada:', data);
                     setInitialFormData({ ...formData });
                 },
                 (error) => {

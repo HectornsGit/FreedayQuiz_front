@@ -22,7 +22,6 @@ const useCreateQuizModal = (session, onQuizCreated) => {
 
             const onSuccess = (data) => {
                 toast.success('Quiz creado');
-                console.log('Quiz creado:', data);
                 setTitle('');
                 setDescription('');
                 setIsModalOpen(false);
