@@ -19,6 +19,7 @@ const CreateQuestionForm = () => {
         handleImageClick,
         handleFinishEdit,
         fileInputRef,
+        resetForm,
     } = useCreateQuestionForm(quizId, session);
 
     return (
@@ -182,7 +183,7 @@ const CreateQuestionForm = () => {
                 </div>
             </form>
             {isModalOpen && (
-                <ListQuestions quizId={quizId} closeModal={closeModal} />
+                <ListQuestions quizId={quizId} closeModal={closeModal} resetForm={resetForm} />
             )}
         </div>
     );

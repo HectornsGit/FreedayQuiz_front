@@ -15,11 +15,27 @@ const useCreateQuestionForm = (quizId, session) => {
         optionA: '',
         optionB: '',
         optionC: '',
+        optionD: '',
         correctAnswer: '',
         question_number: '',
     });
+    const [lastQuestionNumber, setLastQuestionNumber] = useState(0);
 
-    // Icono NoImage por defecto
+    const resetForm = () => {
+        setFormData({
+            image: null,
+            question: '',
+            question_time: '',
+            optionA: '',
+            optionB: '',
+            optionC: '',
+            optionD: '',
+            correctAnswer: '',
+            question_number: lastQuestionNumber + 1, // Incrementa el número de pregunta
+        });
+        setImagePreview(<NoImage className="w-full aspect-video" />);
+    };
+
     const [imagePreview, setImagePreview] = useState(
         <NoImage className="w-full aspect-video" />
     );
@@ -32,20 +48,20 @@ const useCreateQuestionForm = (quizId, session) => {
             if (quizId && session) {
                 try {
                     const token = session.accessToken;
-
                     const headers = { Authorization: `Bearer ${token}` };
 
                     const onSuccess = (data) => {
                         setQuizTitle(data.title);
 
-                        const lastQuestionNumber = Math.max(
+                        const lastQuestionNumberFromAPI = Math.max(
                             0,
                             ...data.questions.map((q) => q.questionNumber || 0)
                         );
 
+                        setLastQuestionNumber(lastQuestionNumberFromAPI);
                         setFormData((prevData) => ({
                             ...prevData,
-                            question_number: lastQuestionNumber + 1,
+                            question_number: lastQuestionNumberFromAPI + 1,
                         }));
                     };
 
@@ -137,8 +153,8 @@ const useCreateQuestionForm = (quizId, session) => {
             formData.optionA,
             formData.optionB,
             formData.optionC,
-            formData.optionD
-        ].filter(option => option);
+            formData.optionD,
+        ].filter((option) => option);
 
         if (new Set(allOptions).size !== allOptions.length) {
             toast.error('No puede haber dos respuestas iguales.');
@@ -149,8 +165,7 @@ const useCreateQuestionForm = (quizId, session) => {
             (option) => option !== formData.correctAnswer
         );
 
-        // Reorganización automática de las respuestas
-        const [optionA, optionB, optionC] = options;
+        const [optionA, optionB, optionC, optionD] = options;
 
         const formDataToSend = new FormData();
         formDataToSend.append('quiz_id', quizId);
@@ -161,6 +176,7 @@ const useCreateQuestionForm = (quizId, session) => {
         if (optionA) formDataToSend.append('optionA', optionA);
         if (optionB) formDataToSend.append('optionB', optionB);
         if (optionC) formDataToSend.append('optionC', optionC);
+        if (optionD) formDataToSend.append('optionD', optionD);
         if (formData.image) formDataToSend.append('image', formData.image);
 
         try {
@@ -174,6 +190,8 @@ const useCreateQuestionForm = (quizId, session) => {
                 (data) => {
                     toast.success('Pregunta creada');
                     console.log('Pregunta creada:', data);
+                    // Actualiza el número de la última pregunta después de crear una nueva
+                    setLastQuestionNumber(lastQuestionNumber + 1);
                 },
                 (error) => {
                     toast.error(error.message);
@@ -247,6 +265,7 @@ const useCreateQuestionForm = (quizId, session) => {
         handleImageClick,
         handleFinishEdit,
         fileInputRef,
+        resetForm,
     };
 };
 export default useCreateQuestionForm;
