@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import NoImage from '../components/icons/NoImage';
@@ -54,8 +54,9 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
                                     optionA: question.optionA || '',
                                     optionB: question.optionB || '',
                                     optionC: question.optionC || '',
-                                    correctAnswer: question.correctAnswer || '',
+                                    optionD: question.correctAnswer || '',
                                 };
+                                console.log(data);
 
                                 setFormData(initialData);
                                 setInitialFormData(initialData);
@@ -98,7 +99,11 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        if (name === 'correctAnswer') {
+            setFormData({ ...formData, correctAnswer: value });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
 
     const handleFileChange = (e) => {
@@ -129,18 +134,15 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
         if (
             !formData.question ||
             !formData.question_time ||
-            !formData.optionA ||
-            !formData.optionB ||
-            !formData.optionC ||
             !formData.correctAnswer
         ) {
             toast.error(
-                'Por favor, completa los campos obligatorios, solo la imagen es opcional'
+                'La pregunta, el tiempo y la respuesta correcta son obligatorios.'
             );
             return false;
         }
 
-        // Verificación de tiempo mínimo para question_time
+        // Verificación de tiempo mínimo
         const minimumTime = 5;
         if (formData.question_time < minimumTime) {
             toast.error(
@@ -150,37 +152,37 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
         }
 
         // Verificación de respuestas duplicadas
-        const answers = [
+        let allOptions = [
             formData.optionA,
             formData.optionB,
             formData.optionC,
-            formData.correctAnswer,
-        ];
-        const uniqueAnswers = new Set(answers);
+            formData.optionD
+        ].filter(option => option);
 
-        if (uniqueAnswers.size !== answers.length) {
-            toast.error('No puede haber dos respuestas iguales');
+        if (new Set(allOptions).size !== allOptions.length) {
+            toast.error('No puede haber dos respuestas iguales.');
             return false;
         }
 
-        const formDataToSend = new FormData();
+        let options = allOptions.filter(
+            (option) => option !== formData.correctAnswer
+        );
 
+        // Reorganización automática de las respuestas
+        const [optionA, optionB, optionC] = options;
+
+        const formDataToSend = new FormData();
         formDataToSend.append('question', formData.question);
         formDataToSend.append('questionTime', formData.question_time);
-        formDataToSend.append('optionA', formData.optionA);
-        formDataToSend.append('optionB', formData.optionB);
-        formDataToSend.append('optionC', formData.optionC);
         formDataToSend.append('correctAnswer', formData.correctAnswer);
-
-        if (formData.image) {
-            formDataToSend.append('image', formData.image);
-        }
+        formDataToSend.append('optionA', optionA || '');
+        formDataToSend.append('optionB', optionB || '');
+        formDataToSend.append('optionC', optionC || '');
+        if (formData.image) {formDataToSend.append('image', formData.image);}
 
         try {
             const token = session.accessToken;
-            const headers = {
-                Authorization: `Bearer ${token}`,
-            };
+            const headers = { Authorization: `Bearer ${token}` };
 
             await fetchAPI(
                 `/update-question/${quizId}/${questionNumber}`,
