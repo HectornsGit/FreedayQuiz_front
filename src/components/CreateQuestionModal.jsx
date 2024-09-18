@@ -1,11 +1,9 @@
 'use client';
 import { useParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import ListQuestions from './ListQuestions';
 import useCreateQuestionForm from '@/hooks/useCreateQuestionForm';
 
 const CreateQuestionForm = () => {
-    const { data: session } = useSession();
     const { quizId } = useParams();
     const {
         quizTitle,
@@ -20,7 +18,7 @@ const CreateQuestionForm = () => {
         handleFinishEdit,
         fileInputRef,
         resetForm,
-    } = useCreateQuestionForm(quizId, session);
+    } = useCreateQuestionForm(quizId);
 
     return (
         <div>
@@ -183,7 +181,11 @@ const CreateQuestionForm = () => {
                 </div>
             </form>
             {isModalOpen && (
-                <ListQuestions quizId={quizId} closeModal={closeModal} resetForm={resetForm} />
+                <ListQuestions
+                    quizId={quizId}
+                    closeModal={closeModal}
+                    resetForm={resetForm}
+                />
             )}
         </div>
     );

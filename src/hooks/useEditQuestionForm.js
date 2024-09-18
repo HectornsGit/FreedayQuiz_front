@@ -1,12 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import NoImage from '../components/icons/NoImage';
 import { useRouter } from 'next/navigation';
+import { profileContext } from '@/context/profileContext';
 
 const useEditQuestionForm = (quizId, questionNumber, session) => {
     const router = useRouter();
+    const { updateQuizData } = useContext(profileContext);
     const [quizTitle, setQuizTitle] = useState('');
     const [formData, setFormData] = useState({
         image: null,
@@ -155,8 +157,8 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
             formData.optionA,
             formData.optionB,
             formData.optionC,
-            formData.optionD
-        ].filter(option => option);
+            formData.optionD,
+        ].filter((option) => option);
 
         if (new Set(allOptions).size !== allOptions.length) {
             toast.error('No puede haber dos respuestas iguales.');
@@ -177,7 +179,9 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
         formDataToSend.append('optionA', optionA || '');
         formDataToSend.append('optionB', optionB || '');
         formDataToSend.append('optionC', optionC || '');
-        if (formData.image) {formDataToSend.append('image', formData.image);}
+        if (formData.image) {
+            formDataToSend.append('image', formData.image);
+        }
 
         try {
             const token = session.accessToken;
@@ -190,6 +194,7 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
                 (data) => {
                     toast.success('Pregunta editada');
                     setInitialFormData({ ...formData });
+                    updateQuizData(data.data.questionUpdated);
                 },
                 (error) => {
                     toast.error(error.message);
