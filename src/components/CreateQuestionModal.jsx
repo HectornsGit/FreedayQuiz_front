@@ -2,9 +2,11 @@
 import { useParams } from 'next/navigation';
 import ListQuestions from './ListQuestions';
 import useCreateQuestionForm from '@/hooks/useCreateQuestionForm';
+import { useSession } from 'next-auth/react';
 
 const CreateQuestionForm = () => {
     const { quizId } = useParams();
+    const { data: session, status } = useSession();
     const {
         quizTitle,
         isModalOpen,
@@ -18,7 +20,7 @@ const CreateQuestionForm = () => {
         handleFinishEdit,
         fileInputRef,
         resetForm,
-    } = useCreateQuestionForm(quizId);
+    } = useCreateQuestionForm(quizId, session);
 
     return (
         <div>
