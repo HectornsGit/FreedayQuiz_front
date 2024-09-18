@@ -17,7 +17,7 @@ const ProfileProvider = ({ children }) => {
                     };
                 }
 
-                return question;
+                return quiz;
             });
             return { ...prevData, quizzes: newData };
         });
