@@ -7,7 +7,7 @@ export const useListQuestions = (router, quizId) => {
     const [dataQuizz, setDataQuizz] = useState([]);
     const [valueCheckbox, setValueCheckbox] = useState([]);
     const [modal, setModal] = useState(false);
-
+    console.log('dataquiz', dataQuizz);
     const getQuestions = async (quizId) => {
         const onSuccess = async (data) => {
             const idQuiz = data.id;
