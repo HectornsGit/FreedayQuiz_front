@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
+import { profileContext } from '@/context/profileContext';
 
 const useEditQuizModal = (session, isOpen, onClose, quizId, onQuizUpdated) => {
     const [title, setTitle] = React.useState('');
     const [description, setDescription] = React.useState('');
+    const { updateBasicData } = useContext(profileContext);
 
     React.useEffect(() => {
         if (isOpen && quizId) {
@@ -64,6 +66,7 @@ const useEditQuizModal = (session, isOpen, onClose, quizId, onQuizUpdated) => {
                 toast.success('Quiz actualizado');
                 setTitle('');
                 setDescription('');
+                updateBasicData(data.data.quizToUpdate);
 
                 if (shouldUpdate) {
                     onQuizUpdated(quizId);

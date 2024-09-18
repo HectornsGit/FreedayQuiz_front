@@ -1,10 +1,11 @@
 import { fetchAPI } from '@/api/fetch-api';
+import { profileContext } from '@/context/profileContext';
 import { useSession } from 'next-auth/react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 
 export const useUserInfo = () => {
     const { data: session, status } = useSession();
-    const [userInfo, setUserInfo] = useState(null);
+    const { userInfo, setUserInfo } = useContext(profileContext);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -25,7 +26,7 @@ export const useUserInfo = () => {
                     description: quiz.description,
                     questions: quiz.questions,
                 }));
-                setUserInfo({ name, email, avatar, quizzes: quizzesData }); 
+                setUserInfo({ name, email, avatar, quizzes: quizzesData });
             }
             setLoading(false);
         };
@@ -57,7 +58,7 @@ export const useUserInfo = () => {
             setError(error);
             setLoading(false);
         }
-    }, [session, status]);
+    }, [session, status, setUserInfo]);
 
     useEffect(() => {
         getUserInfo();

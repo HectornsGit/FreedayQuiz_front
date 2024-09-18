@@ -65,7 +65,7 @@ export default function ListQuestions({ quizId, closeModal, resetForm }) {
                             </li>
 
                             {dataQuizz &&
-                                dataQuizz.map((question) => (
+                                dataQuizz?.map((question) => (
                                     <li
                                         key={question.questionId}
                                         className="lg:max-w-[500px] inline-flex md:mx-4 mx-6"
