@@ -22,7 +22,7 @@ export const useDeleteQuestions = (
             deleteQuestion(data.questionIds);
             toast.success('Pregunta eliminada');
             setValueCheckbox([]);
-            // router.push(`new-question/${IdQuiz}`);
+            // router.push(`${IdQuiz}`);
         };
 
         const onError = (error) => {

@@ -194,7 +194,9 @@ const useCreateQuestionForm = (quizId, session) => {
                     // Actualiza el número de la última pregunta después de crear una nueva
                     setLastQuestionNumber(lastQuestionNumber + 1);
                     addNewQuestion(data.quizData);
-                    resetForm();
+                    router.push(
+                        `/edit-question/${quizId}/${lastQuestionNumber + 1}`
+                    );
                 },
                 (error) => {
                     toast.error(error.message);
@@ -238,20 +240,21 @@ const useCreateQuestionForm = (quizId, session) => {
     };
 
     const handleFinishEdit = async () => {
-        const isFormEmpty = Object.keys(formData).every(
-            (key) => formData[key] === '' || formData[key] === null
-        );
-        // Redirige directamente si el formulario está vacío
-        if (isFormEmpty) {
-            router.push('/profile');
-            return;
-        }
+        // const isFormEmpty = Object.keys(formData).every(
+        //     (key) => formData[key] === '' || formData[key] === null
+        // );
+        // // Redirige directamente si el formulario está vacío
+        // if (isFormEmpty) {
+        //     router.push('/profile');
+        //     return;
+        // }
 
-        const isSuccess = await handleSubmit(new Event('submit'));
-        // Solo redirige si el submit fue exitoso
-        if (isSuccess) {
-            router.push('/profile');
-        }
+        // const isSuccess = await handleSubmit(new Event('submit'));
+        // // Solo redirige si el submit fue exitoso
+        // if (isSuccess) {
+        //     router.push('/profile');
+        // }
+        router.push('/profile');
     };
 
     return {
