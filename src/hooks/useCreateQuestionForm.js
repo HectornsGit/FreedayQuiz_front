@@ -22,6 +22,7 @@ const useCreateQuestionForm = (quizId, session) => {
         question_number: '',
     });
     const [lastQuestionNumber, setLastQuestionNumber] = useState(0);
+    const [longPressTimeout, setLongPressTimeout] = useState(null);
 
     const resetForm = () => {
         setFormData({
@@ -101,6 +102,19 @@ const useCreateQuestionForm = (quizId, session) => {
         } else {
             setFormData({ ...formData, [name]: value });
         }
+    };
+
+    const handleLongPress = (value) => {
+        setFormData({ ...formData, correctAnswer: value });
+    };
+
+    const handleTouchStart = (e, value) => {
+        e.preventDefault();
+        setLongPressTimeout(setTimeout(() => handleLongPress(value), 800)); // 800ms de pulsación larga
+    };
+
+    const handleTouchEnd = () => {
+        clearTimeout(longPressTimeout); // Limpia el timeout si el usuario deja de tocar antes de tiempo
     };
 
     const handleFileChange = (e) => {
@@ -264,6 +278,9 @@ const useCreateQuestionForm = (quizId, session) => {
         setFormData,
         imagePreview,
         handleInputChange,
+        handleTouchStart,
+        handleLongPress,
+        handleTouchEnd,
         handleFileChange,
         handleSubmit,
         openModal,

@@ -13,6 +13,8 @@ const CreateQuestionForm = () => {
         formData,
         imagePreview,
         handleInputChange,
+        handleTouchStart,
+        handleTouchEnd,
         handleFileChange,
         openModal,
         closeModal,
@@ -29,7 +31,7 @@ const CreateQuestionForm = () => {
             </h1>
             <form onSubmit={(e) => e.preventDefault()}>
                 <div
-                    className="flex flex-col self-center items-center mb-4 relative cursor-pointer xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] mx-auto"
+                    className="flex flex-col self-center items-center mb-4 relative cursor-pointer xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] mx-auto"
                     onClick={handleImageClick}
                 >
                     <label className="block mb-2">Imagen</label>
@@ -56,7 +58,7 @@ const CreateQuestionForm = () => {
                             name="question_time"
                             value={formData.question_time}
                             onChange={handleInputChange}
-                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] input-default"
+                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] input-default"
                         />
                     </li>
                     <li className="flex flex-col">
@@ -66,12 +68,12 @@ const CreateQuestionForm = () => {
                             name="question"
                             value={formData.question}
                             onChange={handleInputChange}
-                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] input-default"
+                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] input-default"
                         />
                     </li>
                 </ul>
                 <ul className="flex flex-col self-center w-full items-center lg:gap-y-8 gap-y-6 mt-5">
-                    <label className="lg:-mb-8 -mb-6 xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw]">
+                    <label className="lg:-mb-8 -mb-6 xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]">
                         Selecciona la respuesta correcta
                     </label>
                     <li className="flex items-center relative mt-0">
@@ -81,8 +83,12 @@ const CreateQuestionForm = () => {
                                 name="optionA"
                                 value={formData.optionA}
                                 onChange={handleInputChange}
+                                onTouchStart={(e) =>
+                                    handleTouchStart(e, formData.optionA)
+                                }
+                                onTouchEnd={handleTouchEnd}
                                 placeholder="Respuesta 1"
-                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] 
+                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] 
                                     ${
                                         formData.correctAnswer ===
                                             formData.optionA && formData.optionA
@@ -91,7 +97,7 @@ const CreateQuestionForm = () => {
                                     }`}
                             />
                         </div>
-                        <label className="custom-radio-wrapper absolute right-[-30px]">
+                        <label className="custom-radio-wrapper absolute right-[-30px] hidden sm:block">
                             <input
                                 type="radio"
                                 name="correctAnswer"
@@ -113,8 +119,12 @@ const CreateQuestionForm = () => {
                                 name="optionB"
                                 value={formData.optionB}
                                 onChange={handleInputChange}
+                                onTouchStart={(e) =>
+                                    handleTouchStart(e, formData.optionB)
+                                }
+                                onTouchEnd={handleTouchEnd}
                                 placeholder="Respuesta 2"
-                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] 
+                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] 
                                     ${
                                         formData.correctAnswer ===
                                             formData.optionB && formData.optionB
@@ -123,7 +133,7 @@ const CreateQuestionForm = () => {
                                     }`}
                             />
                         </div>
-                        <label className="custom-radio-wrapper absolute right-[-30px]">
+                        <label className="custom-radio-wrapper absolute right-[-30px] hidden sm:block">
                             <input
                                 type="radio"
                                 name="correctAnswer"
@@ -145,8 +155,12 @@ const CreateQuestionForm = () => {
                                 name="optionC"
                                 value={formData.optionC}
                                 onChange={handleInputChange}
+                                onTouchStart={(e) =>
+                                    handleTouchStart(e, formData.optionC)
+                                }
+                                onTouchEnd={handleTouchEnd}
                                 placeholder="Respuesta 3"
-                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] 
+                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] 
                                     ${
                                         formData.correctAnswer ===
                                             formData.optionC && formData.optionC
@@ -155,7 +169,7 @@ const CreateQuestionForm = () => {
                                     }`}
                             />
                         </div>
-                        <label className="custom-radio-wrapper absolute right-[-30px]">
+                        <label className="custom-radio-wrapper absolute right-[-30px] hidden sm:block">
                             <input
                                 type="radio"
                                 name="correctAnswer"
@@ -177,8 +191,12 @@ const CreateQuestionForm = () => {
                                 name="optionD"
                                 value={formData.optionD}
                                 onChange={handleInputChange}
+                                onTouchStart={(e) =>
+                                    handleTouchStart(e, formData.optionD)
+                                }
+                                onTouchEnd={handleTouchEnd}
                                 placeholder="Respuesta 4"
-                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] 
+                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] 
                                     ${
                                         formData.correctAnswer ===
                                             formData.optionD && formData.optionD
@@ -187,7 +205,7 @@ const CreateQuestionForm = () => {
                                     }`}
                             />
                         </div>
-                        <label className="custom-radio-wrapper absolute right-[-30px]">
+                        <label className="custom-radio-wrapper absolute right-[-30px] hidden">
                             <input
                                 type="radio"
                                 name="correctAnswer"
