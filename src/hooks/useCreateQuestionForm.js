@@ -252,6 +252,7 @@ const useCreateQuestionForm = (quizId, session) => {
         if (isSuccess) {
             router.push('/profile');
         }
+        //  router.push('/profile');
     };
 
     return {
