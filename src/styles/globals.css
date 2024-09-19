@@ -123,6 +123,13 @@ body {
   align-items: center;
 }
 
+@media (max-width: 640px) {
+  .custom-radio-wrapper {
+    display: none;
+  }
+}
+
+
 .custom-radio {
   opacity: 0;
   position: absolute;
