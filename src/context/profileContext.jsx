@@ -25,6 +25,7 @@ const ProfileProvider = ({ children }) => {
 
     //Datos de los quizes en el perfil de usuario:
     const [dataQuizz, setDataQuizz] = useState([]);
+
     const updateQuizData = (data) => {
         setDataQuizz((prevData) => {
             const newData = prevData.map((question) => {
@@ -43,6 +44,30 @@ const ProfileProvider = ({ children }) => {
         });
     };
 
+    const addNewQuestion = (data) => {
+        setDataQuizz((prevData) => {
+            const newQuestion = [
+                ...prevData,
+                {
+                    idQuiz: data.quiz_id,
+                    questionId: data.id,
+                    questionImage: data.image,
+                    questionNumber: data.question_number,
+                },
+            ];
+            return newQuestion;
+        });
+    };
+
+    const deleteQuestion = (data) => {
+        setDataQuizz((prevData) => {
+            const newData = prevData.filter(
+                (question) => !data.includes(question.questionId.toString())
+            );
+            return newData;
+        });
+    };
+
     return (
         <profileContext.Provider
             value={{
@@ -52,6 +77,8 @@ const ProfileProvider = ({ children }) => {
                 setDataQuizz,
                 updateQuizData,
                 updateBasicData,
+                addNewQuestion,
+                deleteQuestion,
             }}
         >
             {children}

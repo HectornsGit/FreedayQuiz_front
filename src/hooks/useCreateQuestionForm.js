@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import NoImage from '../components/icons/NoImage';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import { useRouter } from 'next/navigation';
+import { profileContext } from '@/context/profileContext';
 
 const useCreateQuestionForm = (quizId, session) => {
+    const { addNewQuestion } = useContext(profileContext);
     const [quizTitle, setQuizTitle] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(true);
     const router = useRouter();
@@ -191,6 +193,8 @@ const useCreateQuestionForm = (quizId, session) => {
                     toast.success('Pregunta creada');
                     // Actualiza el número de la última pregunta después de crear una nueva
                     setLastQuestionNumber(lastQuestionNumber + 1);
+                    addNewQuestion(data.quizData);
+                    resetForm();
                 },
                 (error) => {
                     toast.error(error.message);

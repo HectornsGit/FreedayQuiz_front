@@ -3,11 +3,9 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import NoImage from '../components/icons/NoImage';
-import { useRouter } from 'next/navigation';
 import { profileContext } from '@/context/profileContext';
 
 const useEditQuestionForm = (quizId, questionNumber, session) => {
-    const router = useRouter();
     const { updateQuizData } = useContext(profileContext);
     const [quizTitle, setQuizTitle] = useState('');
     const [formData, setFormData] = useState({

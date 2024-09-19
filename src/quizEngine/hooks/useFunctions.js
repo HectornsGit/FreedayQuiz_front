@@ -19,8 +19,8 @@ const useFunctions = (Arguments) => {
 
         if (!playerId && !isMaster) {
             playerId = uuidv4();
-            setItemWithExpiry('idNewPlayer', playerId, 12);
-            setItemWithExpiry('quizId', quizId, 12);
+            setItemWithExpiry('idNewPlayer', playerId, 2);
+            setItemWithExpiry('quizId', quizId, 2);
             dispatch({
                 type: ActionTypes.SET_SESSION_RECOVERY,
                 payload: false,

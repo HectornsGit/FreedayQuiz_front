@@ -30,7 +30,6 @@ export default function ListQuestions({ quizId, closeModal, resetForm }) {
             setValueCheckbox,
             closeModal
         );
-
     return (
         <>
             {modal && (
