@@ -1,33 +1,28 @@
-/* NOTA: Este hook utiliza una lógica para Eliminar preguntas seleccionadas con un checkbox*/
-
-//Voy a necesitar hacer un fetch para eliminar preguntas
 import { fetchAPI } from '@/api/fetch-api';
-
-//me traigo info de sesion para coger el token
 import { useSession } from 'next-auth/react';
-
-//Toast para imprimir mensajes de exito o fracaso (avisaré que se han eliminado las preguntas)
 import { toast } from 'react-toastify';
-
-import { useState } from 'react';
-
+import { useState, useContext } from 'react';
+import { profileContext } from '@/context/profileContext';
+import { useRouter } from 'next/navigation';
 export const useDeleteQuestions = (
     valueCheckbox,
     dataQuizz,
     setValueCheckbox,
     closeModal
 ) => {
-    const IdQuiz = dataQuizz[0]?.idQuiz; //obtengo el id del quiz
-
-    const { data: session } = useSession(); //para obtener el token de la sesion.
-
-    const [isGrey, setIsGrey] = useState({}); //aplicará un filter:grayscale al seleccionar la img a eliminar
-    const [iconDelete, setIconDelete] = useState({}); // dibujará el icono de una papelera cuando se seleccione una img para borrar
+    const router = useRouter();
+    const { deleteQuestion } = useContext(profileContext);
+    const IdQuiz = dataQuizz[0]?.idQuiz;
+    const { data: session } = useSession();
+    const [isGrey, setIsGrey] = useState({});
+    const [iconDelete, setIconDelete] = useState({});
 
     const deleteQuestions = async () => {
-        const onSuccess = () => {
+        const onSuccess = (data) => {
+            deleteQuestion(data.questionIds);
             toast.success('Pregunta eliminada');
-            setValueCheckbox([]); //dejar los checkboxes vacíos
+            setValueCheckbox([]);
+            // router.push(`new-question/${IdQuiz}`);
         };
 
         const onError = (error) => {
@@ -36,10 +31,10 @@ export const useDeleteQuestions = (
         };
 
         try {
-            const token = session.accessToken; //en esta constante me guardo el token
+            const token = session.accessToken;
             const headers = {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`, //metemos token en la cabecera
+                Authorization: `Bearer ${token}`,
             };
 
             const body = {
@@ -60,14 +55,13 @@ export const useDeleteQuestions = (
         }
     };
 
-    //Funcion para obtener el valor del checkbox (ide de las preguntas)
     const handleValue = (e) => {
         const checked = e.target.checked;
         const value = e.target.value;
 
         if (checked) {
             setValueCheckbox((prevstate) => [...prevstate, value]);
-            setIsGrey((prevState) => ({ ...prevState, [value]: checked })); //muestra filtro escala de grises si está el check marcado
+            setIsGrey((prevState) => ({ ...prevState, [value]: checked }));
         } else {
             setValueCheckbox((prevState) =>
                 prevState.filter((item) => item !== value)

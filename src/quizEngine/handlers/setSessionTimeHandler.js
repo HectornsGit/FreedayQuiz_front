@@ -17,7 +17,7 @@ const setSessionTimeHandler =
             return;
         }
 
-        setItemWithExpiry('QuizSessionDuration', duration, 12);
+        setItemWithExpiry('QuizSessionDuration', duration, 2);
         setSessionTime(duration);
         setIsClockInput(false);
         socket.emit('startSession', duration, quizId, number_of_questions);
