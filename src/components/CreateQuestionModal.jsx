@@ -97,7 +97,7 @@ const CreateQuestionForm = () => {
                                     }`}
                             />
                         </div>
-                        <label className="custom-radio-wrapper absolute right-[-30px] hidden sm:visible">
+                        <label className="custom-radio-wrapper absolute right-[-30px]">
                             <input
                                 type="radio"
                                 name="correctAnswer"
@@ -133,7 +133,7 @@ const CreateQuestionForm = () => {
                                     }`}
                             />
                         </div>
-                        <label className="custom-radio-wrapper absolute right-[-30px] hidden sm:visible">
+                        <label className="custom-radio-wrapper absolute right-[-30px]">
                             <input
                                 type="radio"
                                 name="correctAnswer"
@@ -169,7 +169,7 @@ const CreateQuestionForm = () => {
                                     }`}
                             />
                         </div>
-                        <label className="custom-radio-wrapper absolute right-[-30px] hidden sm:visible">
+                        <label className="custom-radio-wrapper absolute right-[-30px]">
                             <input
                                 type="radio"
                                 name="correctAnswer"
@@ -205,7 +205,7 @@ const CreateQuestionForm = () => {
                                     }`}
                             />
                         </div>
-                        <label className="custom-radio-wrapper absolute right-[-30px] hidden sm:visible">
+                        <label className="custom-radio-wrapper absolute right-[-30px]">
                             <input
                                 type="radio"
                                 name="correctAnswer"
