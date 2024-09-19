@@ -4,8 +4,10 @@ import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import NoImage from '../components/icons/NoImage';
 import { profileContext } from '@/context/profileContext';
+import { useRouter } from 'next/navigation';
 
 const useEditQuestionForm = (quizId, questionNumber, session) => {
+    const router = useRouter();
     const { updateQuizData } = useContext(profileContext);
     const [quizTitle, setQuizTitle] = useState('');
     const [formData, setFormData] = useState({
@@ -239,6 +241,7 @@ const useEditQuestionForm = (quizId, questionNumber, session) => {
         } else {
             router.push('/profile');
         }
+        // router.push('/profile');
     };
 
     return {
