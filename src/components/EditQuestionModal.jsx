@@ -69,13 +69,41 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                 </ul>
                 <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6 mt-5">
                     <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
+                        <input //Cambio el orden de respuesta y pongo la opcionD primero ya que se usa para previsualizar la respuesta correcta
+                            type="text"
+                            name="optionD"
+                            value={formData.optionD}
+                            onChange={handleInputChange}
+                            placeholder="Respuesta 1" //pongo Respuesta 1 en la optionD para una megora visual de el usuario
+                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
+                        />
+                        <input
+                            type="radio"
+                            name="correctAnswer"
+                            value={formData.optionD}
+                            checked={
+                                formData.correctAnswer === formData.optionD
+                            }
+                            onChange={handleInputChange}
+                        />
+                    </li>
+                    <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
                         <input
                             type="text"
                             name="optionA"
                             value={formData.optionA}
                             onChange={handleInputChange}
-                            placeholder="Respuesta 1"
+                            placeholder="Respuesta 2"
                             className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
+                        />
+                        <input
+                            type="radio"
+                            name="correctAnswer"
+                            value={formData.optionA}
+                            checked={
+                                formData.correctAnswer === formData.optionA
+                            }
+                            onChange={handleInputChange}
                         />
                     </li>
                     <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
@@ -84,8 +112,17 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                             name="optionB"
                             value={formData.optionB}
                             onChange={handleInputChange}
-                            placeholder="Respuesta 2"
+                            placeholder="Respuesta 3"
                             className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
+                        />
+                        <input
+                            type="radio"
+                            name="correctAnswer"
+                            value={formData.optionB}
+                            checked={
+                                formData.correctAnswer === formData.optionB
+                            }
+                            onChange={handleInputChange}
                         />
                     </li>
                     <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
@@ -94,18 +131,17 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                             name="optionC"
                             value={formData.optionC}
                             onChange={handleInputChange}
-                            placeholder="Respuesta 3"
+                            placeholder="Respuesta 4"
                             className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
-                    </li>
-                    <li className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
                         <input
-                            type="text"
+                            type="radio"
                             name="correctAnswer"
-                            value={formData.correctAnswer}
+                            value={formData.optionC}
+                            checked={
+                                formData.correctAnswer === formData.optionC
+                            }
                             onChange={handleInputChange}
-                            placeholder="Respuesta Correcta"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
                         />
                     </li>
                 </ul>

@@ -115,3 +115,47 @@ body {
 .qr-code img {
     filter: sepia(82%) saturate(2000%) hue-rotate(0deg) brightness(105%) contrast(104%);
 }
+
+.custom-radio-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-radio {
+  opacity: 0;
+  position: absolute;
+  width: 26px;
+  height: 26px;
+}
+
+.custom-radio-checkmark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4E39F5, #03F7F9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.custom-radio-checkmark::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s ease;
+}
+
+.custom-radio:checked + .custom-radio-checkmark::before {
+  transform: scale(1);
+}
+
+.custom-radio-checkmark:hover::before {
+  transform: scale(0.7);
+}

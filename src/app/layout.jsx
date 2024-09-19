@@ -1,14 +1,15 @@
-'use client'
-import { Montserrat } from 'next/font/google'
-import '../styles/globals.css'
-import Header from '../components/Header'
-import Footer from '@/components/Footer'
-const inter = Montserrat({ subsets: ['latin'] })
-import { SessionProvider } from 'next-auth/react'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { useMemo } from 'react'
-import { usePathname } from 'next/navigation'
+'use client';
+import { Montserrat } from 'next/font/google';
+import '../styles/globals.css';
+import Header from '../components/Header';
+import Footer from '@/components/Footer';
+const inter = Montserrat({ subsets: ['latin'] });
+import { SessionProvider } from 'next-auth/react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useMemo } from 'react';
+import { usePathname } from 'next/navigation';
+import { ProfileProvider } from '@/context/profileContext';
 
 export default function RootLayout({ children, session }) {
     const pathname = usePathname();
@@ -27,7 +28,7 @@ export default function RootLayout({ children, session }) {
             theme: 'light',
         }),
         []
-    )
+    );
 
     return (
         <html lang="es">
@@ -40,12 +41,14 @@ export default function RootLayout({ children, session }) {
             </head>
             <body className={`${inter.className} `}>
                 <SessionProvider session={session}>
-                    {DontShowHeader && <Header />}
-                    <main className="w-full min-h-[76vh]">
-                        <ToastContainer {...toastConfig} />
-                        {children}
-                    </main>
-                    <Footer />
+                    <ProfileProvider>
+                        {DontShowHeader && <Header />}
+                        <main className="w-full min-h-[76vh]">
+                            <ToastContainer {...toastConfig} />
+                            {children}
+                        </main>
+                        <Footer />
+                    </ProfileProvider>
                 </SessionProvider>
             </body>
         </html>

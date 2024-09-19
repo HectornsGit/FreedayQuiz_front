@@ -24,7 +24,7 @@ const useLoginForm = () => {
         });
 
         if (result.ok) {
-            router.push('/');
+            router.push('/profile');
         } else {
             toast.error('Error en el inicio de sesión');
         }

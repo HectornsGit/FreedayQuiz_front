@@ -1,10 +1,11 @@
 import { fetchAPI } from '@/api/fetch-api';
+import { profileContext } from '@/context/profileContext';
 import { useSession } from 'next-auth/react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 
-export const useListQuestions = (router, quizId) => {
+export const useListQuestions = (router, quizId, resetForm, pathname) => {
     const { data: session } = useSession();
-    const [dataQuizz, setDataQuizz] = useState([]);
+    const { dataQuizz, setDataQuizz } = useContext(profileContext);
     const [valueCheckbox, setValueCheckbox] = useState([]);
     const [modal, setModal] = useState(false);
 
@@ -59,8 +60,12 @@ export const useListQuestions = (router, quizId) => {
     );
 
     const handleAddQuestion = useCallback(() => {
-        router.push(`/new-question/${quizId}`);
-    }, [router, quizId]);
+        if (pathname === `/new-question/${quizId}`) {
+            resetForm();
+        } else {
+            router.push(`/new-question/${quizId}`);
+        }
+    }, [router, quizId, resetForm, pathname]);
 
     useEffect(() => {
         getQuestions(quizId);

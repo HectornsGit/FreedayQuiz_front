@@ -39,7 +39,6 @@ const useRegisterForm = () => {
         }
 
         const onSuccess = (data) => {
-            console.log('Datos del usuario registrado', data);
             toast.success('Registrado correctamente');
             setEmail('');
             setName('');

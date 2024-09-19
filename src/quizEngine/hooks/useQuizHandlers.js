@@ -82,7 +82,7 @@ export const useQuizHandlers = ({
             return;
         }
         //Se guarda en el localStorage para comprobar la recuperación de sesión en caso necesario:
-        setItemWithExpiry('playerName', nickName, 12);
+        setItemWithExpiry('playerName', nickName, 2);
         toast.dismiss();
 
         const initialPlayer = {
