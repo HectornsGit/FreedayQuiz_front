@@ -5,12 +5,13 @@ import AddQuestion from './icons/AddQuestion';
 import Slider from './Slider';
 import { useListQuestions } from '@/hooks/useListQuestions';
 import { useDeleteQuestions } from '@/hooks/useDeleteQuestions';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Delete from './icons/Delete';
 
-export default function ListQuestions({ quizId, closeModal }) {
+export default function ListQuestions({ quizId, closeModal, resetForm }) {
     const url = process.env.NEXT_PUBLIC_API_HOST;
     const router = useRouter();
+    const pathname = usePathname();
 
     const {
         dataQuizz,
@@ -20,7 +21,7 @@ export default function ListQuestions({ quizId, closeModal }) {
         setValueCheckbox,
         handleRouteQuestion,
         handleAddQuestion,
-    } = useListQuestions(router, quizId);
+    } = useListQuestions(router, quizId, resetForm, pathname);
 
     const { deleteQuestions, handleValue, isGrey, iconDelete } =
         useDeleteQuestions(
@@ -29,7 +30,6 @@ export default function ListQuestions({ quizId, closeModal }) {
             setValueCheckbox,
             closeModal
         );
-
     return (
         <>
             {modal && (
@@ -64,7 +64,7 @@ export default function ListQuestions({ quizId, closeModal }) {
                             </li>
 
                             {dataQuizz &&
-                                dataQuizz.map((question) => (
+                                dataQuizz?.map((question) => (
                                     <li
                                         key={question.questionId}
                                         className="lg:max-w-[500px] inline-flex md:mx-4 mx-6"

@@ -1,12 +1,12 @@
 'use client';
 import { useParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import ListQuestions from './ListQuestions';
 import useCreateQuestionForm from '@/hooks/useCreateQuestionForm';
+import { useSession } from 'next-auth/react';
 
 const CreateQuestionForm = () => {
-    const { data: session } = useSession();
     const { quizId } = useParams();
+    const { data: session, status } = useSession();
     const {
         quizTitle,
         isModalOpen,
@@ -19,6 +19,7 @@ const CreateQuestionForm = () => {
         handleImageClick,
         handleFinishEdit,
         fileInputRef,
+        resetForm,
     } = useCreateQuestionForm(quizId, session);
 
     return (
@@ -28,7 +29,7 @@ const CreateQuestionForm = () => {
             </h1>
             <form onSubmit={(e) => e.preventDefault()}>
                 <div
-                    className="flex flex-col self-center items-center mb-4 relative cursor-pointer xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] mx-auto"
+                    className="flex flex-col self-center items-center mb-4 relative cursor-pointer xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] mx-auto"
                     onClick={handleImageClick}
                 >
                     <label className="block mb-2">Imagen</label>
@@ -55,7 +56,7 @@ const CreateQuestionForm = () => {
                             name="question_time"
                             value={formData.question_time}
                             onChange={handleInputChange}
-                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] input-default"
+                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] input-default"
                         />
                     </li>
                     <li className="flex flex-col">
@@ -65,66 +66,140 @@ const CreateQuestionForm = () => {
                             name="question"
                             value={formData.question}
                             onChange={handleInputChange}
-                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] input-default"
+                            className="flex items-center text-center xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] input-default"
                         />
                     </li>
                 </ul>
-                <ul className="flex flex-col self-center w-full items-center lg:gap-8 gap-6 mt-5">
-                    <li
-                        className={
-                            'p-[3PX] bg-gradient-to-br  flex items-center from-[#4E39F5] via-[#03F7F9]'
-                        }
-                    >
-                        <input
-                            type="text"
-                            name="optionA"
-                            value={formData.optionA}
-                            onChange={handleInputChange}
-                            placeholder="Respuesta 1"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
-                        />
+                <ul className="flex flex-col self-center w-full items-center lg:gap-y-8 gap-y-6 mt-5">
+                    <label className="lg:-mb-8 -mb-6 xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw]">
+                        Selecciona la respuesta correcta
+                    </label>
+                    <li className="flex items-center relative mt-0">
+                        <div className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
+                            <input
+                                type="text"
+                                name="optionA"
+                                value={formData.optionA}
+                                onChange={handleInputChange}
+                                placeholder="Respuesta 1"
+                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] 
+                                    ${
+                                        formData.correctAnswer ===
+                                            formData.optionA && formData.optionA
+                                            ? 'bg-gradient-to-br from-[#4E39F5] via-[#03F7F9]'
+                                            : 'bg-black'
+                                    }`}
+                            />
+                        </div>
+                        <label className="custom-radio-wrapper absolute right-[-30px]">
+                            <input
+                                type="radio"
+                                name="correctAnswer"
+                                value={formData.optionA}
+                                checked={
+                                    formData.correctAnswer === formData.optionA
+                                }
+                                onChange={handleInputChange}
+                                className="custom-radio"
+                            />
+                            <span className="custom-radio-checkmark absolute"></span>
+                        </label>
                     </li>
-                    <li
-                        className={
-                            'p-[3PX] bg-gradient-to-br  flex items-center from-[#4E39F5] via-[#03F7F9]'
-                        }
-                    >
-                        <input
-                            type="text"
-                            name="optionB"
-                            value={formData.optionB}
-                            onChange={handleInputChange}
-                            placeholder="Respuesta 2"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
-                        />
+
+                    <li className="flex items-center relative">
+                        <div className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
+                            <input
+                                type="text"
+                                name="optionB"
+                                value={formData.optionB}
+                                onChange={handleInputChange}
+                                placeholder="Respuesta 2"
+                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] 
+                                    ${
+                                        formData.correctAnswer ===
+                                            formData.optionB && formData.optionB
+                                            ? 'bg-gradient-to-br from-[#4E39F5] via-[#03F7F9]'
+                                            : 'bg-black'
+                                    }`}
+                            />
+                        </div>
+                        <label className="custom-radio-wrapper absolute right-[-30px]">
+                            <input
+                                type="radio"
+                                name="correctAnswer"
+                                value={formData.optionB}
+                                checked={
+                                    formData.correctAnswer === formData.optionB
+                                }
+                                onChange={handleInputChange}
+                                className="custom-radio"
+                            />
+                            <span className="custom-radio-checkmark absolute"></span>
+                        </label>
                     </li>
-                    <li
-                        className={
-                            'p-[3PX] bg-gradient-to-br  flex items-center from-[#4E39F5] via-[#03F7F9]'
-                        }
-                    >
-                        <input
-                            type="text"
-                            name="optionC"
-                            value={formData.optionC}
-                            onChange={handleInputChange}
-                            placeholder="Respuesta 3"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
-                        />
+
+                    <li className="flex items-center relative">
+                        <div className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
+                            <input
+                                type="text"
+                                name="optionC"
+                                value={formData.optionC}
+                                onChange={handleInputChange}
+                                placeholder="Respuesta 3"
+                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] 
+                                    ${
+                                        formData.correctAnswer ===
+                                            formData.optionC && formData.optionC
+                                            ? 'bg-gradient-to-br from-[#4E39F5] via-[#03F7F9]'
+                                            : 'bg-black'
+                                    }`}
+                            />
+                        </div>
+                        <label className="custom-radio-wrapper absolute right-[-30px]">
+                            <input
+                                type="radio"
+                                name="correctAnswer"
+                                value={formData.optionC}
+                                checked={
+                                    formData.correctAnswer === formData.optionC
+                                }
+                                onChange={handleInputChange}
+                                className="custom-radio"
+                            />
+                            <span className="custom-radio-checkmark absolute"></span>
+                        </label>
                     </li>
-                    <li
-                        className={
-                            'p-[3PX] bg-gradient-to-br  flex items-center from-[#4E39F5] via-[#03F7F9]'
-                        }
-                    >
-                        <input
-                            type="text"
-                            name="correctAnswer"
-                            value={formData.correctAnswer}
-                            onChange={handleInputChange}
-                            placeholder="Respuesta Correcta"
-                            className="flex items-center h-full gap-6 text-center text-2xl p-4  bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]"
-                        />
+
+                    <li className="flex items-center relative">
+                        <div className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
+                            <input
+                                type="text"
+                                name="optionD"
+                                value={formData.optionD}
+                                onChange={handleInputChange}
+                                placeholder="Respuesta 4"
+                                className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[80vw] 
+                                    ${
+                                        formData.correctAnswer ===
+                                            formData.optionD && formData.optionD
+                                            ? 'bg-gradient-to-br from-[#4E39F5] via-[#03F7F9]'
+                                            : 'bg-black'
+                                    }`}
+                            />
+                        </div>
+                        <label className="custom-radio-wrapper absolute right-[-30px]">
+                            <input
+                                type="radio"
+                                name="correctAnswer"
+                                value={formData.optionD}
+                                checked={
+                                    formData.correctAnswer === formData.optionD
+                                }
+                                onChange={handleInputChange}
+                                className="custom-radio"
+                            />
+                            <span className="custom-radio-checkmark absolute"></span>
+                        </label>
                     </li>
                 </ul>
                 <div className="relative p-4 flex items-center justify-center">
@@ -146,7 +221,11 @@ const CreateQuestionForm = () => {
                 </div>
             </form>
             {isModalOpen && (
-                <ListQuestions quizId={quizId} closeModal={closeModal} />
+                <ListQuestions
+                    quizId={quizId}
+                    closeModal={closeModal}
+                    resetForm={resetForm}
+                />
             )}
         </div>
     );

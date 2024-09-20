@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import NoImage from '../components/icons/NoImage';
 import { toast } from 'react-toastify';
 import { fetchAPI } from '@/api/fetch-api';
 import { useRouter } from 'next/navigation';
+import { profileContext } from '@/context/profileContext';
 
 const useCreateQuestionForm = (quizId, session) => {
+    const { addNewQuestion } = useContext(profileContext);
     const [quizTitle, setQuizTitle] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(true);
     const router = useRouter();
@@ -15,11 +17,27 @@ const useCreateQuestionForm = (quizId, session) => {
         optionA: '',
         optionB: '',
         optionC: '',
+        optionD: '',
         correctAnswer: '',
         question_number: '',
     });
+    const [lastQuestionNumber, setLastQuestionNumber] = useState(0);
 
-    // Icono NoImage por defecto
+    const resetForm = () => {
+        setFormData({
+            image: null,
+            question: '',
+            question_time: '',
+            optionA: '',
+            optionB: '',
+            optionC: '',
+            optionD: '',
+            correctAnswer: '',
+            question_number: lastQuestionNumber + 1, // Incrementa el número de pregunta
+        });
+        setImagePreview(<NoImage className="w-full aspect-video" />);
+    };
+
     const [imagePreview, setImagePreview] = useState(
         <NoImage className="w-full aspect-video" />
     );
@@ -32,22 +50,20 @@ const useCreateQuestionForm = (quizId, session) => {
             if (quizId && session) {
                 try {
                     const token = session.accessToken;
-
-                    const headers = {
-                        Authorization: `Bearer ${token}`,
-                    };
+                    const headers = { Authorization: `Bearer ${token}` };
 
                     const onSuccess = (data) => {
                         setQuizTitle(data.title);
 
-                        const lastQuestionNumber = Math.max(
+                        const lastQuestionNumberFromAPI = Math.max(
                             0,
                             ...data.questions.map((q) => q.questionNumber || 0)
                         );
 
+                        setLastQuestionNumber(lastQuestionNumberFromAPI);
                         setFormData((prevData) => ({
                             ...prevData,
-                            question_number: lastQuestionNumber + 1,
+                            question_number: lastQuestionNumberFromAPI + 1,
                         }));
                     };
 
@@ -80,7 +96,11 @@ const useCreateQuestionForm = (quizId, session) => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        if (name === 'correctAnswer') {
+            setFormData({ ...formData, correctAnswer: value });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
 
     const handleFileChange = (e) => {
@@ -113,13 +133,10 @@ const useCreateQuestionForm = (quizId, session) => {
         if (
             !formData.question ||
             !formData.question_time ||
-            !formData.optionA ||
-            !formData.optionB ||
-            !formData.optionC ||
             !formData.correctAnswer
         ) {
             toast.error(
-                'Por favor, completa los campos obligatorios, solo la imagen es opcional'
+                'La pregunta, el tiempo y la respuesta correcta son obligatorios.'
             );
             return false;
         }
@@ -134,33 +151,39 @@ const useCreateQuestionForm = (quizId, session) => {
         }
 
         // Verificación de respuestas duplicadas
-        const answers = [
+        let allOptions = [
             formData.optionA,
             formData.optionB,
             formData.optionC,
-            formData.correctAnswer,
-        ];
-        const uniqueAnswers = new Set(answers);
+            formData.optionD,
+        ].filter((option) => option);
 
-        if (uniqueAnswers.size !== answers.length) {
-            toast.error('No puede haber dos respuestas iguales');
+        if (new Set(allOptions).size !== allOptions.length) {
+            toast.error('No puede haber dos respuestas iguales.');
             return false;
         }
 
+        let options = allOptions.filter(
+            (option) => option !== formData.correctAnswer
+        );
+
+        const [optionA, optionB, optionC, optionD] = options;
+
         const formDataToSend = new FormData();
         formDataToSend.append('quiz_id', quizId);
-        Object.keys(formData).forEach((key) => {
-            if (formData[key] !== null && formData[key] !== '') {
-                formDataToSend.append(key, formData[key]);
-            }
-        });
+        formDataToSend.append('question', formData.question);
+        formDataToSend.append('question_time', formData.question_time);
+        formDataToSend.append('question_number', formData.question_number);
+        formDataToSend.append('correctAnswer', formData.correctAnswer);
+        if (optionA) formDataToSend.append('optionA', optionA);
+        if (optionB) formDataToSend.append('optionB', optionB);
+        if (optionC) formDataToSend.append('optionC', optionC);
+        if (optionD) formDataToSend.append('optionD', optionD);
+        if (formData.image) formDataToSend.append('image', formData.image);
 
         try {
             const token = session.accessToken;
-
-            const headers = {
-                Authorization: `Bearer ${token}`,
-            };
+            const headers = { Authorization: `Bearer ${token}` };
 
             await fetchAPI(
                 '/create-questions',
@@ -168,7 +191,12 @@ const useCreateQuestionForm = (quizId, session) => {
                 formDataToSend,
                 (data) => {
                     toast.success('Pregunta creada');
-                    console.log('Pregunta creada:', data);
+                    // Actualiza el número de la última pregunta después de crear una nueva
+                    setLastQuestionNumber(lastQuestionNumber + 1);
+                    addNewQuestion(data.quizData);
+                    router.push(
+                        `/edit-question/${quizId}/${lastQuestionNumber + 1}`
+                    );
                 },
                 (error) => {
                     toast.error(error.message);
@@ -188,10 +216,7 @@ const useCreateQuestionForm = (quizId, session) => {
 
     const openModal = async () => {
         const isFormEmpty = Object.keys(formData).every(
-            (key) =>
-                (key === 'question_number' && formData[key] !== '') ||
-                formData[key] === null ||
-                formData[key] === ''
+            (key) => formData[key] === '' || formData[key] === null
         );
 
         if (isFormEmpty) {
@@ -215,32 +240,22 @@ const useCreateQuestionForm = (quizId, session) => {
     };
 
     const handleFinishEdit = async () => {
-        try {
-            const isFormEmpty = Object.keys(formData).every(
-                (key) =>
-                    (key === 'question_number' && formData[key] !== '') ||
-                    formData[key] === null ||
-                    formData[key] === ''
-            );
+        // const isFormEmpty = Object.keys(formData).every(
+        //     (key) => formData[key] === '' || formData[key] === null
+        // );
+        // // Redirige directamente si el formulario está vacío
+        // if (isFormEmpty) {
+        //     router.push('/profile');
+        //     return;
+        // }
 
-            // Redirige directamente si el formulario está vacío
-            if (isFormEmpty) {
-                router.push('/profile');
-                return;
-            }
-
-            const isSuccess = await handleSubmit(new Event('submit'));
-
-            // Solo redirige si el submit fue exitoso
-            if (isSuccess) {
-                router.push('/profile');
-            }
-        } catch (error) {
-            console.error('Error al guardar y redirigir:', error);
-            toast.error('Error al guardar los cambios.');
-        }
+        // const isSuccess = await handleSubmit(new Event('submit'));
+        // // Solo redirige si el submit fue exitoso
+        // if (isSuccess) {
+        //     router.push('/profile');
+        // }
+        router.push('/profile');
     };
-
 
     return {
         quizTitle,
@@ -256,6 +271,7 @@ const useCreateQuestionForm = (quizId, session) => {
         handleImageClick,
         handleFinishEdit,
         fileInputRef,
+        resetForm,
     };
 };
 export default useCreateQuestionForm;

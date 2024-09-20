@@ -14,7 +14,7 @@ const quizDataHandler = (
             (data, playersData, currentQuestion, executedQuestions) => {
                 setIsMasterOnline(true);
                 if (loggedUserId && data.owner_id == loggedUserId) {
-                    setItemWithExpiry('isMaster', true, 12);
+                    setItemWithExpiry('isMaster', true, 2);
                     window.localStorage.removeItem('idNewPlayer');
                     setQuizData(data);
                     if (executedQuestions)
