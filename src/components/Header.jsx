@@ -6,8 +6,10 @@ import '../styles/header.css';
 import ButtonPrimary from './ButtonPrimary';
 import ButtonSecondary from './ButtonSecondary';
 import useHeader from '@/hooks/useHeader';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
+    const router = useRouter();
     const { data: session } = useSession();
     const {
         menu,
@@ -98,7 +100,10 @@ export default function Header() {
                             <li className="text-center text-black font-bold text-xl py-2">
                                 <button
                                     onClick={() => {
-                                        signOut();
+                                        signOut({ redirect: false });
+                                        router.push(
+                                            process.env.NEXT_PUBLIC_FRONT
+                                        );
                                         handleMenuClose();
                                     }}
                                     className="w-full"
@@ -157,7 +162,11 @@ export default function Header() {
                                     <li>
                                         <button
                                             onClick={() => {
-                                                signOut();
+                                                signOut({ redirect: false });
+                                                router.push(
+                                                    process.env
+                                                        .NEXT_PUBLIC_FRONT
+                                                );
                                                 handledesktopMenuClose();
                                             }}
                                             className="block w-full px-4 py-2 hover:bg-gray-200"
