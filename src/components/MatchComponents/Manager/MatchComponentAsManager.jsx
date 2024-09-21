@@ -51,6 +51,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
         if (question) {
             const answers = [];
             for (const [key, value] of Object.entries(question)) {
+                if (value === null || value === undefined) {
+                    continue;
+                }
                 if (key === 'correctAnswer') {
                     answers.push({
                         key: 'optionD',
