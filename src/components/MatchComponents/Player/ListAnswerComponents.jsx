@@ -12,6 +12,11 @@ const ListAnswersComponents = ({
     timeLeft,
 }) => {
     return shuffledQuestionResponses.map((response, index) => {
+        for (const [key, value] of Object.entries(response)) {
+            if (value === null || value === undefined) {
+                return;
+            }
+        }
         const correctAnswer = response.correctAnswer;
         return (
             <li
