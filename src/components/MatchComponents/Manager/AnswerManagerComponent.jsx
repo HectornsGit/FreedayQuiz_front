@@ -1,6 +1,5 @@
 'use client';
-
-import CheckMark from '@/components/icons/checkmark';
+import CheckMark from '../../icons/Checkmark';
 
 const AnswerManagerComponent = ({ text, isCorrect, logo }) => {
     return (
