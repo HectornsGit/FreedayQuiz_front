@@ -14,14 +14,18 @@ const Accordion = ({ title, children }) => {
             <button
                 onClick={toggleAccordion}
                 className="w-full justify-between
-                 text-xl font-semibold p-2 text-left flex gap-2 items-center text-[--yellow] border-b border-[--yellow] focus:outline-none"
+                 text-xl font-semibold p-2 text-left flex gap-2 items-center text-black bg-[--yellow] border-b border-[--yellow] focus:outline-none"
             >
                 <span>{title}</span>
                 <span className="font-bold">
                     {isOpen ? (
-                        <ChevronUp className={'mb-1 h-6   fill-[--yellow]'} />
+                        <ChevronUp
+                            className={'mb-1 h-6  rounded-sm  bg-[--yellow]'}
+                        />
                     ) : (
-                        <ChevronDown className={'mb-1 h-6   fill-[--yellow]'} />
+                        <ChevronDown
+                            className={'mb-1 h-6 rounded-sm   bg-[--yellow]'}
+                        />
                     )}
                 </span>
             </button>

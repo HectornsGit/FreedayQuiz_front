@@ -1,14 +1,9 @@
-import AnswerInputComponent from './AnswerInputComponent.jsx';
-import React, { useEffect, useState } from 'react';
+'use client';
+import AnswerManagerComponent from './AnswerManagerComponent';
 
-const ListAnswerInputs = ({ answers }) => {
+const ListAnswerManagerComponent = ({ answers }) => {
     const answerNames = ['🌞', '🌜', '🌟', '⚡'];
 
-    const [correctAnswer, setCorrectAnswer] = useState(
-        answers.filter((item) => {
-            return item.isCorrect === true;
-        })[0].key
-    );
     return (
         <ul className="flex flex-col  w-full items-center  gap-6">
             {answers.length > 0 &&
@@ -19,17 +14,16 @@ const ListAnswerInputs = ({ answers }) => {
                             key={key}
                             className="xl:place-self-end p-[3PX] md:w-80  sm:w-96 w-[95vw] bg-gradient-to-r   flex items-center    from-[--yellow] from-9% via-green-400 via-50% to-[--cyan] to-94%"
                         >
-                            <AnswerInputComponent
+                            <AnswerManagerComponent
                                 answer={key}
-                                setCorrectAnswer={setCorrectAnswer}
-                                correctAnswer={correctAnswer}
+                                isCorrect={isCorrect}
                                 text={value}
                                 logo={answerNames[index]}
-                            ></AnswerInputComponent>
+                            ></AnswerManagerComponent>
                         </li>
                     );
                 })}
         </ul>
     );
 };
-export default ListAnswerInputs;
+export default ListAnswerManagerComponent;

@@ -15,7 +15,7 @@ const ClockInput = ({
         setValue(defaultValue);
     }, [defaultValue]);
     return (
-        <div className="flex font-black relative -top-20 sm:-top-24 -left-2 sm:-left-56 text-black rounded-full bg-[--yellow]  text-left w-16 h-16 flex-col items-center justify-center ">
+        <div className="flex font-black relative -top-20 sm:-top-24 -left-2 sm:-left-56 text-black rounded-full bg-[--yellow] -mb-6 text-left w-16 h-16 flex-col items-center justify-center ">
             <label className="hidden text-md " htmlFor={id}>
                 {text}
             </label>
