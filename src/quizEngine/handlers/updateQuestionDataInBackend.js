@@ -9,21 +9,44 @@ const updateQuestionDataInBackend =
             );
             return;
         }
+
+        const answerNames = ['optionA', 'optionB', 'optionC'];
         const form = e.target;
-        const datafromForm = {
+
+        const questionDataFromForm = {
             question: form.elements.question.value,
             questionTime: form.elements.questionTime.value,
-            optionA: form.elements.optionA.value,
-            optionB: form.elements.optionB.value,
-            optionC: form.elements.optionC.value,
-            correctAnswer: form.elements.correctAnswer.value,
         };
+
+        const answersFromForm = {
+            optionA: form.elements.optionA?.value,
+            optionB: form.elements.optionB?.value,
+            optionC: form.elements.optionC?.value,
+            optionD: form.elements.optionD?.value,
+            correctAnswer: form.elements.correctAnswer?.value,
+        };
+
         const updatedData = {};
-        for (const [key, value] of Object.entries(datafromForm)) {
+        updatedData.correctAnswer =
+            answersFromForm[answersFromForm.correctAnswer];
+        for (const [key, value] of Object.entries(answersFromForm)) {
+            {
+                if (key === 'correctAnswer') {
+                    continue;
+                }
+                if (value === updatedData.correctAnswer || value == undefined) {
+                    continue;
+                }
+                updatedData[answerNames[0]] = value;
+                answerNames.shift();
+            }
+        }
+        for (const [key, value] of Object.entries(questionDataFromForm)) {
             if (value !== '') {
                 updatedData[key] = value;
             }
         }
+
         const finalData = { ...question, ...updatedData };
         setIsInput(false);
         if (socket) {
