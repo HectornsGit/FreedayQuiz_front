@@ -3,8 +3,8 @@ import QuestionTitleInput from './QuestionTitleInput';
 import ClockInput from '@/components/ClockInput';
 import Clock from '@/components/Clock';
 import YellowBgPencil from '@/components/icons/YellowBgPencil';
-import { useEffect, useRef, useState } from 'react';
-import AnswerInputComponent from './AnswerInputComponent';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import ListAnswerInputs from './ListAnswerInputs';
 import ManagerButton from './ManagerButton';
 import QuestionImage from '../QuestionImage';
 import ListPlayerStats from '../ListPlayerStats';
@@ -14,6 +14,7 @@ import ScoreButton from './ScoreButton';
 import Exit from '@/components/icons/Exit';
 import UsersLogo from '@/components/icons/UsersLogo';
 import CrossLogo from '@/components/icons/crossLogo';
+import ListAnswerManagerComponent from './ListAnswerManagerComponent';
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const hiddenTextRef = useRef(null);
@@ -44,12 +45,26 @@ const MatchComponentAsManager = ({ managerProps }) => {
         startRandomQuestion,
     } = managerProps;
 
-    // Iconos para las respuestas.
-    const answerNames = ['🌞', '🌜', '🌟', '⚡'];
-
     // Estado para controlar el modal de los jugadores
     const [showPlayers, setShowPlayers] = useState(false);
-
+    const answersList = useMemo(() => {
+        if (question) {
+            const answers = [];
+            for (const [key, value] of Object.entries(question)) {
+                if (key === 'correctAnswer') {
+                    answers.push({
+                        key: 'optionD',
+                        value: value,
+                        isCorrect: true,
+                    });
+                }
+                if (['optionA', 'optionB', 'optionC'].includes(key)) {
+                    answers.push({ key: key, value: value, isCorrect: false });
+                }
+            }
+            return answers;
+        }
+    }, [question]);
     // Variable que controla los botones de mostrar puntuaciones
     const disableQuestionsButton = isQuestionRunning ? true : false;
 
@@ -62,6 +77,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
     useEffect(() => {
         if (!question) {
             handleStartQuiz();
+        } else {
         }
     }, [sessionTime, question, handleStartQuiz]);
 
@@ -332,86 +348,29 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                     </p>
                                                 )
                                         }
-                                        {
-                                            // Grid con las respuestas
-                                        }
-                                        <ul className="xl:grid xl:grid-cols-2  md:place-items-center   flex flex-col self-center w-full items-center  gap-6">
-                                            <li
-                                                key={'correctAnswer'}
-                                                className={
-                                                    'xl:place-self-end p-[3PX] md:w-80  sm:w-96 w-[95vw] bg-gradient-to-r   flex items-center    from-green-300  from-9% via-green-400 via-50% to-lime-400 to-94%'
-                                                }
-                                            >
-                                                <AnswerInputComponent
-                                                    logo={answerNames[0]}
-                                                    defaultValue={
-                                                        question?.correctAnswer
-                                                    }
-                                                    handleQuestionChange={
-                                                        handleQuestionChange
-                                                    }
-                                                    isInput={isInput}
-                                                    id={'correctAnswer'}
-                                                    updateForm={
-                                                        updateQuestionDataInBackend
-                                                    }
-                                                ></AnswerInputComponent>
-                                            </li>
-                                            <li
-                                                key={'optionA'}
-                                                className={
-                                                    'xl:place-self-start md:w-80  sm:w-96 w-[95vw] p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
-                                                }
-                                            >
-                                                <AnswerInputComponent
-                                                    logo={answerNames[1]}
-                                                    defaultValue={
-                                                        question?.optionA
-                                                    }
-                                                    handleQuestionChange={
-                                                        handleQuestionChange
-                                                    }
-                                                    isInput={isInput}
-                                                    id={'optionA'}
-                                                ></AnswerInputComponent>
-                                            </li>
-                                            <li
-                                                key={'optionB'}
-                                                className={
-                                                    'xl:place-self-end md:w-80  sm:w-96 w-[95vw] p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
-                                                }
-                                            >
-                                                <AnswerInputComponent
-                                                    logo={answerNames[2]}
-                                                    defaultValue={
-                                                        question?.optionB
-                                                    }
-                                                    handleQuestionChange={
-                                                        handleQuestionChange
-                                                    }
-                                                    isInput={isInput}
-                                                    id={'optionB'}
-                                                ></AnswerInputComponent>
-                                            </li>
-                                            <li
-                                                key={'optionC'}
-                                                className={
-                                                    'xl:place-self-start md:w-80  sm:w-96 w-[95vw] p-[3PX] bg-gradient-to-r  flex items-center    from-red-700 from-9% via-pink-500 via-50% to-yellow-400 to-94%'
-                                                }
-                                            >
-                                                <AnswerInputComponent
-                                                    logo={answerNames[3]}
-                                                    defaultValue={
-                                                        question?.optionC
-                                                    }
-                                                    handleQuestionChange={
-                                                        handleQuestionChange
-                                                    }
-                                                    isInput={isInput}
-                                                    id={'optionC'}
-                                                ></AnswerInputComponent>
-                                            </li>
-                                        </ul>
+                                        <section className="lg:row-span-2 self-center">
+                                            {
+                                                // Grid con las respuestas
+                                                isInput
+                                                    ? answersList.length >
+                                                          0 && (
+                                                          <ListAnswerInputs
+                                                              answers={
+                                                                  answersList
+                                                              }
+                                                          />
+                                                      )
+                                                    : answersList.length >
+                                                          0 && (
+                                                          <ListAnswerManagerComponent
+                                                              answers={
+                                                                  answersList
+                                                              }
+                                                          />
+                                                      )
+                                            }
+                                        </section>
+
                                         {
                                             // Botones de guardar cambios y volver del modo edición
                                             isInput && (
