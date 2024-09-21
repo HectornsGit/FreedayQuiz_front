@@ -32,7 +32,10 @@ html {
 
 body {
     background-image: url('../../public/Background.webp');
-    background: center no-repeat cover;
+    background-color: #111111;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     color: #fff;
     overflow-y: auto;
     overflow-x: hidden;
@@ -102,16 +105,15 @@ body {
 
 /*ocultar barra de scroll*/
 .no-scroll2::-webkit-scrollbar {
-        display: none; /* Chrome, Safari */
+        display: none; /* Chrome, Safari  */
     }
 
 .no-scroll {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer y Edge */
+    scrollbar-width: none;  /* Firefox */ 
+    -ms-overflow-style: none; /* Internet Explorer y Edge  */
     overflow-x: scroll;
     overflow-y: hidden;
 }
-
 .qr-code img {
     filter: sepia(82%) saturate(2000%) hue-rotate(0deg) brightness(105%) contrast(104%);
 }

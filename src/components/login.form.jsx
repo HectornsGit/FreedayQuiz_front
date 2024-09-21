@@ -39,21 +39,23 @@ function LoginForm() {
                         Contraseña:{' '}
                         <span className="text-[--red] font-semibold">*</span>
                     </label>
-                    <input
-                        type={showPass ? 'text' : 'password'}
-                        value={password}
-                        onChange={(e) => {
-                            setPassword(e.target.value);
-                        }}
-                        required
-                        className="input-default"
-                    />
-                    {/* Icono de ojo para ver/ocultar texto contraseña */}
-                    <div
-                        className="relative left-[11rem] bottom-[2.1rem] fill-[#111]"
-                        onClick={() => setShowPass(!showPass)}
-                    >
-                        {showPass ? <EyeClose /> : <EyeOpen />}
+                    <div className="flex items-center">
+                        <input
+                            type={showPass ? 'text' : 'password'}
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                            }}
+                            required
+                            className="input-default flex-grow z-10"
+                        />
+                        {/* Icono de ojo para ver/ocultar texto contraseña */}
+                        <div
+                            className="-ml-10 cursor-pointer fill-[#111] z-20"
+                            onClick={() => setShowPass(!showPass)}
+                        >
+                            {showPass ? <EyeClose /> : <EyeOpen />}
+                        </div>
                     </div>
                     <Link
                         href="/request-resetpassword"
