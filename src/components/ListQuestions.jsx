@@ -52,13 +52,10 @@ export default function ListQuestions({ quizId, closeModal, resetForm }) {
                         )}
                     </div>
                     <Slider>
-                        <ul
-                            id="slider"
-                            className="w-full h-full flex content-center whitespace-nowrap scroll-smooth no-scroll no-scroll2"
-                        >
+                        <>
                             <li
                                 onClick={handleAddQuestion}
-                                className="cursor-pointer p-3 inline-flex flex-col items-center justify-center md:gap-y-12 gap-y-5 lg:w-80 lg:h-52 md:w-2/5 md:h-[123px] bg-black border-2 border-solid border-[--yellow] rounded"
+                                className="cursor-pointer p-3 flex flex-col items-center justify-center md:gap-y-12 gap-y-5 bg-black border-2 border-solid border-[--yellow] rounded"
                             >
                                 <AddQuestion />
                             </li>
@@ -67,7 +64,7 @@ export default function ListQuestions({ quizId, closeModal, resetForm }) {
                                 dataQuizz?.map((question) => (
                                     <li
                                         key={question.questionId}
-                                        className="lg:max-w-[500px] inline-flex md:mx-4 mx-6"
+                                        className="lg:max-w-[500px] flex"
                                     >
                                         <div className="flex flex-col items-center pr-1">
                                             <p className="text-2xl mb-4">
@@ -125,7 +122,7 @@ export default function ListQuestions({ quizId, closeModal, resetForm }) {
                                         )}
                                     </li>
                                 ))}
-                        </ul>
+                        </>
                     </Slider>
                 </>
             )}
