@@ -71,7 +71,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                 </ul>
                 <ul className="flex flex-col self-center w-full items-center lg:gap-y-8 gap-y-6 mt-5">
                     <label className="lg:-mb-8 -mb-6 xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw]">
-                        Selecciona la respuesta correcta
+                        Presiona para elegir la correcta
                     </label>
                     <li className="flex items-center relative mt-0">
                         <div className="p-[3PX] bg-gradient-to-br flex items-center from-[#4E39F5] via-[#03F7F9]">
@@ -120,7 +120,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                                     handleTouchStart(e, formData.optionB)
                                 }
                                 onTouchEnd={handleTouchEnd}
-                                placeholder="Respuesta 2"
+                                placeholder="Respuesta opcional"
                                 className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] 
                     ${
                         formData.correctAnswer === formData.optionB &&
@@ -156,7 +156,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                                     handleTouchStart(e, formData.optionC)
                                 }
                                 onTouchEnd={handleTouchEnd}
-                                placeholder="Respuesta 3"
+                                placeholder="Respuesta opcional"
                                 className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] 
                     ${
                         formData.correctAnswer === formData.optionC &&
@@ -192,7 +192,7 @@ const EditQuestionForm = ({ quizId, questionNumber }) => {
                                     handleTouchStart(e, formData.optionD)
                                 }
                                 onTouchEnd={handleTouchEnd}
-                                placeholder="Respuesta 4"
+                                placeholder="Respuesta opcional"
                                 className={`flex items-center h-full gap-6 text-center text-2xl p-4 bg-black xl:w-[30vw] lg:w-[50vw] sm:w-[70vw] w-[90vw] 
                     ${
                         formData.correctAnswer === formData.optionD &&
