@@ -12,6 +12,7 @@ import ChevronLeft from './icons/ChevronLeft';
 import Points from './icons/Points';
 import useUserProfile from '@/hooks/useUserProfile';
 import Start from './icons/Start';
+import Save from './icons/Save';
 
 const UserProfile = () => {
     const { data: session } = useSession();
@@ -71,7 +72,7 @@ const UserProfile = () => {
                                         onClick={handleSave}
                                         className="absolute bottom-1 right-0 z-20"
                                     >
-                                        <YellowPencil className="w-8 h-8 text-black cursor-pointer bg-yellow-400" />
+                                        <Save className="w-8 h-8 cursor-pointer text-yellow-400" />
                                     </button>
                                     <div className="w-full h-full flex justify-center items-center rounded-full">
                                         {avatarPreview ? (
@@ -83,7 +84,7 @@ const UserProfile = () => {
                                         ) : (
                                             <div className="w-full h-full flex justify-center items-center bg-gray-200 rounded-full border-2 border-[var(--yellow)]">
                                                 <span className="text-gray-500">
-                                                    No image selected
+                                                    Seleccionar imagen
                                                 </span>
                                             </div>
                                         )}
@@ -107,7 +108,7 @@ const UserProfile = () => {
                                 {isEditing.name ? (
                                     <>
                                         <button onClick={handleSave}>
-                                            <YellowPencil className="w-5 h-5 mr-5 text-yellow-400" />
+                                            <Save className="w-5 h-5 mr-5 text-yellow-400" />
                                         </button>
                                         <input
                                             type="text"
@@ -131,7 +132,7 @@ const UserProfile = () => {
                                 {isEditing.email ? (
                                     <>
                                         <button onClick={handleSave}>
-                                            <YellowPencil className="w-5 h-5 mr-5 text-yellow-400" />
+                                            <Save className="w-5 h-5 mr-5 text-yellow-400" />
                                         </button>
                                         <input
                                             type="email"
@@ -157,7 +158,7 @@ const UserProfile = () => {
                                 {isEditing.password ? (
                                     <>
                                         <button onClick={handleSave}>
-                                            <YellowPencil className="w-5 h-5 mr-5 text-yellow-400" />
+                                            <Save className="w-5 h-5 mr-5 text-yellow-400" />
                                         </button>
                                         <input
                                             type="password"
