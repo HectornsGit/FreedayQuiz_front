@@ -121,55 +121,18 @@ const MatchComponentAsManager = ({ managerProps }) => {
             {
                 // Encabezado principal
             }
-            <header className="lg:col-span-1 lg:col-start-2   lg:row-span-1 flex flex-col mb-6 w-full">
-                <ul className="flex grow mb-8 h-12 items-center mx-4 justify-around">
-                    {
-                        // El botón de salir solo se muestra en pantallas grandes
-                        window.innerWidth > 1280 && (
-                            <li className="">
-                                <button className="" onClick={endQuiz}>
-                                    <Exit
-                                        className={
-                                            'rounded-sm  w-8 fill-[--yellow]'
-                                        }
-                                    ></Exit>
-                                </button>
-                            </li>
-                        )
-                    }
-                    <li>
-                        {
-                            // Reloj con el tiempo de la sesión
-                            sessionTimeLeft > 0 && (
-                                <Clock
-                                    time={sessionTimeLeft}
-                                    setSessionTimeHandler={
-                                        setSessionTimeHandler
-                                    }
-                                    isClockInput={isClockInput}
-                                    setIsClockInput={setIsClockInput}
-                                />
-                            )
-                        }
-                    </li>
-                    {
-                        // El botón de editar pregunta solo se muestra en pantallas grandes
-                        window.innerWidth > 1280 && (
-                            <li>
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setIsInput(!isInput);
-                                    }}
-                                >
-                                    <YellowBgPencil
-                                        className={'rounded-sm p-1 w-8'}
-                                    ></YellowBgPencil>
-                                </button>
-                            </li>
-                        )
-                    }
-                </ul>
+            <header className="lg:col-span-1 lg:col-start-2  items-center  lg:row-span-1 flex flex-col mb-6 w-full">
+                {
+                    // Reloj con el tiempo de la sesión
+                    sessionTimeLeft > 0 && (
+                        <Clock
+                            time={sessionTimeLeft}
+                            setSessionTimeHandler={setSessionTimeHandler}
+                            isClockInput={isClockInput}
+                            setIsClockInput={setIsClockInput}
+                        />
+                    )
+                }
 
                 {
                     // Título y código de acceso al quiz
@@ -188,12 +151,33 @@ const MatchComponentAsManager = ({ managerProps }) => {
             {
                 // Lista de jugadores (solo se muestra en pantalla grande)
             }
-            <aside className=" pb-4 lg:row-span-2 h-[900px] bg-gradient-to-r from-[--yellow] to-[--cyan] lg:row-start-2  xl:flex xl:visible lg:invisible lg:flex hidden ">
-                {playerData && (
+            <aside
+                className={
+                    (showPlayers ? 'xl:visible ' : 'xl:invisible ') +
+                    ' pb-4 lg:row-span-2 h-[900px] bg-gradient-to-r from-[--yellow] to-[--cyan] lg:row-start-2  xl:flex lg:invisible lg:flex hidden '
+                }
+            >
+                {showPlayers && playerData && (
                     <div className=" overflow-y-clip  flex flex-col items-start bg-zinc-950  h-full w-full mr-2 my-2">
-                        <h1 className="text-2xl font-bold text-left self-start p-4 mb-4">
-                            Jugadores
-                        </h1>
+                        <header className="flex justify-between w-full px-6 items-center">
+                            <h1 className="text-2xl font-bold text-left self-start pt-8  p-4 mb-4">
+                                Jugadores
+                            </h1>
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setShowPlayers(false);
+                                }}
+                            >
+                                <div className="bg-black pr-1 pb-1 active:bg-white">
+                                    <CrossLogo
+                                        className={
+                                            'active:bg-black active:fill-white  w-10 h-10 p-2 bg-white fill-black'
+                                        }
+                                    ></CrossLogo>
+                                </div>
+                            </button>
+                        </header>
                         <div className="w-full pl-2 pr-4">
                             <ListPlayerStats
                                 players={playerData}
@@ -461,56 +445,53 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                 />
                                             )}
                                     </li>
-                                    {window.innerWidth < 1280 && (
-                                        <li>
-                                            <ul className="flex gap-8">
-                                                <li className="">
-                                                    <button
-                                                        className=""
-                                                        onClick={endQuiz}
-                                                    >
-                                                        <Exit
-                                                            className={
-                                                                'rounded-sm  w-12 p-2 bg-[--yellow]'
-                                                            }
-                                                        ></Exit>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.preventDefault;
-                                                            setShowPlayers(
-                                                                !showPlayers
-                                                            );
-                                                        }}
-                                                    >
-                                                        <UsersLogo
-                                                            className={
-                                                                '  rounded-sm px-2 py-2 w-12 h-12  bg-[--yellow]'
-                                                            }
-                                                        ></UsersLogo>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            setIsInput(
-                                                                !isInput
-                                                            );
-                                                        }}
-                                                    >
-                                                        <YellowBgPencil
-                                                            className={
-                                                                'rounded-sm p-2 w-12'
-                                                            }
-                                                        ></YellowBgPencil>
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    )}
+
+                                    <li>
+                                        <ul className="flex gap-8">
+                                            <li className="">
+                                                <button
+                                                    className=""
+                                                    onClick={endQuiz}
+                                                >
+                                                    <Exit
+                                                        className={
+                                                            'rounded-sm  w-12 p-2 bg-[--yellow]'
+                                                        }
+                                                    ></Exit>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault;
+                                                        setShowPlayers(
+                                                            !showPlayers
+                                                        );
+                                                    }}
+                                                >
+                                                    <UsersLogo
+                                                        className={
+                                                            '  rounded-sm px-2 py-2 w-12 h-12  bg-[--yellow]'
+                                                        }
+                                                    ></UsersLogo>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setIsInput(!isInput);
+                                                    }}
+                                                >
+                                                    <YellowBgPencil
+                                                        className={
+                                                            'rounded-sm p-2 w-12'
+                                                        }
+                                                    ></YellowBgPencil>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             )
                         }
