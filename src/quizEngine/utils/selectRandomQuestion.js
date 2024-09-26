@@ -18,7 +18,7 @@ const selectRandomQuestion = (
 
         if (confirm) {
             console.log('Se acabó el juego');
-        };
+        }
 
         const validNumbers = list_of_questions.map(
             (question) => question.number
@@ -32,6 +32,6 @@ const selectRandomQuestion = (
     const randomQuestionNumber =
         validNumbers[Math.floor(Math.random() * validNumbers.length)];
 
-    return randomQuestionNumber;
+    return { randomQuestionNumber, validNumbers };
 };
 export default selectRandomQuestion;

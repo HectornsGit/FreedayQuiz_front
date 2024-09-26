@@ -28,6 +28,7 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
         recoverySession,
         clickedResponses,
         isThereAWinner,
+        automaticCountDown,
     } = playerProps;
 
     //Para ordenar puntuacion jugadores (no sé si compensa meter esto en un customhook)

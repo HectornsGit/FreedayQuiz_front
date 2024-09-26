@@ -27,6 +27,7 @@ import {
     restartTimeSession,
     setWinnerOn,
     stopQuestionTime,
+    countDown,
 } from '../handleEvents';
 
 const useSocketConfig = (argumentsData) => {
@@ -65,6 +66,7 @@ const useSocketConfig = (argumentsData) => {
         setNumberAnswersPerQuestion,
         connectedClients,
         numberAnswersPerQuestion,
+        setAutomaticCountDown,
     } = argumentsData;
 
     useEffect(() => {
@@ -249,6 +251,17 @@ const useSocketConfig = (argumentsData) => {
             };
         }
     }, [socket, handleAnswerSubmitted]);
+
+    useEffect(() => {
+        if (socket) {
+            countDown(socket, setAutomaticCountDown);
+            return () => {
+                if (socket) {
+                    socket.off('countDown');
+                }
+            };
+        }
+    }, [socket, setAutomaticCountDown]);
 
     //Actualizar los datos del quiz que se editan en tiempo real y sincronizarlos en todos los clientes de la sala:
     useEffect(() => {
