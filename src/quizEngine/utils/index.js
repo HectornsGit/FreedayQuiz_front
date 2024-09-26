@@ -7,6 +7,7 @@ import setItemWithExpiry from './setItemWithExpity';
 import getItemWithExpiry from './getItemWithExpiry';
 import selectRandomQuestion from './selectRandomQuestion';
 import formatDate from './formatDate';
+import countdownTimer from './countdownTimer';
 export {
     findValue,
     shuffleArray,
@@ -17,4 +18,5 @@ export {
     getItemWithExpiry,
     selectRandomQuestion,
     formatDate,
+    countdownTimer,
 };

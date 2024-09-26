@@ -1,5 +1,6 @@
 import { selectRandomQuestion } from '../utils';
-const startRandomQuestion = (
+
+const startRandomAutomaticQuestion = (
     socket,
     setQuestionsExecuted,
     questionsExecuted,
@@ -29,4 +30,4 @@ const startRandomQuestion = (
         });
     }
 };
-export default startRandomQuestion;
+export default startRandomAutomaticQuestion;

@@ -24,6 +24,7 @@ import getResults from './getResults';
 import restartTimeSession from './restartTimeSession';
 import setWinnerOn from './setWinnerOn';
 import stopQuestionTime from './stopQuestionTime';
+import countDown from './countDown';
 export {
     connectHandler,
     errorHandler,
@@ -51,4 +52,5 @@ export {
     firstDataHandler,
     setWinnerOn,
     stopQuestionTime,
+    countDown,
 };

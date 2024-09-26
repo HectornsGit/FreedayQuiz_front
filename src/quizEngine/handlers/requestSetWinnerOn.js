@@ -1,5 +1,5 @@
 const requestSetWinnerOn = (socket, quizId) => (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
 
     if (socket) {
         socket.emit('requestSetWinnerOn', quizId);

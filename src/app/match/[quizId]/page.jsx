@@ -51,6 +51,9 @@ const Page = () => {
         setIsInput,
         requestSetWinnerOn,
         isThereAWinner,
+        setQuestionsExecuted,
+        automaticCountDown,
+        quizId,
     } = useQuizLogic();
 
     const managerProps = {
@@ -88,6 +91,10 @@ const Page = () => {
         setIsInput,
         requestSetWinnerOn,
         isThereAWinner,
+        socket,
+        setQuestionsExecuted,
+        automaticCountDown,
+        quizId,
     };
     const playerProps = {
         signOutHandler,
@@ -113,6 +120,8 @@ const Page = () => {
         clickedResponses,
         requestSetWinnerOn,
         isThereAWinner,
+        automaticCountDown,
+        quizId,
     };
 
     if (error) {

@@ -15,9 +15,12 @@ import Exit from '@/components/icons/Exit';
 import UsersLogo from '@/components/icons/UsersLogo';
 import CrossLogo from '@/components/icons/crossLogo';
 import ListAnswerManagerComponent from './ListAnswerManagerComponent';
+import { startRandomAutomaticQuestion } from '@/quizEngine/handlers';
+import { countdownTimer } from '@/quizEngine/utils';
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const hiddenTextRef = useRef(null);
+
     const {
         endQuiz,
         handleQuestionChange,
@@ -43,10 +46,16 @@ const MatchComponentAsManager = ({ managerProps }) => {
         requestSetWinnerOn,
         isThereAWinner,
         startRandomQuestion,
+        socket,
+        setQuestionsExecuted,
+        automaticCountDown,
+        quizId,
     } = managerProps;
 
     // Estado para controlar el modal de los jugadores
     const [showPlayers, setShowPlayers] = useState(false);
+    const [isAutomaticOn, setIsAutomaticOn] = useState(false);
+    const [disableWhenAutomatic, setDisableWhenAutomatic] = useState(false);
     const answersList = useMemo(() => {
         if (question) {
             const answers = [];
@@ -83,6 +92,78 @@ const MatchComponentAsManager = ({ managerProps }) => {
         } else {
         }
     }, [sessionTime, question, handleStartQuiz]);
+
+    //Sistema de automatización del quiz:
+    const isRunningRef = useRef(false);
+    const handleSwitchOffAutomatic = () => {
+        setIsAutomaticOn(false);
+        isRunningRef.current = false;
+        setDisableWhenAutomatic(false);
+    };
+
+    const automatizQuiz = async () => {
+        let backData;
+        let time = 5;
+
+        const atomaticQuizEngine = async () => {
+            try {
+                socket.emit('startAutomaticCountDown', quizId);
+                await countdownTimer(time);
+
+                const automatic = await new Promise((resolve, reject) => {
+                    if (!backData) {
+                        startRandomQuestion();
+                    } else {
+                        startRandomAutomaticQuestion(
+                            socket,
+                            setQuestionsExecuted,
+                            backData.executedList,
+                            backData.number_of_questions,
+                            backData.quizId,
+                            JSON.parse(backData.list_of_questions)
+                        );
+                    }
+
+                    if (socket) {
+                        socket.on('questionStarted', (_quizId, automatic) => {
+                            resolve(automatic);
+                        });
+
+                        socket.on('error', (error) => {
+                            reject(error);
+                        });
+                    } else {
+                        reject(new Error('Socket no disponible'));
+                    }
+                });
+
+                backData = automatic;
+                const totalTime = question.questionTime + 10000;
+                await new Promise((resolve) => {
+                    setTimeout(resolve, totalTime);
+                });
+                showScoresHandler();
+            } catch (error) {
+                console.error('Error al iniciar la pregunta:', error);
+            }
+        };
+
+        isRunningRef.current = true;
+        setIsAutomaticOn(true);
+        setDisableWhenAutomatic(true);
+
+        do {
+            if (!isRunningRef.current) {
+                break;
+            }
+            await atomaticQuizEngine();
+        } while (backData.validNumbers.length > 1);
+
+        if (isRunningRef.current) {
+            handleFinalScore();
+            setIsAutomaticOn(false);
+        }
+    };
 
     // Antes de marcar el tiempo de sesión.
     if (!sessionTime) {
@@ -213,6 +294,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                 isQuestionRunning
                                             }
                                         ></ClockInput>
+
+                                        {/*Este es el valor de la cuenta atrás antes de que empiece la pregunta automática*/}
+                                        <p>{automaticCountDown}</p>
 
                                         {
                                             // Versión editable de la pregunta
@@ -398,27 +482,58 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                 <ManagerButton
                                                     text="Iniciar pregunta"
                                                     isPrimary={true}
-                                                    disabled={isQuestionRunning}
+                                                    disabled={
+                                                        isAutomaticOn
+                                                            ? disableWhenAutomatic
+                                                            : isQuestionRunning
+                                                    }
                                                     handleClick={initQuestion}
                                                 />
                                             </li>
                                             <li>
                                                 <ManagerButton
                                                     text={'Pregunta aleatoria'}
-                                                    disabled={isQuestionRunning}
+                                                    disabled={
+                                                        isAutomaticOn
+                                                            ? disableWhenAutomatic
+                                                            : isQuestionRunning
+                                                    }
                                                     handleClick={
                                                         startRandomQuestion
                                                     }
                                                 ></ManagerButton>
                                             </li>
+                                            {!isAutomaticOn ? (
+                                                <li>
+                                                    <ManagerButton
+                                                        text={
+                                                            'Juego automático'
+                                                        }
+                                                        handleClick={
+                                                            automatizQuiz
+                                                        }
+                                                    ></ManagerButton>
+                                                </li>
+                                            ) : (
+                                                <li>
+                                                    <ManagerButton
+                                                        text={'Juego manual'}
+                                                        handleClick={
+                                                            handleSwitchOffAutomatic
+                                                        }
+                                                    ></ManagerButton>
+                                                </li>
+                                            )}
                                         </ul>
                                     </li>
                                     <li className="md:w-5/12 w-full ">
                                         <ScoreButton
                                             handleClick={showScoresHandler}
                                             disabled={
-                                                !isQuestionRunning ||
-                                                timeLeft > 0
+                                                isAutomaticOn
+                                                    ? disableWhenAutomatic
+                                                    : !isQuestionRunning ||
+                                                      timeLeft > 0
                                             }
                                             text={'Puntuaciones'}
                                         />
@@ -428,8 +543,10 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                             <ScoreButton
                                                 handleClick={handleFinalScore}
                                                 disabled={
-                                                    !isQuestionRunning ||
-                                                    timeLeft > 0
+                                                    isAutomaticOn
+                                                        ? disableWhenAutomatic
+                                                        : !isQuestionRunning ||
+                                                          timeLeft > 0
                                                 }
                                                 primary={true}
                                                 text={'Puntuación final'}
