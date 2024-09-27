@@ -138,10 +138,19 @@ const MatchComponentAsManager = ({ managerProps }) => {
                 });
 
                 backData = automatic;
-                const totalTime = question.questionTime + 10000;
+                const totalTime = question.questionTime * 1000;
+
                 await new Promise((resolve) => {
+                    if (socket) {
+                        socket.on('timeUp2', () => {
+                            resolve();
+                        });
+                    }
                     setTimeout(resolve, totalTime);
                 });
+                if (!isRunningRef.current) {
+                    return;
+                }
                 showScoresHandler();
             } catch (error) {
                 console.error('Error al iniciar la pregunta:', error);
@@ -511,6 +520,11 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                         }
                                                         handleClick={
                                                             automatizQuiz
+                                                        }
+                                                        disabled={
+                                                            isAutomaticOn
+                                                                ? false
+                                                                : isQuestionRunning
                                                         }
                                                     ></ManagerButton>
                                                 </li>
