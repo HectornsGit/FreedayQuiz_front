@@ -1,3 +1,5 @@
+const { DEFAULT_SANS_SERIF_FONT } = require('next/dist/shared/lib/constants');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -13,6 +15,9 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
+    fontFamily:{
+      'freedayquiz': ['Poetsen One', 'sans-serif']
+    }
   },
   plugins: [],
 };
