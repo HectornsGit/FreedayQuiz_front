@@ -7,17 +7,18 @@ const Landing = () => {
     return (
         <>
             <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--bg-hab-black)]">
-                <div className=" text-center -mt-48 mb-10">
-                    <h2 className="text-[6rem] font-freedayquiz bg-gradient-to-r from-[--cyan] to-[--yellow] inline-block text-transparent bg-clip-text">
+                <div className="text-center -mt-48 mb-10 flex flex-col">
+                    <h2 className="lg:text-[6rem] text-[4rem] font-freedayquiz bg-gradient-to-r from-[--cyan] to-[--yellow] inline-block text-transparent bg-clip-text">
                         FREE DAY
                     </h2>
-                    <br></br>
-                    <h2 className="-mt-20 text-[9.8rem] font-freedayquiz bg-gradient-to-r from-[--cyan] to-[--yellow] inline-block text-transparent bg-clip-text">
+                    <h2 className="lg:-mt-20 lg:text-[9.8rem] -mt-10  text-[6rem] font-freedayquiz bg-gradient-to-r from-[--cyan] to-[--yellow] inline-block text-transparent bg-clip-text">
                         QUIZ!
                     </h2>
                 </div>
                 <div className="text-center text-white">
-                    <h1 className="text-5xl font-bold mb-4">¡Bienvenido/a!</h1>
+                    <h1 className="lg:text-5xl text-4xl font-bold mb-4">
+                        ¡Bienvenido/a!
+                    </h1>
                     <p className="mb-6">
                         Introduce el pin de juego para empezar a jugar
                     </p>
