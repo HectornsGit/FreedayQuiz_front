@@ -8,7 +8,7 @@ export default function HowToPlay() {
 
     return (
         <section className="w-full max-w-md mx-auto mt-10 flex flex-col items-center">
-            <nav className="flex border-b border-[--yellow]">
+            <nav className="flex border-b border-[--yellow] mb-4">
                 {/* Pestaña 1: Manager */}
                 <button
                     className={`py-2 px-4 text-center ${
@@ -40,7 +40,9 @@ export default function HowToPlay() {
             <>
                 {tab === 1 && <HowToPlayManager />}
                 {/* Si el num de pestaña es X imrpime esto */}
-                {tab === 2 && <div>Instrucciones para jugar</div>}
+                {tab === 2 && (
+                    <div>Instrucciones para jugar: en construcción</div>
+                )}
             </>
         </section>
     );
