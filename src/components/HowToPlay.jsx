@@ -7,7 +7,7 @@ export default function HowToPlay() {
     const [tab, setTab] = useState(1); // creo un estado para saber qué pestaña está activa. Comienza con la 1
 
     return (
-        <section className="w-full max-w-md mx-auto mt-10 flex flex-col items-center">
+        <section className="w-full max-w-md mx-auto my-10 flex flex-col items-center">
             <nav className="flex border-b border-[--yellow] mb-4">
                 {/* Pestaña 1: Manager */}
                 <button
