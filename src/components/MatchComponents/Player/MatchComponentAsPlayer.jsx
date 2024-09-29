@@ -66,6 +66,16 @@ const MatchComponentAsPlayer = ({ playerProps }) => {
         <section className="flex flex-col items-center my-12 mx-4">
             {showScores && !isQuestionRunning ? (
                 <>
+                    {!isThereAWinner && (
+                        <>
+                            <p className="text-xl font-black text-center">
+                                Siguiente pregunta en...{' '}
+                            </p>
+                            <p className="text-center text-[6rem] font-black bg-gradient-to-r from-[--cyan] to-[--yellow] inline-block text-transparent bg-clip-text">
+                                {automaticCountDown}
+                            </p>
+                        </>
+                    )}
                     {isThereAWinner && <ShowWinner winner={winner} />}
                     <ShowScores
                         orderedPlayersbyScore={orderedPlayersbyScore}
