@@ -7,7 +7,7 @@ const Landing = () => {
     return (
         <>
             <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--bg-hab-black)]">
-                <div className="text-center -mt-48 mb-10 flex flex-col">
+                <div className="-mt-48 mb-10 flex flex-col">
                     <h2 className="lg:text-[6rem] text-[4rem] font-freedayquiz bg-gradient-to-r from-[--cyan] to-[--yellow] inline-block text-transparent bg-clip-text">
                         FREE DAY
                     </h2>
