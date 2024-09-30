@@ -306,10 +306,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                 isQuestionRunning
                                             }
                                         ></ClockInput>
-
-                                        {/*Este es el valor de la cuenta atrás antes de que empiece la pregunta automática*/}
-                                        <p>{automaticCountDown}</p>
-
                                         {
                                             // Versión editable de la pregunta
                                             isInput && (
@@ -327,7 +323,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                 />
                                             )
                                         }
-
                                         {
                                             // Versión no editable de la pregunta
                                             isInput === false && (
@@ -431,29 +426,38 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                     </p>
                                                 )
                                         }
-                                        <section className="lg:row-span-2 self-center">
-                                            {
-                                                // Grid con las respuestas
-                                                isInput
-                                                    ? answersList.length >
-                                                          0 && (
-                                                          <ListAnswerInputs
-                                                              answers={
-                                                                  answersList
-                                                              }
-                                                          />
-                                                      )
-                                                    : answersList.length >
-                                                          0 && (
-                                                          <ListAnswerManagerComponent
-                                                              answers={
-                                                                  answersList
-                                                              }
-                                                          />
-                                                      )
-                                            }
-                                        </section>
-
+                                        {
+                                            /*Este es el valor de la cuenta atrás antes de que empiece la pregunta automática*/
+                                            isAutomaticOn && (
+                                                <p className="font-extrabold text-2xl font-freedayquiz ">
+                                                    {automaticCountDown}
+                                                </p>
+                                            )
+                                        }
+                                        {isAutomaticOn == false && (
+                                            <section className="lg:row-span-2 self-center">
+                                                {
+                                                    // Grid con las respuestas
+                                                    isInput
+                                                        ? answersList.length >
+                                                              0 && (
+                                                              <ListAnswerInputs
+                                                                  answers={
+                                                                      answersList
+                                                                  }
+                                                              />
+                                                          )
+                                                        : answersList.length >
+                                                              0 && (
+                                                              <ListAnswerManagerComponent
+                                                                  answers={
+                                                                      answersList
+                                                                  }
+                                                              />
+                                                          )
+                                                }
+                                            </section>
+                                        )}
                                         {
                                             // Botones de guardar cambios y volver del modo edición
                                             isInput && (
@@ -487,89 +491,137 @@ const MatchComponentAsManager = ({ managerProps }) => {
                         {
                             // Botones de control de la partida
                             isInput == false && (
-                                <ul className="flex flex-col  justify-center items-center mt-4 gap-6">
+                                <ul className="flex flex-col  justify-center items-center mt-8 gap-6">
                                     <li>
-                                        <ul className="flex  justify-center items-center mt-4 gap-4">
-                                            <li className="">
-                                                <ManagerButton
-                                                    text="Iniciar pregunta"
-                                                    isPrimary={true}
-                                                    disabled={
-                                                        isAutomaticOn
-                                                            ? disableWhenAutomatic
-                                                            : isQuestionRunning
-                                                    }
-                                                    handleClick={initQuestion}
-                                                />
-                                            </li>
+                                        {
+                                            // Botones que controlan el modo de juego
+                                        }
+                                        <ul className="flex flex-col sm:flex-row justify-start gap-6 sm:items-center items-start sm:justify-between ">
                                             <li>
-                                                <ManagerButton
-                                                    text={'Pregunta aleatoria'}
-                                                    disabled={
-                                                        isAutomaticOn
-                                                            ? disableWhenAutomatic
-                                                            : isQuestionRunning
-                                                    }
-                                                    handleClick={
-                                                        startRandomQuestion
-                                                    }
-                                                ></ManagerButton>
+                                                <h3 className="font-semibold  ">
+                                                    Modo de juego:
+                                                </h3>
                                             </li>
-                                            {!isAutomaticOn ? (
-                                                <li>
-                                                    <ManagerButton
-                                                        text={
-                                                            'Juego automático'
-                                                        }
-                                                        handleClick={
-                                                            automatizQuiz
-                                                        }
-                                                        disabled={
-                                                            isAutomaticOn
-                                                                ? false
-                                                                : isQuestionRunning
-                                                        }
-                                                    ></ManagerButton>
-                                                </li>
-                                            ) : (
-                                                <li>
-                                                    <ManagerButton
-                                                        text={'Juego manual'}
-                                                        handleClick={
+                                            <li className="flex items-center gap-2">
+                                                <div className="rounded-full w-5 h-5 border border-white  disabled:bg-white disabled:p-2 flex items-center justify-center ">
+                                                    <button
+                                                        className="  rounded-full w-4 h-4  disabled:w-3 disabled:h-3 disabled:bg-white"
+                                                        onClick={automatizQuiz}
+                                                        disabled={isAutomaticOn}
+                                                    ></button>
+                                                </div>
+                                                <span>Automático</span>
+                                            </li>
+                                            <li className="flex items-center gap-2">
+                                                <div className="rounded-full w-5 h-5 border border-white  disabled:bg-white disabled:p-2 flex items-center justify-center ">
+                                                    <button
+                                                        className="  rounded-full w-4 h-4   disabled:w-3 disabled:h-3 disabled:bg-white"
+                                                        onClick={
                                                             handleSwitchOffAutomatic
                                                         }
-                                                    ></ManagerButton>
-                                                </li>
-                                            )}
+                                                        disabled={
+                                                            !isAutomaticOn
+                                                        }
+                                                    ></button>
+                                                </div>
+                                                <span>Manual</span>
+                                            </li>
                                         </ul>
                                     </li>
-                                    <li className="md:w-5/12 w-full ">
-                                        <ScoreButton
-                                            handleClick={showScoresHandler}
-                                            disabled={
-                                                isAutomaticOn
-                                                    ? disableWhenAutomatic
-                                                    : !isQuestionRunning ||
-                                                      timeLeft > 0
-                                            }
-                                            text={'Puntuaciones'}
-                                        />
-                                    </li>
-                                    <li className="md:w-5/12 w-full ">
-                                        <div className="flex flex-col items-center">
-                                            <ScoreButton
-                                                handleClick={handleFinalScore}
-                                                disabled={
-                                                    isAutomaticOn
-                                                        ? disableWhenAutomatic
-                                                        : !isQuestionRunning ||
-                                                          timeLeft > 0
-                                                }
-                                                primary={true}
-                                                text={'Puntuación final'}
-                                            />
-                                        </div>
-                                    </li>
+                                    {
+                                        // Botones que controlan el modo manual
+                                        isAutomaticOn == false && (
+                                            <li className=" w-full flex flex-col items-center justify-center gap-2">
+                                                <ul className="w-full flex flex-col items-center justify-center gap-4">
+                                                    <li>
+                                                        <ul className="flex  justify-center items-center mt-4 gap-4">
+                                                            <li className="">
+                                                                <ManagerButton
+                                                                    text="Iniciar pregunta"
+                                                                    isPrimary={
+                                                                        true
+                                                                    }
+                                                                    disabled={
+                                                                        isQuestionRunning
+                                                                    }
+                                                                    handleClick={
+                                                                        initQuestion
+                                                                    }
+                                                                />
+                                                            </li>
+                                                            <li>
+                                                                <ManagerButton
+                                                                    text={
+                                                                        'Pregunta aleatoria'
+                                                                    }
+                                                                    disabled={
+                                                                        isQuestionRunning
+                                                                    }
+                                                                    handleClick={
+                                                                        startRandomQuestion
+                                                                    }
+                                                                ></ManagerButton>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li className="md:w-5/12 w-full ">
+                                                        <ScoreButton
+                                                            handleClick={
+                                                                showScoresHandler
+                                                            }
+                                                            disabled={
+                                                                isAutomaticOn
+                                                                    ? disableWhenAutomatic
+                                                                    : !isQuestionRunning ||
+                                                                      timeLeft >
+                                                                          0
+                                                            }
+                                                            text={
+                                                                'Puntuaciones'
+                                                            }
+                                                        />
+                                                    </li>
+                                                    <li className="md:w-5/12 w-full ">
+                                                        <div className="flex flex-col items-center">
+                                                            <ScoreButton
+                                                                handleClick={
+                                                                    handleFinalScore
+                                                                }
+                                                                disabled={
+                                                                    isAutomaticOn
+                                                                        ? disableWhenAutomatic
+                                                                        : !isQuestionRunning ||
+                                                                          timeLeft >
+                                                                              0
+                                                                }
+                                                                primary={true}
+                                                                text={
+                                                                    'Puntuación final'
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        )
+                                    }
+                                    {isAutomaticOn && (
+                                        <li className="  w-full flex flex-col items-center justify-center gap-2">
+                                            <ul className="w-full flex flex-col items-center justify-center gap-4">
+                                                <li>
+                                                    <ManagerButton
+                                                        text={'Empezar Juego'}
+                                                        isPrimary
+                                                    ></ManagerButton>
+                                                </li>
+                                                <li>
+                                                    <ManagerButton
+                                                        text={'Pausar Juego'}
+                                                    ></ManagerButton>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    )}
                                     <li className="md:w-5/12 w-full ">
                                         {playerData.length > 0 &&
                                             isThereAWinner && (
@@ -579,7 +631,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                 />
                                             )}
                                     </li>
-
+                                    {
+                                        // Botones de abajo
+                                    }
                                     <li>
                                         <ul className="flex gap-8">
                                             <li className="">
