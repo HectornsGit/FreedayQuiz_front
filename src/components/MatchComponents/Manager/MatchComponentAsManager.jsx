@@ -151,6 +151,9 @@ const MatchComponentAsManager = ({ managerProps }) => {
                 if (!isRunningRef.current) {
                     return;
                 }
+                await new Promise((resolve) => {
+                    setTimeout(resolve, 3000);
+                });
                 showScoresHandler();
             } catch (error) {
                 console.error('Error al iniciar la pregunta:', error);
