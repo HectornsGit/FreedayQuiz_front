@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import ChevronLeft from './icons/ChevronLeft';
 import ChevronRight from './icons/ChevronRight';
+import Exit from './icons/Exit';
 
 export default function HowToPlayManager() {
     //TO DO: como voy a usar este slider 2 veces, meterlo en un hook
@@ -193,9 +194,6 @@ export default function HowToPlayManager() {
                         </h2>
                     </header>
                     <div className="max-w-[630px]">
-                        {/*                         <h4 className="font-medium text-lg border-b-2">
-                            Edita
-                        </h4> */}
                         <p className="mb-3">
                             Podrás ver una lista con las preguntas creadas al
                             final del formulario, cada vez que crees una
@@ -205,7 +203,7 @@ export default function HowToPlayManager() {
                         <p className="mb-3">
                             Para editar una pregunta, sólo tienes que hacer
                             click en la imagen correspondiente. Te cargará el
-                            formulario de edicion con los datos de la pregunta.
+                            formulario de edición con los datos de la pregunta.
                             Puedes cambiar cualquiera de los campos
                         </p>
                         <p className="mb-3">
@@ -214,7 +212,7 @@ export default function HowToPlayManager() {
                         </p>
                     </div>
                     <img
-                        src="/instrucciones/Editar-Preguntas.gif"
+                        src="/instrucciones/Guardar-Preguntas.gif"
                         alt="video de como crear un quiz"
                         className="pb-2 pr-2 bg-gradient-to-bl from-[--cyan] to-[--yellow]"
                     />
@@ -234,12 +232,12 @@ export default function HowToPlayManager() {
                     <div className="max-w-[630px]">
                         <p className="mb-3">
                             Selecciona la/s pregunta/s que quieras borrar
-                            pulsando en la papelera correspondiente
+                            pulsando en la papelera correspondiente.
                         </p>
                         <p className="mb-3">
                             Verás que las preguntas a eliminar cambiarán a
                             blanco y negro. Pulsa el botón eliminar preguntas
-                            para eliminar las preguntas elegidas
+                            para eliminar las preguntas elegidas.
                         </p>
                     </div>
                     <img
@@ -301,7 +299,7 @@ export default function HowToPlayManager() {
                         </p>
                     </div>
                     <img
-                        src="/instrucciones/Guardar-Preguntas.gif"
+                        src="/instrucciones/Volver-Perfil.jpg"
                         alt="video de como crear un quiz"
                         className="pb-2 pr-2 bg-gradient-to-bl from-[--cyan] to-[--yellow]"
                     />
@@ -397,7 +395,7 @@ export default function HowToPlayManager() {
                         <p className="mb-3">
                             Lo primero que verás es el tiempo que le resta a la
                             partida, si necesitas agregar más tiempo, lo podrás
-                            hacer en cualquer momento pulsando al icono del
+                            hacer en cualquier momento pulsando al icono del
                             lápiz que hay a la derecha.
                         </p>
                         <p className="mb-3">
@@ -411,7 +409,7 @@ export default function HowToPlayManager() {
                         </p>
                     </div>
                     <img
-                        src="/instrucciones/Crontol-Partida.gif"
+                        src="/instrucciones/Control-Partida.gif"
                         alt="video de como crear un quiz"
                         className="pb-2 pr-2 bg-gradient-to-bl from-[--cyan] to-[--yellow]"
                     />
@@ -466,12 +464,75 @@ export default function HowToPlayManager() {
                         </h2>
                     </header>
                     <div className="max-w-[630px]">
-                        <p className="mb-3">pregunta</p>
-                        <p className="mb-3">Una</p>
-                        <p className="mb-3">También</p>
+                        <p className="mb-3">
+                            Podrás elegir entre dos modos de juego:{' '}
+                        </p>
+                        <h4 className="font-medium text-lg border-b-2">
+                            Automático
+                        </h4>
+                        <p className="mb-3">
+                            Se mostrarán las preguntas y las puntuaciones de
+                            forma automática,&nbsp;
+                            <strong>
+                                ¡podrás prestar atención a lo que responden
+                                los/as jugadores/as!.
+                            </strong>
+                            &nbsp; Pausa el juego siempre que quieras pulsando
+                            en el botón pausar juego
+                        </p>
+                        <h4 className="font-medium text-lg border-b-2">
+                            Manual
+                        </h4>
+                        <p className="mb-3">
+                            Selecciona la pregunta y pulsa el boton iniciar
+                            pregunta. Cuando todos/as respondan a la pregunta,
+                            se habilitará el botón mostrar puntuaciones para que
+                            puedas enseñar la puntuación.
+                        </p>
+                        <p className="mb-3">
+                            Si no quieres seguir un orden, pulsa el botón
+                            pregunta aleatoria y se lanzará una pregunta de la
+                            lista al azar.
+                        </p>
                     </div>
                     <img
-                        src="/instrucciones/Crear-Quiz.gif"
+                        src="/instrucciones/Modo-Juego.gif"
+                        alt="video de como crear un quiz"
+                        className="pb-2 pr-2 bg-gradient-to-bl from-[--cyan] to-[--yellow]"
+                    />
+                </section>
+            )}
+            {/* PASO 13: Fin partida*/}
+            {step === 14 && (
+                <section className="flex flex-col px-7 lg:w-max w-fit gap-y-6">
+                    <header className="flex items-center gap-x-2">
+                        <p className="font-black text-black text-lg text-center bg-[--yellow] p-2 w-8">
+                            14
+                        </p>
+                        <h2 className="font-black text-lg">
+                            Puntuaciones finales
+                        </h2>
+                    </header>
+                    <div className="max-w-[630px]">
+                        <p className="mb-3">
+                            Una vez realizadas todas las preguntas, muestra
+                            quien ha ganado pulsando en el botón puntuacion
+                            final
+                        </p>
+                        <p className="mb-3">
+                            Guarda en un excel el listado de jugadores/as y
+                            puntuaciones finales pulsando el boton descargar CSV
+                        </p>
+                        <p className="mb-3 inline-block">
+                            Para salir y finalizar el quiz pulsa el icono de
+                            salir&nbsp;&nbsp;
+                            <span className="float-right">
+                                <Exit className="w-6 fill-[--yellow]" />
+                            </span>
+                        </p>
+                    </div>
+                    <img
+                        src="/instrucciones/"
                         alt="video de como crear un quiz"
                         className="pb-2 pr-2 bg-gradient-to-bl from-[--cyan] to-[--yellow]"
                     />
@@ -480,7 +541,7 @@ export default function HowToPlayManager() {
             <button onClick={handleNextStep}>
                 <div
                     className={`bg-[#FCFF00] rounded-full p-2 ${
-                        step > 18 ? 'hidden' : 'block'
+                        step > 13 ? 'hidden' : 'block'
                     }`}
                 >
                     <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
