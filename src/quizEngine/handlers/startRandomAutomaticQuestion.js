@@ -6,7 +6,8 @@ const startRandomAutomaticQuestion = (
     questionsExecuted,
     numberOfQuestions,
     quizId,
-    list_of_questions
+    list_of_questions,
+    newQuestionTime
 ) => {
     const states = {
         isQuestionRunning: true,
@@ -27,6 +28,7 @@ const startRandomAutomaticQuestion = (
         socket.emit('startQuestion', quizId, states, {
             randomQuestionNumber,
             validNumbers,
+            newQuestionTime,
         });
     }
 };

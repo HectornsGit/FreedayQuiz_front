@@ -17,6 +17,7 @@ import CrossLogo from '@/components/icons/crossLogo';
 import ListAnswerManagerComponent from './ListAnswerManagerComponent';
 import { startRandomAutomaticQuestion } from '@/quizEngine/handlers';
 import { countdownTimer } from '@/quizEngine/utils';
+import useAutomaticQuiz from '@/hooks/useAutomaticQuiz';
 
 const MatchComponentAsManager = ({ managerProps }) => {
     const hiddenTextRef = useRef(null);
@@ -54,8 +55,6 @@ const MatchComponentAsManager = ({ managerProps }) => {
 
     // Estado para controlar el modal de los jugadores
     const [showPlayers, setShowPlayers] = useState(false);
-    const [isAutomaticOn, setIsAutomaticOn] = useState(false);
-    const [disableWhenAutomatic, setDisableWhenAutomatic] = useState(false);
     const answersList = useMemo(() => {
         if (question) {
             const answers = [];
@@ -94,26 +93,66 @@ const MatchComponentAsManager = ({ managerProps }) => {
     }, [sessionTime, question, handleStartQuiz]);
 
     //Sistema de automatización del quiz:
-    const isRunningRef = useRef(false);
-    const handleSwitchOffAutomatic = () => {
-        setIsAutomaticOn(false);
-        isRunningRef.current = false;
-        setDisableWhenAutomatic(false);
+    const {
+        isRunningRef,
+        isQuizPausedRef,
+        isQuizResumedRef,
+        checkPaused,
+        isAutomaticOn,
+        setIsAutomaticOn,
+        disableWhenAutomatic,
+        setDisableWhenAutomatic,
+        handleSwitchOffAutomatic,
+        pauseQuiz,
+    } = useAutomaticQuiz();
+
+    let questionTimeLeft;
+    let startTimeLeft;
+    let backData;
+    let time = 5;
+    let startTime;
+
+    const resumeQuiz = () => {
+        isQuizPausedRef.current = false;
+        isQuizResumedRef.current = true;
+        automatizQuiz();
     };
 
-    const automatizQuiz = async () => {
-        let backData;
-        let time = 5;
+    //Eventos para controlar los tiempos de los intervalos:
+    if (socket) {
+        socket.on('quizPausedQuestion', (timeFromBack) => {
+            questionTimeLeft = timeFromBack;
+            console.log('Uno', questionTimeLeft);
+        });
+        socket.on('quizPausedStart', (InitTimeFromBack) => {
+            startTimeLeft = InitTimeFromBack;
+            console.log('Uno', questionTimeLeft);
+        });
+    }
 
+    //Función principal:
+    const automatizQuiz = async () => {
         const atomaticQuizEngine = async () => {
             try {
-                socket.emit('startAutomaticCountDown', quizId);
-                await countdownTimer(time);
+                if (checkPaused()) return;
+                startTime = 6;
+                if (startTimeLeft > 0 && isQuizResumedRef.current) {
+                    socket.emit(
+                        'startAutomaticCountDown',
+                        quizId,
+                        startTimeLeft
+                    );
+                } else if (!isQuizResumedRef.current) {
+                    socket.emit('startAutomaticCountDown', quizId, startTime);
+                    if (checkPaused()) return;
+                    await countdownTimer(time, socket);
+                }
 
+                if (checkPaused()) return;
                 const automatic = await new Promise((resolve, reject) => {
                     if (!backData) {
                         startRandomQuestion();
-                    } else {
+                    } else if (!isQuizResumedRef.current) {
                         startRandomAutomaticQuestion(
                             socket,
                             setQuestionsExecuted,
@@ -121,6 +160,16 @@ const MatchComponentAsManager = ({ managerProps }) => {
                             backData.number_of_questions,
                             backData.quizId,
                             JSON.parse(backData.list_of_questions)
+                        );
+                    } else {
+                        startRandomAutomaticQuestion(
+                            socket,
+                            setQuestionsExecuted,
+                            backData.executedList,
+                            backData.number_of_questions,
+                            backData.quizId,
+                            JSON.parse(backData.list_of_questions),
+                            questionTimeLeft
                         );
                     }
 
@@ -137,44 +186,68 @@ const MatchComponentAsManager = ({ managerProps }) => {
                     }
                 });
 
-                backData = automatic;
+                if (automatic) backData = automatic;
                 const totalTime = question.questionTime * 1000;
+                if (checkPaused()) return;
 
+                // Esperar el tiempo de la pregunta, o hasta que todos respondan:
                 await new Promise((resolve) => {
+                    const waitingTime = setTimeout(() => {
+                        resolve();
+                    }, totalTime);
+
                     if (socket) {
-                        socket.on('timeUp2', () => {
+                        const handleTimeUp = () => {
+                            clearTimeout(waitingTime);
                             resolve();
-                        });
+                            socket.off('timeUp2', handleTimeUp);
+                            socket.off('quizPaused', handlePausedQuiz);
+                        };
+
+                        const handlePausedQuiz = () => {
+                            clearTimeout(waitingTime);
+                            socket.off('timeUp2', handleTimeUp);
+                            resolve();
+                        };
+
+                        socket.on('timeUp2', handleTimeUp);
+                        socket.on('quizPausedQuestion', handlePausedQuiz);
                     }
-                    setTimeout(resolve, totalTime);
                 });
 
+                if (checkPaused()) return;
                 if (!isRunningRef.current) {
                     return;
                 }
 
+                // Esperar tres segundos después de que todos hayan respondido antes de mostrar puntuaciones:
                 await new Promise((resolve) => {
+                    if (checkPaused()) return;
                     setTimeout(resolve, 3000);
                 });
 
+                if (checkPaused()) return;
                 showScoresHandler();
             } catch (error) {
                 console.error('Error al iniciar la pregunta:', error);
             }
         };
 
+        if (checkPaused()) return;
+
         isRunningRef.current = true;
         setIsAutomaticOn(true);
         setDisableWhenAutomatic(true);
 
         do {
-            if (!isRunningRef.current) {
+            if (!isRunningRef.current || checkPaused()) {
                 break;
             }
-            await atomaticQuizEngine();
-        } while (backData.validNumbers.length > 1);
 
-        if (isRunningRef.current) {
+            await atomaticQuizEngine();
+        } while (backData && backData.validNumbers.length > 1);
+
+        if (isRunningRef.current && !checkPaused()) {
             handleFinalScore();
             setIsAutomaticOn(false);
         }
@@ -613,13 +686,21 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                             <ul className="w-full flex flex-col items-center justify-center gap-4">
                                                 <li>
                                                     <ManagerButton
-                                                        text={'Empezar Juego'}
+                                                        text={'Reanudar Juego'}
+                                                        handleClick={resumeQuiz}
                                                         isPrimary
+                                                        disabled={
+                                                            !isQuizPausedRef.current
+                                                        }
                                                     ></ManagerButton>
                                                 </li>
                                                 <li>
                                                     <ManagerButton
                                                         text={'Pausar Juego'}
+                                                        disabled={
+                                                            isQuizPausedRef.current
+                                                        }
+                                                        handleClick={pauseQuiz}
                                                     ></ManagerButton>
                                                 </li>
                                             </ul>
