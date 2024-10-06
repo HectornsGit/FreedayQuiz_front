@@ -521,7 +521,8 @@ export default function HowToPlayManager() {
                         </p>
                         <p className="mb-3">
                             Guarda en un excel el listado de jugadores/as y
-                            puntuaciones finales pulsando el boton descargar CSV
+                            puntuaciones finales pulsando el boton descargar
+                            resultados
                         </p>
                         <p className="mb-3 inline-block">
                             Para salir y finalizar el quiz pulsa el icono de
@@ -532,7 +533,7 @@ export default function HowToPlayManager() {
                         </p>
                     </div>
                     <img
-                        src="/instrucciones/"
+                        src="/instrucciones/Descargar-Resultados.jpg"
                         alt="video de como crear un quiz"
                         className="pb-2 pr-2 bg-gradient-to-bl from-[--cyan] to-[--yellow]"
                     />
