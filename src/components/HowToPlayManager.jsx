@@ -72,7 +72,7 @@ export default function HowToPlayManager() {
                         <p className="mb-3">
                             Si no recuerdas tu contraseña ¡no te preocupes!,
                             puedes pulsar en el enlace &quot;He olvidado mi
-                            contraseña&quot; para recuperarla
+                            contraseña&quot; para recuperarla.
                         </p>
                     </div>
                     <img
@@ -478,7 +478,8 @@ export default function HowToPlayManager() {
                                 los/as jugadores/as!.
                             </strong>
                             &nbsp; Pausa el juego siempre que quieras pulsando
-                            en el botón pausar juego
+                            en el botón pausar juego, reanúdalo volviendo a
+                            pulsar en empezar juego.
                         </p>
                         <h4 className="font-medium text-lg border-b-2">
                             Manual
@@ -502,7 +503,7 @@ export default function HowToPlayManager() {
                     />
                 </section>
             )}
-            {/* PASO 13: Fin partida*/}
+            {/* PASO 14: Fin partida*/}
             {step === 14 && (
                 <section className="flex flex-col px-7 lg:w-max w-fit gap-y-6">
                     <header className="flex items-center gap-x-2">
