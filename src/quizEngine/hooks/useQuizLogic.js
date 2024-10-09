@@ -322,6 +322,7 @@ const useQuizLogic = () => {
         setQuestionsExecuted,
         automaticCountDown,
         quizId,
+        setIsDisabled,
     };
 };
 export default useQuizLogic;

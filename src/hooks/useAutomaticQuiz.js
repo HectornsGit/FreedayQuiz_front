@@ -3,9 +3,15 @@ import { useRef, useState } from 'react';
 const useAutomaticQuiz = () => {
     const [isAutomaticOn, setIsAutomaticOn] = useState(false);
     const [disableWhenAutomatic, setDisableWhenAutomatic] = useState(false);
+    const [systemPaused, setSystemPaused] = useState(false);
+
     const isRunningRef = useRef(false);
     const isQuizPausedRef = useRef(false);
     const isQuizResumedRef = useRef(false);
+    const waitingTime = useRef(null);
+    const waitingTime2 = useRef(null);
+    const backData = useRef(null);
+
     const isPaused = () => isQuizPausedRef.current;
 
     const handleSwitchOffAutomatic = () => {
@@ -17,20 +23,9 @@ const useAutomaticQuiz = () => {
 
     const checkPaused = () => {
         if (isPaused()) {
-            console.log('Quiz pausado, deteniendo ejecución.');
             return true;
         }
         return false;
-    };
-
-    const pauseQuiz = () => {
-        questionTimeLeft = 0;
-        startTimeLeft = 0;
-        isQuizPausedRef.current = true;
-        isQuizResumedRef.current = false;
-        if (socket && questionTimeLeft === 0) {
-            socket.emit('pauseQuiz', quizId);
-        }
     };
 
     return {
@@ -43,7 +38,11 @@ const useAutomaticQuiz = () => {
         disableWhenAutomatic,
         setDisableWhenAutomatic,
         handleSwitchOffAutomatic,
-        pauseQuiz,
+        waitingTime,
+        waitingTime2,
+        backData,
+        systemPaused,
+        setSystemPaused,
     };
 };
 export default useAutomaticQuiz;

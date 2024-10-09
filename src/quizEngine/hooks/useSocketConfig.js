@@ -254,6 +254,32 @@ const useSocketConfig = (argumentsData) => {
 
     useEffect(() => {
         if (socket) {
+            socket.on('disableButtons', () => {
+                setIsDisabled(true);
+            });
+            return () => {
+                if (socket) {
+                    socket.off('disableButtons');
+                }
+            };
+        }
+    }, [setIsDisabled, socket]);
+
+    useEffect(() => {
+        if (socket) {
+            socket.on('activateButtons', () => {
+                setIsDisabled(false);
+            });
+            return () => {
+                if (socket) {
+                    socket.off('activateButtons');
+                }
+            };
+        }
+    }, [setIsDisabled, socket]);
+
+    useEffect(() => {
+        if (socket) {
             countDown(socket, setAutomaticCountDown);
             return () => {
                 if (socket) {

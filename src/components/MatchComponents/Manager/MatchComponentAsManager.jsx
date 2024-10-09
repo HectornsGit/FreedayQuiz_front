@@ -15,7 +15,10 @@ import Exit from '@/components/icons/Exit';
 import UsersLogo from '@/components/icons/UsersLogo';
 import CrossLogo from '@/components/icons/crossLogo';
 import ListAnswerManagerComponent from './ListAnswerManagerComponent';
-import { startRandomAutomaticQuestion } from '@/quizEngine/handlers';
+import {
+    startRandomAutomaticQuestion,
+    resumeQuestion,
+} from '@/quizEngine/handlers';
 import { countdownTimer } from '@/quizEngine/utils';
 import useAutomaticQuiz from '@/hooks/useAutomaticQuiz';
 
@@ -92,7 +95,7 @@ const MatchComponentAsManager = ({ managerProps }) => {
         }
     }, [sessionTime, question, handleStartQuiz]);
 
-    //Sistema de automatización del quiz:
+    // Sistema de automatización del quiz:
     const {
         isRunningRef,
         isQuizPausedRef,
@@ -103,138 +106,157 @@ const MatchComponentAsManager = ({ managerProps }) => {
         disableWhenAutomatic,
         setDisableWhenAutomatic,
         handleSwitchOffAutomatic,
-        pauseQuiz,
+        waitingTime,
+        waitingTime2,
+        backData,
+        systemPaused,
+        setSystemPaused,
     } = useAutomaticQuiz();
 
-    let questionTimeLeft;
-    let startTimeLeft;
-    let backData;
-    let time = 5;
+    const questionTimeLeft = useRef(0);
     let startTime;
+    let time = 5;
+
+    const pauseQuiz = () => {
+        setSystemPaused(true);
+        clearTimeout(waitingTime);
+        clearTimeout(waitingTime2);
+        questionTimeLeft.current = 0;
+        isQuizPausedRef.current = true;
+        isQuizResumedRef.current = false;
+        if (socket) {
+            socket.emit('pauseQuiz', quizId);
+        }
+    };
 
     const resumeQuiz = () => {
+        setSystemPaused(false);
         isQuizPausedRef.current = false;
         isQuizResumedRef.current = true;
+        if (socket) {
+            socket.emit('reactivateButtons', quizId);
+        }
         automatizQuiz();
     };
 
-    //Eventos para controlar los tiempos de los intervalos:
+    // Eventos para controlar los tiempos de los intervalos:
     if (socket) {
         socket.on('quizPausedQuestion', (timeFromBack) => {
-            questionTimeLeft = timeFromBack;
-            console.log('Uno', questionTimeLeft);
-        });
-        socket.on('quizPausedStart', (InitTimeFromBack) => {
-            startTimeLeft = InitTimeFromBack;
-            console.log('Uno', questionTimeLeft);
+            questionTimeLeft.current = timeFromBack || 0;
         });
     }
+    //Función interna:
+    const atomaticQuizEngine = async () => {
+        try {
+            if (checkPaused()) return;
+            if (!isRunningRef.current) return;
 
-    //Función principal:
-    const automatizQuiz = async () => {
-        const atomaticQuizEngine = async () => {
-            try {
-                if (checkPaused()) return;
-                startTime = 6;
-                if (startTimeLeft > 0 && isQuizResumedRef.current) {
-                    socket.emit(
-                        'startAutomaticCountDown',
-                        quizId,
-                        startTimeLeft
-                    );
-                } else if (!isQuizResumedRef.current) {
-                    socket.emit('startAutomaticCountDown', quizId, startTime);
-                    if (checkPaused()) return;
-                    await countdownTimer(time, socket);
-                }
+            // Limpiar listeners anteriores
+            socket.off('error');
+            socket.off('quizPaused');
+            socket.off('timeUp2');
+            socket.off('quizPausedQuestion');
+
+            startTime = 6;
+            if (questionTimeLeft.current <= 0) {
+                console.log('Inicio', questionTimeLeft.current);
+                socket.emit('startAutomaticCountDown', quizId, startTime);
 
                 if (checkPaused()) return;
-                const automatic = await new Promise((resolve, reject) => {
-                    if (!backData) {
-                        startRandomQuestion();
-                    } else if (!isQuizResumedRef.current) {
-                        startRandomAutomaticQuestion(
-                            socket,
-                            setQuestionsExecuted,
-                            backData.executedList,
-                            backData.number_of_questions,
-                            backData.quizId,
-                            JSON.parse(backData.list_of_questions)
-                        );
-                    } else {
-                        startRandomAutomaticQuestion(
-                            socket,
-                            setQuestionsExecuted,
-                            backData.executedList,
-                            backData.number_of_questions,
-                            backData.quizId,
-                            JSON.parse(backData.list_of_questions),
-                            questionTimeLeft
-                        );
-                    }
-
-                    if (socket) {
-                        socket.on('questionStarted', (_quizId, automatic) => {
-                            resolve(automatic);
-                        });
-
-                        socket.on('error', (error) => {
-                            reject(error);
-                        });
-                    } else {
-                        reject(new Error('Socket no disponible'));
-                    }
-                });
-
-                if (automatic) backData = automatic;
-                const totalTime = question.questionTime * 1000;
-                if (checkPaused()) return;
-
-                // Esperar el tiempo de la pregunta, o hasta que todos respondan:
-                await new Promise((resolve) => {
-                    const waitingTime = setTimeout(() => {
-                        resolve();
-                    }, totalTime);
-
-                    if (socket) {
-                        const handleTimeUp = () => {
-                            clearTimeout(waitingTime);
-                            resolve();
-                            socket.off('timeUp2', handleTimeUp);
-                            socket.off('quizPaused', handlePausedQuiz);
-                        };
-
-                        const handlePausedQuiz = () => {
-                            clearTimeout(waitingTime);
-                            socket.off('timeUp2', handleTimeUp);
-                            resolve();
-                        };
-
-                        socket.on('timeUp2', handleTimeUp);
-                        socket.on('quizPausedQuestion', handlePausedQuiz);
-                    }
-                });
-
-                if (checkPaused()) return;
-                if (!isRunningRef.current) {
-                    return;
-                }
-
-                // Esperar tres segundos después de que todos hayan respondido antes de mostrar puntuaciones:
-                await new Promise((resolve) => {
-                    if (checkPaused()) return;
-                    setTimeout(resolve, 3000);
-                });
-
-                if (checkPaused()) return;
-                showScoresHandler();
-            } catch (error) {
-                console.error('Error al iniciar la pregunta:', error);
+                await countdownTimer(time, socket);
             }
-        };
 
+            if (checkPaused()) return;
+            if (!isRunningRef.current) return;
+            const automatic = await new Promise((resolve, reject) => {
+                if (!backData.current) {
+                    startRandomQuestion();
+                } else if (backData.current && questionTimeLeft.current === 0) {
+                    startRandomAutomaticQuestion(
+                        socket,
+                        setQuestionsExecuted,
+                        backData.current.executedList,
+                        backData.current.number_of_questions,
+                        backData.current.quizId,
+                        JSON.parse(backData.current.list_of_questions)
+                    );
+                } else {
+                    resumeQuestion(socket, quizId, questionTimeLeft.current);
+                }
+
+                if (
+                    socket &&
+                    (!backData.current || questionTimeLeft.current <= 0)
+                ) {
+                    socket.on('questionStarted', (_quizId, automatic) => {
+                        resolve(automatic);
+                    });
+
+                    socket.on('error', (error) => {
+                        reject(error);
+                    });
+                } else {
+                    resolve();
+                }
+            });
+
+            if (automatic) backData.current = automatic;
+            const totalTime = !backData
+                ? question.questionTime * 1000
+                : questionTimeLeft.current <= 0 && backData
+                  ? backData.current.timeLeft * 1000
+                  : questionTimeLeft.current * 1000;
+
+            if (checkPaused()) return;
+            if (!isRunningRef.current) return;
+            // Esperar el tiempo de la pregunta, o hasta que todos respondan:
+            await new Promise((resolve) => {
+                const waitingTime = setTimeout(() => {
+                    if (!checkPaused()) {
+                        resolve();
+                    }
+                }, totalTime);
+
+                if (socket) {
+                    const handleTimeUp = () => {
+                        clearTimeout(waitingTime);
+                        resolve();
+                    };
+
+                    const handlePausedQuiz = () => {
+                        clearTimeout(waitingTime);
+                    };
+
+                    socket.on('timeUp2', handleTimeUp);
+                    socket.on('quizPausedQuestion', handlePausedQuiz);
+                }
+            });
+
+            if (checkPaused()) return;
+            if (!isRunningRef.current) return;
+
+            // Esperar tres segundos después de que todos hayan respondido antes de mostrar puntuaciones:
+            await new Promise((resolve) => {
+                const waitingTime2 = setTimeout(() => {
+                    resolve();
+                }, 3000);
+            });
+
+            if (checkPaused()) return;
+            if (!isRunningRef.current) return;
+
+            showScoresHandler();
+
+            isQuizResumedRef.current = false;
+            questionTimeLeft.current = 0;
+        } catch (error) {
+            console.error('Error al iniciar la pregunta:', error);
+        }
+    };
+
+    // Función principal:
+    const automatizQuiz = async () => {
         if (checkPaused()) return;
-
         isRunningRef.current = true;
         setIsAutomaticOn(true);
         setDisableWhenAutomatic(true);
@@ -243,13 +265,13 @@ const MatchComponentAsManager = ({ managerProps }) => {
             if (!isRunningRef.current || checkPaused()) {
                 break;
             }
-
             await atomaticQuizEngine();
-        } while (backData && backData.validNumbers.length > 1);
+        } while (backData.current && backData.current.validNumbers.length > 1);
 
         if (isRunningRef.current && !checkPaused()) {
             handleFinalScore();
-            setIsAutomaticOn(false);
+            handleSwitchOffAutomatic();
+            return;
         }
     };
 
@@ -583,7 +605,10 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                     <button
                                                         className="  rounded-full w-4 h-4  disabled:w-3 disabled:h-3 disabled:bg-white"
                                                         onClick={automatizQuiz}
-                                                        disabled={isAutomaticOn}
+                                                        disabled={
+                                                            isAutomaticOn ||
+                                                            timeLeft > 0
+                                                        }
                                                     ></button>
                                                 </div>
                                                 <span>Automático</span>
@@ -596,7 +621,8 @@ const MatchComponentAsManager = ({ managerProps }) => {
                                                             handleSwitchOffAutomatic
                                                         }
                                                         disabled={
-                                                            !isAutomaticOn
+                                                            !isAutomaticOn ||
+                                                            systemPaused
                                                         }
                                                     ></button>
                                                 </div>

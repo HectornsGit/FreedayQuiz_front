@@ -1,7 +1,6 @@
 const countdownTimer = (time, socket) => {
     return new Promise((resolve, reject) => {
         const timer = setInterval(() => {
-            console.log(`Iniciando nueva pregunta en ${time}`);
             time--;
 
             if (time < 0) {
@@ -17,14 +16,6 @@ const countdownTimer = (time, socket) => {
 
         if (socket) {
             socket.on('quizPaused', handlePause);
-
-            // Limpieza al desconectar el socket
-            socket.on('disconnect', () => {
-                clearInterval(timer);
-                reject(
-                    new Error('Socket desconectado. Temporizador detenido.')
-                );
-            });
         }
     });
 };
