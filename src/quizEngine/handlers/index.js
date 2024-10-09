@@ -15,6 +15,7 @@ import getQuestionFromList from './getQuestionFromList';
 import startRandomQuestion from './startRandomQuestion';
 import startRandomAutomaticQuestion from './startRandomAutomaticQuestion';
 import requestSetWinnerOn from './requestSetWinnerOn';
+import resumeQuestion from './resumeQuestion';
 
 export {
     nextQuestionHandler,
@@ -34,4 +35,5 @@ export {
     startRandomQuestion,
     requestSetWinnerOn,
     startRandomAutomaticQuestion,
+    resumeQuestion,
 };

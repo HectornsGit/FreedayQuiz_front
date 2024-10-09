@@ -54,6 +54,7 @@ const Page = () => {
         setQuestionsExecuted,
         automaticCountDown,
         quizId,
+        setIsDisabled,
     } = useQuizLogic();
 
     const managerProps = {
@@ -95,6 +96,8 @@ const Page = () => {
         setQuestionsExecuted,
         automaticCountDown,
         quizId,
+        setIsDisabled,
+        isDisabled,
     };
     const playerProps = {
         signOutHandler,
