@@ -138,7 +138,7 @@ export default function HowToPlayPlayer() {
                         </p>
                     </div>
                     <img
-                        src="/instrucciones/Jugar-Jugador.gif"
+                        src="/instrucciones/Puntuaciones-Jugador.jpg"
                         alt="video de como registrar un usuario"
                         className="pb-2 pr-2 bg-gradient-to-bl from-[--cyan] to-[--yellow]"
                     />
@@ -161,7 +161,7 @@ export default function HowToPlayPlayer() {
                         </p>
                     </div>
                     <img
-                        src="/instrucciones/Jugar-Jugador.gif"
+                        src="/instrucciones/Ganador-Jugador.gif"
                         alt="video de como registrar un usuario"
                         className="pb-2 pr-2 bg-gradient-to-bl from-[--cyan] to-[--yellow]"
                     />
