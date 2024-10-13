@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import HowToPlayManager from './HowToPlayManager';
+import HowToPlayPlayer from './HowToPlayPlayer';
 
 export default function HowToPlay() {
     //Voy a crear dos pestañas (Manager y jugador)
@@ -40,9 +41,7 @@ export default function HowToPlay() {
             <>
                 {tab === 1 && <HowToPlayManager />}
                 {/* Si el num de pestaña es X imrpime esto */}
-                {tab === 2 && (
-                    <div>Instrucciones para jugar: en construcción</div>
-                )}
+                {tab === 2 && <HowToPlayPlayer />}
             </>
         </section>
     );
