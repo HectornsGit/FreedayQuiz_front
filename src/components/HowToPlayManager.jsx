@@ -334,8 +334,8 @@ export default function HowToPlayManager() {
                         </p>
                     </div>
                     <img
-                        src="/instrucciones/Editar-Eliminar-Quiz.gif"
-                        alt="video de como crear un quiz"
+                        src="/instrucciones/Editar-Eliminar-quiz.gif"
+                        alt="video de como eliminar un quiz"
                         className="pb-2 pr-2 bg-gradient-to-bl from-[--cyan] to-[--yellow]"
                     />
                 </section>
