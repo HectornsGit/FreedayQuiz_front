@@ -25,7 +25,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                 >
                     <img
-                        src="https://media.licdn.com/dms/image/v2/D4E35AQHBYaR8Xu4bPQ/profile-framedphoto-shrink_200_200/profile-framedphoto-shrink_200_200/0/1721294330369?e=1729436400&v=beta&t=5Mm7d2qxKzbXFzv3ZZ5M-Dp_SJdpt_g0Mp8di4B-h2A"
+                        src="https://media.licdn.com/dms/image/v2/D4D03AQFRneyNeQt42Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1731424513991?e=1738800000&v=beta&t=Wh3yZyr_DgyvfFIKR0vLFw5Od788MBlNZXIvcJVW3HA"
                         alt="LinkedIn Héctor"
                         className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-4 border-[--bg-hab-black] object-cover"
                     />
@@ -36,7 +36,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                 >
                     <img
-                        src="https://media.licdn.com/dms/image/v2/D4D35AQHOGpj85QBUKQ/profile-framedphoto-shrink_200_200/profile-framedphoto-shrink_200_200/0/1635012122922?e=1729436400&v=beta&t=AANQ-GeZaIjesmO-nzqZsFiLD9izjX6TCiISqX9zZV0"
+                        src="https://media.licdn.com/dms/image/v2/D4D35AQHOGpj85QBUKQ/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1635012122922?e=1733824800&v=beta&t=H5rSG3pKM2ay3UWDPax8E29fPcg-WeKAYI3fMN1gQKA"
                         alt="LinkedIn Nelson"
                         className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-4 border-[--bg-hab-black] object-cover"
                     />
@@ -47,7 +47,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                 >
                     <img
-                        src="https://media.licdn.com/dms/image/v2/D4D03AQGrWvd5dEbkLg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1703728000532?e=1731542400&v=beta&t=4PqTVzKIHQcOSuoy_87JYyurEV4NCdCYayMPgbxR6zs"
+                        src="https://media.licdn.com/dms/image/v2/D4D03AQGrWvd5dEbkLg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1703728000532?e=1738800000&v=beta&t=qA5L1WXt_e7wm-bjt0zf_sagxEf_Yg090twcCzOnCLI"
                         alt="LinkedIn Javier"
                         className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-4 border-[--bg-hab-black] object-cover"
                     />
@@ -58,7 +58,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                 >
                     <img
-                        src="https://media.licdn.com/dms/image/v2/C4E03AQE6aY6Qr1f7SQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1652625764506?e=1731542400&v=beta&t=9tysPFPpPvkV6vgb6dkoYOCOgeEb6kDCCNjGdvVGa1o"
+                        src="https://media.licdn.com/dms/image/v2/C4E03AQE6aY6Qr1f7SQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1652625764506?e=1738800000&v=beta&t=jTWyJRK-NQ7oqPpC9gOvxkSyYml0c6lrCX5nrPoAOyw"
                         alt="LinkedIn Lidia"
                         className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-4 border-[--bg-hab-black] object-cover"
                     />
